@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Kaone Studio — Sobat Motret Terbaikmu.</title>
+<title>Kaone Studio — Fotografer Wedding &amp; Adat Batak di Padang Lawas Utara</title>
 
 <!-- Favicon -->
 <!-- Baris rel="icon" file (favicon.svg, favicon-32.png, dst) di bawah ini
@@ -34,8 +34,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kaone Studio">
 <meta property="og:locale" content="id_ID">
-<meta property="og:title" content="Kaone Studio — Fotografer, Videografer, Undangan Digital, Rental Gaun di Padang Lawas Utara">
-<meta property="og:description" content="Sobat Motret Terbaikmu.">
+<meta property="og:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
+<meta property="og:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta property="og:url" content="https://kaone.web.id/">
 <meta property="og:image" content="https://picsum.photos/seed/kaone-wedding-utama/1200/630">
 <meta property="og:image:width" content="1200">
@@ -43,8 +43,8 @@
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kaone Studio — Fotografer, Videografer, Undangan Digital, Rental Gaun di Padang Lawas Utara">
-<meta name="twitter:description" content="Sobat Motret Terbaikmu.">
+<meta name="twitter:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
+<meta name="twitter:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta name="twitter:image" content="https://picsum.photos/seed/kaone-wedding-utama/1200/630">
 
 <!-- Structured Data (schema.org) untuk Google -->
@@ -1605,6 +1605,97 @@ function buildImgHtml(entry, alt, extraAttrs){
   return `<img src="${r.src}" alt="${alt}" loading="lazy" decoding="async"${extraAttrs}>`;
 }
 
+/* =========================================================================
+   GALERI OTOMATIS DARI FOLDER GOOGLE DRIVE
+   -------------------------------------------------------------------------
+   Kalau field "driveFolder" pada sebuah layanan (di bawah) diisi, halaman
+   akan otomatis mengambil SEMUA foto di dalam folder Drive itu untuk jadi
+   foto sampul (mainImage) + galeri layanan tsb — tidak perlu tempel link
+   satu-satu lagi. Kalau "driveFolder" dikosongkan (""), layanan itu tetap
+   memakai mainImage/gallery manual seperti biasa.
+
+   CARA PAKAI:
+   1. Buat 1 folder di Google Drive khusus untuk tiap layanan (isinya
+      cuma foto-foto JPG/PNG layanan itu saja).
+   2. Klik kanan folder → "Bagikan" → "Dapatkan link" → ubah jadi
+      "Siapa saja yang memiliki link" (Anyone with the link) → Pelihat.
+   3. Salin link foldernya (bentuknya seperti
+      https://drive.google.com/drive/folders/FOLDER_ID_DI_SINI)
+      lalu tempel utuh (atau cukup FOLDER_ID-nya saja) ke "driveFolder"
+      layanan terkait di bawah.
+   4. Foto sampul akan dipakai dari foto yang namanya urutan pertama
+      (A-Z). Supaya sampul selalu foto yang Anda mau, beri nama depan
+      foto itu sesuatu yang urut duluan, misal "01-sampul.jpg", lalu
+      foto lain "02.jpg", "03.jpg", dst.
+   5. KEAMANAN API KEY: key di bawah ini dibatasi hanya untuk domain
+      kaone.web.id (HTTP referrer restriction) lewat Google Cloud
+      Console, supaya tidak disalahgunakan orang lain walau terlihat
+      di kode halaman. Kalau Anda pakai key sendiri, lakukan
+      pembatasan yang sama di https://console.cloud.google.com/
+      (APIs & Services → Credentials → edit key → "Website restrictions"
+      → isi kaone.web.id/* dan www.kaone.web.id/*).
+   ========================================================================= */
+const DRIVE_GALLERY_API_KEY = "AIzaSyDZ3Yq9SfhnaR_ue7MDra6iLHsvfa74L34"; // <- isi API key Google Drive Anda di sini
+
+function extractDriveFolderId(input){
+  if(!input) return "";
+  const s = String(input).trim();
+  const m = s.match(/folders\/([a-zA-Z0-9_-]+)/);
+  if(m) return m[1];
+  return s; // anggap sudah berupa FOLDER_ID polos
+}
+
+function driveThumbUrl(fileId, size){
+  return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + (size || 1600);
+}
+
+async function fetchDriveFolderImages(folderId){
+  if(!DRIVE_GALLERY_API_KEY || !folderId) return [];
+  const found = [];
+  let pageToken = "";
+  try{
+    do{
+      const params = new URLSearchParams({
+        q: "'" + folderId + "' in parents and mimeType contains 'image/' and trashed=false",
+        fields: "nextPageToken, files(id,name)",
+        orderBy: "name",
+        pageSize: "200",
+        key: DRIVE_GALLERY_API_KEY
+      });
+      if(pageToken) params.set("pageToken", pageToken);
+      const res = await fetch("https://www.googleapis.com/drive/v3/files?" + params.toString());
+      const data = await res.json();
+      if(data.error){
+        console.error("Gagal memuat folder Drive:", data.error.message || data.error);
+        return found;
+      }
+      (data.files || []).forEach(f => found.push(f));
+      pageToken = data.nextPageToken || "";
+    } while(pageToken);
+  }catch(err){
+    console.error("Gagal memuat folder Drive:", err);
+  }
+  return found.map(f => driveThumbUrl(f.id, 1600));
+}
+
+/* Setelah halaman tampil dengan foto awal (manual/placeholder), diam-diam
+   ambil foto dari folder Drive untuk tiap layanan yang driveFolder-nya
+   diisi, lalu render ulang HANYA kartu layanan itu begitu fotonya siap —
+   supaya halaman tetap langsung terlihat, tidak menunggu Drive selesai. */
+async function applyDriveGalleries(){
+  for(let i = 0; i < services.length; i++){
+    const svc = services[i];
+    const folderId = extractDriveFolderId(svc.driveFolder);
+    if(!folderId) continue;
+    const urls = await fetchDriveFolderImages(folderId);
+    if(!urls.length) continue;
+    svc.mainImage = urls[0];
+    svc.gallery = urls.slice(1);
+    const el = document.querySelector('.service[data-key="' + svc.key + '"]');
+    if(el) el.outerHTML = buildServiceHTML(svc, i);
+  }
+}
+
 const services = [
   {
     key: "wedding",
@@ -1612,6 +1703,7 @@ const services = [
     desc: "Dokumentasi hari pernikahan, dari persiapan hingga resepsi, dengan sudut pandang yang natural dan tenang.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Wedding.",
     mainImage: "https://picsum.photos/seed/kaone-wedding-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Wedding di sini
     gallery: [
       "https://picsum.photos/seed/kaone-wedding-1/700/900",
       "https://picsum.photos/seed/kaone-wedding-2/700/900",
@@ -1627,6 +1719,7 @@ const services = [
     desc: "Sesi foto pranikah yang santai dan personal, di lokasi pilihan Anda maupun di dalam studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Prewedding.",
     mainImage: "https://picsum.photos/seed/kaone-prewedding-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Prewedding di sini
     gallery: [
       "https://picsum.photos/seed/kaone-prewedding-1/700/900",
       "https://picsum.photos/seed/kaone-prewedding-2/700/900",
@@ -1642,6 +1735,7 @@ const services = [
     desc: "Prosesi adat Batak yang sarat makna kekeluargaan — kami rekam setiap tahap dengan seksama dan penuh hormat.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Patuaekkon.",
     mainImage: "https://picsum.photos/seed/kaone-patuaekkon-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Patuaekkon di sini
     gallery: [
       "https://picsum.photos/seed/kaone-patuaekkon-1/700/900",
       "https://picsum.photos/seed/kaone-patuaekkon-2/700/900",
@@ -1657,6 +1751,7 @@ const services = [
     desc: "Upacara adat dengan iringan gondang — momen tari dan doa keluarga besar yang layak diabadikan utuh.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Margondang.",
     mainImage: "https://picsum.photos/seed/kaone-margondang-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Margondang di sini
     gallery: [
       "https://picsum.photos/seed/kaone-margondang-1/700/900",
       "https://picsum.photos/seed/kaone-margondang-2/700/900",
@@ -1672,6 +1767,7 @@ const services = [
     desc: "Perayaan kelahiran buah hati — dari prosesi mangayun hingga aqiqah, penuh kehangatan keluarga.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Mangayun/Aqiqah.",
     mainImage: "https://picsum.photos/seed/kaone-mangayun-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Mangayun di sini
     gallery: [
       "https://picsum.photos/seed/kaone-mangayun-1/700/900",
       "https://picsum.photos/seed/kaone-mangayun-2/700/900",
@@ -1687,6 +1783,7 @@ const services = [
     desc: "Merayakan pencapaian akademik dengan sesi foto yang rapi, di kampus maupun studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Graduation.",
     mainImage: "https://picsum.photos/seed/kaone-graduation-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Graduation di sini
     gallery: [
       "https://picsum.photos/seed/kaone-graduation-1/700/900",
       "https://picsum.photos/seed/kaone-graduation-2/700/900",
@@ -1701,7 +1798,8 @@ const services = [
     title: "Selfphoto",
     desc: "Sesi foto studio santai untuk diri sendiri, teman, atau keluarga — cocok untuk konten pribadi maupun kado spesial.",
     waText: "Halo Kaone Studio, saya ingin booking jasa Selfphoto.",
-    mainImage: "https://drive.google.com/uc?export=view&id=1ZT3MuGmnaLnmBfAGa9tCYoKNXB4B8EfQ",
+    mainImage: "https://drive.google.com/thumbnail?id=1ZT3MuGmnaLnmBfAGa9tCYoKNXB4B8EfQ&sz=w1600",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Selfphoto di sini (kalau diisi, ini akan menggantikan mainImage manual di atas)
     gallery: [
       "https://picsum.photos/seed/kaone-selfphoto-1/700/900",
       "https://picsum.photos/seed/kaone-selfphoto-2/700/900",
@@ -1717,6 +1815,7 @@ const services = [
     desc: "Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.",
     waText: "Halo Kaone Studio, saya ingin sewa Rental Gaun.",
     mainImage: "https://picsum.photos/seed/kaone-rentalgaun-utama/1200/720",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Rental Gaun di sini
     gallery: [
       "https://picsum.photos/seed/kaone-rentalgaun-1/700/900",
       "https://picsum.photos/seed/kaone-rentalgaun-2/700/900",
@@ -1803,14 +1902,21 @@ document.getElementById("servicesList").innerHTML =
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ---- Toggle galeri ---- */
-document.querySelectorAll(".service-toggle").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const parent = btn.closest(".service");
-    const isOpen = parent.getAttribute("data-open") === "true";
-    parent.setAttribute("data-open", isOpen ? "false" : "true");
-    btn.querySelector(".toggle-label").textContent = isOpen ? "Lihat Galeri" : "Tutup Galeri";
-  });
+/* Ambil foto dari folder Google Drive (kalau ada layanan yang diisi
+   driveFolder-nya) dan ganti kartu layanan terkait begitu foto siap. */
+applyDriveGalleries();
+
+/* ---- Toggle galeri ----
+   Dipasang via event delegation di #servicesList (bukan per-tombol),
+   supaya tetap berfungsi walau sebuah kartu layanan diganti ulang oleh
+   applyDriveGalleries() setelah foto dari Google Drive selesai dimuat. */
+document.getElementById("servicesList").addEventListener("click",(e)=>{
+  const btn = e.target.closest(".service-toggle");
+  if(!btn) return;
+  const parent = btn.closest(".service");
+  const isOpen = parent.getAttribute("data-open") === "true";
+  parent.setAttribute("data-open", isOpen ? "false" : "true");
+  btn.querySelector(".toggle-label").textContent = isOpen ? "Lihat Galeri" : "Tutup Galeri";
 });
 
 /* ---- Lightbox ---- */
