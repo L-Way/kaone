@@ -86,49 +86,99 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='6' fill='%23c6a15b'/%3E%3Ccircle cx='71' cy='42' r='3' fill='%23c6a15b'/%3E%3C/svg%3E">
 <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='6' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='7' fill='%23c6a15b'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='6' fill='%23c6a15b'/%3E%3Ccircle cx='71' cy='42' r='3' fill='%23c6a15b'/%3E%3C/svg%3E">
-<meta name="theme-color" content="#15110d">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0B0C0E">
+<style>
+  /* ===== Font lokal (Fontsource, self-hosted) — tanpa CDN, tanpa gangguan muat ===== */
+  /* Lora — suara editorial/emosional: judul besar, nama brand, nomor bab, marquee */
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/lora-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/lora-latin-500-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:600; font-display:swap; src:url('fonts/lora-latin-600-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:400; font-display:swap; src:url('fonts/lora-latin-400-italic.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:500; font-display:swap; src:url('fonts/lora-latin-500-italic.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:600; font-display:swap; src:url('fonts/lora-latin-600-italic.woff2') format('woff2'); }
+  /* DM Sans — suara naratif: paragraf & deskripsi, ringan dan lapang */
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:300; font-display:swap; src:url('fonts/dm-sans-latin-300-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/dm-sans-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/dm-sans-latin-500-normal.woff2') format('woff2'); }
+  /* JetBrains Mono — suara teknis/arsip: label kapital, metadata, nomor telepon */
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:300; font-display:swap; src:url('fonts/jetbrains-mono-latin-300-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2'); }
+</style>
 <style>
   :root{
-    --bg:#15110d;
-    --bg-alt:#1c160f;
-    --bg-panel:#1f1811;
-    --maroon:#5c1b1f;
-    --maroon-light:#7a2a2a;
-    --gold:#c6a15b;
-    --gold-light:#e6cd94;
-    --gold-dim:#8a7143;
-    --ivory:#f1e8d6;
-    --muted:#b3a893;
-    --line:rgba(198,161,91,0.28);
+    /* ===== Tier 1 — raw palette (deliberately narrow) ===== */
+    --c-obsidian:#0B0C0E;      /* latar utama halaman */
+    --c-panel:#141518;         /* latar kartu & lightbox */
+    --c-card-dark:#101114;     /* kartu info kontak */
+    --c-section-alt:#0D0E11;   /* manifesto & kontak (pemisah irama) */
+    --c-gold:#D4AF37;          /* emas champagne — aksen utama, tombol, label */
+    --c-gold-light:#E6C65C;    /* emas terang — kata miring di judul, hover */
+    --c-gold-pale:#F3D368;     /* emas pudar — teks lencana kecil */
+    --c-gold-muted:#8a7143;    /* emas redup — highlight seleksi teks */
+    --c-bone:#F5F5F7;          /* putih tulang — teks utama */
+    --c-gray-1:#A1A1AA;        /* teks sekunder — tingkat 1 (paling terang) */
+    --c-gray-2:#9CA3AF;        /* teks sekunder — tingkat 2 (default) */
+    --c-gray-3:#82828A;        /* teks sekunder — tingkat 3 (paling redup), dinaikkan agar tetap ≥4.5:1 di atas latar obsidian */
+    --c-border:rgba(255,255,255,0.1); /* garis batas tipis antar elemen */
+    --c-wa-green:#25D366;      /* khusus tombol WhatsApp — satu-satunya hijau di halaman */
+    --c-wa-ink:#0b1f14;        /* teks di atas tombol WhatsApp */
+    --c-destructive:#e08a7d;   /* status error, di luar sistem emas/obsidian */
+
+    /* ===== Tier 2 — token semantik (memetakan palet mentah ke peran) ===== */
+    --background:var(--c-obsidian);
+    --foreground:var(--c-bone);
+    --card:var(--c-panel);
+    --card-alt:var(--c-card-dark);
+    --section-alt:var(--c-section-alt);
+    --primary:var(--c-gold);
+    --primary-foreground:var(--c-obsidian);
+    --accent:var(--c-gold-light);
+    --badge:var(--c-gold-pale);
+    --selection:var(--c-gold-muted);
+    --muted-foreground:var(--c-gray-2);
+    --border:var(--c-border);
+    --ring:var(--c-gold);
+    --success:var(--c-wa-green);
+    --success-foreground:var(--c-wa-ink);
+    --destructive:var(--c-destructive);
     --shadow:0 20px 50px rgba(0,0,0,0.45);
-    --ease:cubic-bezier(.22,.61,.36,1);
+
+    /* ===== Sistem radius — satu variabel dasar, diskalakan untuk keluarga "wadah konten" ===== */
+    --radius:10px;
+    --radius-sm:calc(var(--radius) * 0.6);   /* 6px  — elemen kecil (outline fokus, dsb) */
+    --radius-md:calc(var(--radius) * 0.8);   /* 8px  — wadah kecil */
+    --radius-xl:calc(var(--radius) * 1.2);   /* 12px — kartu standar */
+    --radius-2xl:calc(var(--radius) * 1.6);  /* 16px — kartu besar/menonjol */
+    --radius-full:999px;                     /* pil sempurna — elemen aksi */
+    --ease:cubic-bezier(.22,1,.36,1);
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  /* scroll-behavior native dimatikan: inersia scroll kini dikendalikan
+     Lenis (lihat script sebelum penutup </body>) agar durasi 1.25 detik
+     yang khas tidak tabrakan dengan smooth-scroll bawaan browser. */
+  html{scroll-behavior:auto;}
   body{
     margin:0;
-    background:var(--bg);
-    color:var(--ivory);
-    font-family:'Jost', sans-serif;
+    background:var(--background);
+    color:var(--foreground);
+    font-family:'DM Sans', sans-serif;
     font-weight:300;
     overflow-x:hidden;
   }
   h1,h2,h3,.display{
-    font-family:'Cormorant Garamond', serif;
+    font-family:'Lora', serif;
     font-weight:500;
-    color:var(--ivory);
+    color:var(--foreground);
     margin:0;
-    letter-spacing:.01em;
+    letter-spacing:-.01em;
   }
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
   img{max-width:100%;display:block;}
   picture{display:block; width:100%; height:100%;}
-  ::selection{background:var(--gold-dim);color:var(--bg);}
+  ::selection{background:var(--selection);color:var(--background);}
 
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
@@ -136,9 +186,9 @@
 
   .container{
     width:100%;
-    max-width:1180px;
+    max-width:1280px;
     margin:0 auto;
-    padding:0 clamp(20px,5vw,48px);
+    padding:0 clamp(20px,5vw,32px);
   }
 
   /* ---------- Ornamental motif (reused deliberately, not scattered) ---------- */
@@ -149,7 +199,7 @@
     overflow:visible;
   }
   .lattice path, .lattice line{
-    stroke:var(--gold);
+    stroke:var(--primary);
     stroke-width:1;
     fill:none;
   }
@@ -164,14 +214,13 @@
   #splash{
     position:fixed;
     inset:0;
-    z-index:100;
+    z-index:110;
     display:flex;
     align-items:center;
     justify-content:center;
     background:
-      radial-gradient(circle at 50% 20%, rgba(92,27,31,0.35), transparent 55%),
-      radial-gradient(circle at 80% 85%, rgba(198,161,91,0.10), transparent 45%),
-      var(--bg);
+      radial-gradient(circle at 80% 85%, rgba(212,175,55,0.10), transparent 45%),
+      var(--background);
     transition:opacity 1s var(--ease), visibility 1s var(--ease);
   }
   #splash.hide{
@@ -184,7 +233,7 @@
     position:absolute;
     width:3px;height:3px;
     border-radius:50%;
-    background:var(--gold);
+    background:var(--primary);
     opacity:0;
     animation:float-up linear infinite;
   }
@@ -212,21 +261,21 @@
     to{ opacity:1; transform:scale(1) rotate(0deg);}
   }
   .splash-mark circle, .splash-mark path{
-    stroke:var(--gold-light);
+    stroke:var(--accent);
     stroke-width:1.1;
     fill:none;
   }
   .splash-brand{
     font-size:clamp(2.4rem, 7vw, 3.6rem);
     letter-spacing:.14em;
-    color:var(--ivory);
+    color:var(--foreground);
     opacity:0;
     filter:blur(6px);
     animation:reveal-up 1s var(--ease) .55s forwards;
   }
   .splash-brand em{
     font-style:italic;
-    color:var(--gold-light);
+    color:var(--accent);
   }
   @keyframes reveal-up{
     from{ opacity:0; transform:translateY(14px); filter:blur(6px);}
@@ -242,16 +291,16 @@
   .splash-tagline{
     font-size:.98rem;
     letter-spacing:.06em;
-    color:var(--muted);
+    color:var(--muted-foreground);
     opacity:0;
     animation:reveal-up 1s var(--ease) 1.25s forwards;
   }
   .splash-welcome{
     margin-top:34px;
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Lora',serif;
     font-style:italic;
     font-size:1.35rem;
-    color:var(--gold-light);
+    color:var(--accent);
     opacity:0;
     animation:reveal-up 1s var(--ease) 1.55s forwards;
   }
@@ -262,8 +311,8 @@
     align-items:center;
     gap:10px;
     padding:15px 40px;
-    border:1px solid var(--gold);
-    color:var(--ivory);
+    border:1px solid var(--primary);
+    color:var(--foreground);
     font-size:.92rem;
     letter-spacing:.08em;
     overflow:hidden;
@@ -275,12 +324,12 @@
     content:"";
     position:absolute;
     inset:0;
-    background:var(--gold);
+    background:var(--primary);
     transform:translateX(-101%);
     transition:transform .55s var(--ease);
     z-index:-1;
   }
-  .btn-enter:hover{ color:var(--bg); letter-spacing:.12em; }
+  .btn-enter:hover{ color:var(--background); letter-spacing:.12em; }
   .btn-enter:hover::before{ transform:translateX(0); }
   .btn-enter svg{width:16px;height:16px;transition:transform .5s var(--ease);}
   .btn-enter:hover svg{ transform:translateX(4px); }
@@ -309,40 +358,58 @@
   header{
     position:sticky;
     top:0;
-    z-index:40;
+    z-index:50;
+    height:64px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:18px clamp(20px,5vw,48px);
-    background:rgba(21,17,13,0.6);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-    transition:padding .4s var(--ease), background .4s var(--ease);
+    padding:0 clamp(20px,5vw,48px);
+    background:transparent;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    border-bottom:1px solid transparent;
+    transition:background .4s var(--ease), backdrop-filter .4s var(--ease), border-color .4s var(--ease);
   }
   header.scrolled{
-    padding:12px clamp(20px,5vw,48px);
-    background:rgba(21,17,13,0.86);
+    background:rgba(11,12,14,0.8);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border-bottom:1px solid var(--border);
   }
   .logo{
     display:flex;
     align-items:center;
-    gap:10px;
-    font-family:'Cormorant Garamond',serif;
-    font-size:1.35rem;
-    letter-spacing:.05em;
+    gap:11px;
+    font-family:'Lora',serif;
+    font-size:1.3rem;
+    letter-spacing:.02em;
   }
-  .logo svg{width:26px;height:26px;stroke:var(--gold-light);}
-  .logo em, .brand-mark em{ font-style:italic; color:var(--gold-light); }
+  .logo svg{width:26px;height:26px;stroke:var(--accent);}
+  .logo-badge{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1px solid var(--primary);
+    font-family:'Lora',serif;
+    font-size:1.02rem;
+    color:var(--accent);
+    flex-shrink:0;
+  }
+  .logo em, .brand-mark em{ font-style:italic; color:var(--accent); }
   nav.main-nav{
     display:flex;
     gap:clamp(18px,3vw,38px);
   }
   nav.main-nav a{
     position:relative;
-    font-size:.85rem;
-    letter-spacing:.04em;
-    color:var(--muted);
+    font-family:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:.72rem;
+    font-weight:400;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--muted-foreground);
     padding:4px 0;
     transition:color .35s var(--ease);
   }
@@ -351,10 +418,10 @@
     position:absolute;
     left:0; bottom:0;
     width:0; height:1px;
-    background:var(--gold-light);
+    background:var(--accent);
     transition:width .35s var(--ease);
   }
-  nav.main-nav a:hover{ color:var(--ivory); }
+  nav.main-nav a:hover{ color:var(--foreground); }
   nav.main-nav a:hover::after{ width:100%; }
 
   .header-cta{
@@ -368,19 +435,20 @@
     align-items:center;
     gap:8px;
     padding:10px 22px;
-    background:var(--gold);
-    color:var(--bg);
+    background:var(--primary);
+    color:var(--background);
     font-size:.82rem;
     letter-spacing:.05em;
     overflow:hidden;
     isolation:isolate;
-    transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+    border-radius:var(--radius-full);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
   }
   .btn-gold:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 26px rgba(198,161,91,0.35);
+    transform:scale(1.05);
+    box-shadow:0 10px 26px rgba(212,175,55,0.35);
   }
-  .btn-gold:active{ transform:translateY(0) scale(.98); }
+  .btn-gold:active{ transform:scale(.98); }
   .btn-gold svg{width:15px;height:15px;}
 
   .hamburger{
@@ -392,7 +460,7 @@
   }
   .hamburger span{
     height:1px;
-    background:var(--gold-light);
+    background:var(--accent);
     transition:transform .35s var(--ease), opacity .35s var(--ease);
   }
   .hamburger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
@@ -404,8 +472,8 @@
     inset:0 0 0 auto;
     width:min(78vw,320px);
     height:100vh;
-    background:var(--bg-alt);
-    border-left:1px solid var(--line);
+    background:var(--card);
+    border-left:1px solid var(--border);
     z-index:60;
     transform:translateX(100%);
     transition:transform .5s var(--ease);
@@ -415,7 +483,7 @@
     gap:26px;
   }
   .mobile-nav.open{ transform:translateX(0); }
-  .mobile-nav a{ font-size:1.1rem; font-family:'Cormorant Garamond',serif; color:var(--ivory); }
+  .mobile-nav a{ font-size:1.1rem; font-family:'Lora',serif; color:var(--foreground); }
   .scrim{
     position:fixed; inset:0; background:rgba(0,0,0,0.55);
     z-index:55; opacity:0; visibility:hidden;
@@ -423,19 +491,53 @@
   }
   .scrim.open{ opacity:1; visibility:visible; }
 
-  /* ---------- Hero ---------- */
+  /* ---------- Hero (full-bleed photo) ---------- */
   .hero{
     position:relative;
-    padding:clamp(70px,14vw,140px) 0 clamp(60px,10vw,110px);
-    background:
-      radial-gradient(ellipse at 85% 0%, rgba(92,27,31,0.35), transparent 55%),
-      radial-gradient(ellipse at 10% 90%, rgba(198,161,91,0.10), transparent 50%);
+    isolation:isolate;
+    min-height:92vh;
+    display:flex;
+    align-items:flex-end;
+    padding:clamp(90px,14vw,140px) 0 clamp(140px,16vw,180px);
+    overflow:hidden;
+    perspective:1400px;
   }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.15fr .85fr;
-    gap:clamp(30px,6vw,60px);
-    align-items:end;
+  .hero-media{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .hero-media img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 22%;
+    filter:grayscale(1) contrast(1.05) brightness(.9);
+    transform-origin:center 30%;
+    opacity:0;
+    transition:opacity 1.8s var(--ease);
+    will-change:opacity;
+  }
+  .hero-media img.is-active{ opacity:1; }
+  /* Scrim 2 lapis: (1) radial gelap yang menciptakan efek sorotan/spotlight
+     dramatis di sekitar pusat foto, (2) gradien dari bawah agar teks di
+     atasnya selalu terbaca. Lapisan linear tambahan di sisi kiri menjaga
+     kontras untuk konten yang rata kiri. */
+  .hero-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 58% 38%, rgba(11,12,14,0.28) 0%, rgba(11,12,14,0.08) 34%, rgba(11,12,14,0.72) 100%),
+      linear-gradient(100deg, rgba(11,12,14,0.94) 4%, rgba(11,12,14,0.6) 34%, rgba(11,12,14,0.16) 58%, rgba(11,12,14,0.52) 100%),
+      linear-gradient(0deg, rgba(11,12,14,0.9) 0%, rgba(11,12,14,0) 36%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:1;
+    max-width:640px;
   }
   .hero-eyebrow-line{
     display:flex;
@@ -446,64 +548,199 @@
   .hero-eyebrow-line span{
     font-size:.82rem;
     letter-spacing:.06em;
-    color:var(--gold-light);
+    color:var(--accent);
   }
   .hero-eyebrow-line i{
     display:block;
     width:44px;height:1px;
-    background:var(--gold);
+    background:var(--primary);
   }
+  .hero-tagline{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:22px;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero-tagline{ animation:heroFadeUp .8s var(--ease) .15s forwards; }
+  /* Stagger baris judul (nth-child 1–3): berjeda persis 0.16 detik antar baris */
+
   .hero h1{
-    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    font-size:clamp(3rem, 6vw, 72px);
     line-height:1.06;
     max-width:14ch;
   }
-  .hero h1 .accent{ font-style:italic; color:var(--gold-light); }
+  .hero h1 .accent{ font-style:italic; color:var(--accent); }
+  .hero h1 .line-mask{
+    display:block;
+    overflow:hidden;
+  }
+  .hero h1 .line-inner{
+    display:block;
+    transform:translateY(112%);
+    will-change:transform;
+  }
+  #site.show .hero h1 .line-mask:nth-child(1) .line-inner{ animation:heroLineUp .9s var(--ease) .16s forwards; }
+  #site.show .hero h1 .line-mask:nth-child(2) .line-inner{ animation:heroLineUp .9s var(--ease) .32s forwards; }
+  #site.show .hero h1 .line-mask:nth-child(3) .line-inner{ animation:heroLineUp .9s var(--ease) .48s forwards; }
+
+  @keyframes heroFadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes heroLineUp{
+    from{ transform:translateY(112%); }
+    to{ transform:translateY(0); }
+  }
+
   .hero p{
     margin-top:22px;
     max-width:44ch;
-    color:var(--muted);
+    color:var(--muted-foreground);
     line-height:1.75;
     font-size:1.02rem;
+    opacity:0;
+    transform:translateY(16px);
   }
+  #site.show .hero p{ animation:heroFadeUp .8s var(--ease) .7s forwards; }
+
   .hero-actions{
     margin-top:34px;
     display:flex;
     gap:16px;
     flex-wrap:wrap;
+    opacity:0;
+    transform:translateY(16px);
   }
+  #site.show .hero-actions{ animation:heroFadeUp .8s var(--ease) 1.2s forwards; }
+
+  .hero-actions .btn-gold svg{ transition:transform .3s var(--ease); }
+  .hero-actions .btn-gold:hover svg{ transform:translateY(2px); }
+
   .btn-outline{
     display:inline-flex;
     align-items:center;
     gap:8px;
     padding:13px 26px;
-    border:1px solid var(--line);
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
     font-size:.85rem;
     letter-spacing:.04em;
-    color:var(--ivory);
-    transition:border-color .35s var(--ease), background .35s var(--ease);
+    color:var(--foreground);
+    transition:border-color .3s var(--ease), background .3s var(--ease);
   }
-  .btn-outline:hover{ border-color:var(--gold); background:rgba(198,161,91,0.08); }
+  .btn-outline svg{ width:15px; height:15px; flex-shrink:0; }
+  .btn-outline:hover{ border-color:var(--primary); background:rgba(212,175,55,0.08); }
 
-  .hero-aside{
-    border-left:1px solid var(--line);
-    padding-left:clamp(20px,4vw,34px);
-  }
-  .hero-aside p{
-    color:var(--muted);
-    line-height:1.8;
-    font-size:.95rem;
-  }
-  .hero-aside .figure{
-    font-family:'Cormorant Garamond',serif;
-    font-size:2.4rem;
-    color:var(--gold-light);
-    line-height:1;
-  }
-  .hero-stats{
+  .hero-badges{
     display:flex;
-    gap:clamp(24px,4vw,42px);
-    margin-top:20px;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:38px;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero-badges{ animation:heroFadeUp .8s var(--ease) 1.7s forwards; }
+  .hero-badge{
+    display:inline-flex;
+    align-items:baseline;
+    gap:7px;
+    padding:11px 22px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-size:.68rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--muted-foreground);
+    background:rgba(11,12,14,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  .hero-badge strong{
+    font-family:'Lora',serif;
+    font-size:1.15rem;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--badge);
+    font-weight:500;
+  }
+
+  .hero-float-card{
+    position:absolute;
+    z-index:1;
+    right:clamp(20px,5vw,48px);
+    bottom:clamp(28px,5vw,54px);
+    width:210px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    background:rgba(20,21,24,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transform-style:preserve-3d;
+    /* Tidak pakai CSS transition di sini: tilt kini dihaluskan lewat
+       simulasi pegas per-frame di JS (stiffness 120, damping 18),
+       supaya tidak ada dua sistem easing yang saling tabrakan. */
+    will-change:transform;
+  }
+  .hero-float-card img{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    filter:saturate(1.05) brightness(1.02);
+  }
+  .hero-float-card-body{
+    padding:12px 14px 16px;
+  }
+  .hero-float-card-tag{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:5px;
+  }
+  .hero-float-card-tag svg{ width:12px;height:12px; flex-shrink:0; }
+  .hero-float-card-title{
+    font-size:.95rem;
+    color:var(--foreground);
+    line-height:1.3;
+  }
+
+  /* ---------- Indikator scroll (kapsul + titik memantul) ---------- */
+  .scroll-indicator{
+    position:absolute;
+    left:50%;
+    bottom:clamp(20px,3.5vw,32px);
+    transform:translateX(-50%);
+    z-index:1;
+    width:26px;
+    height:42px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    display:flex;
+    justify-content:center;
+    padding-top:8px;
+    opacity:0;
+  }
+  /* Elemen terakhir dalam koreografi bertahap: mencapai 2.3 detik */
+  #site.show .scroll-indicator{ animation:heroFadeUp .8s var(--ease) 2.3s forwards; }
+  .scroll-dot{
+    width:4px;height:4px;
+    border-radius:50%;
+    background:var(--primary);
+    animation:scrollDotBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDotBounce{
+    0%,100%{ transform:translateY(0); opacity:1; }
+    50%{ transform:translateY(14px); opacity:.35; }
   }
 
   /* ---------- Section shell ---------- */
@@ -517,12 +754,12 @@
     margin-bottom:clamp(30px,5vw,52px);
   }
   .section-head h2{
-    font-size:clamp(2rem, 4vw, 2.9rem);
+    font-size:clamp(2.25rem, 3.6vw, 3rem);
     max-width:16ch;
   }
   .section-head p{
     max-width:38ch;
-    color:var(--muted);
+    color:var(--muted-foreground);
     line-height:1.75;
     font-size:.95rem;
   }
@@ -537,16 +774,16 @@
   #layanan{ padding:clamp(70px,10vw,120px) 0; }
 
   .service{
-    border-top:1px solid var(--line);
+    border-top:1px solid var(--border);
   }
-  .service:last-child{ border-bottom:1px solid var(--line); }
+  .service:last-child{ border-bottom:1px solid var(--border); }
 
   .service-media{
     position:relative;
     width:100%;
     aspect-ratio:16/9;
     overflow:hidden;
-    background:var(--bg-panel);
+    background:var(--card);
   }
   .service-media img{
     width:100%;height:100%;object-fit:cover;
@@ -558,7 +795,7 @@
   .service-media::after{
     content:"";
     position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(21,17,13,0) 50%, rgba(15,12,9,0.82) 100%);
+    background:linear-gradient(180deg, rgba(11,12,14,0) 50%, rgba(11,12,14,0.82) 100%);
   }
   .service-caption{
     position:absolute;
@@ -571,10 +808,10 @@
     gap:16px;
   }
   .service-index{
-    font-family:'Cormorant Garamond',serif;
+    font-family:'Lora',serif;
     font-style:italic;
     font-size:1.15rem;
-    color:var(--gold-light);
+    color:var(--accent);
     flex-shrink:0;
   }
   .service-title{
@@ -585,7 +822,7 @@
     padding:clamp(20px,3.5vw,30px) 0 4px;
   }
   .service-desc{
-    color:var(--muted);
+    color:var(--muted-foreground);
     font-size:.92rem;
     max-width:58ch;
     line-height:1.72;
@@ -597,17 +834,17 @@
     justify-content:center;
     gap:8px;
     padding:12px 22px;
-    border:1px solid var(--line);
+    border:1px solid var(--border);
     font-size:.8rem;
     letter-spacing:.03em;
-    color:var(--gold-light);
+    color:var(--accent);
     white-space:nowrap;
     min-height:44px;
     transition:border-color .35s var(--ease), background .35s var(--ease);
   }
   .service-toggle:hover, .service-toggle:active{
-    border-color:var(--gold);
-    background:rgba(198,161,91,0.08);
+    border-color:var(--primary);
+    background:rgba(212,175,55,0.08);
   }
   .service-toggle svg{
     width:12px;height:12px;
@@ -634,7 +871,7 @@
     position:relative;
     aspect-ratio:4/5;
     overflow:hidden;
-    background:var(--bg-panel);
+    background:var(--card);
     cursor:zoom-in;
   }
   .gallery-item img{
@@ -653,7 +890,7 @@
     border:1px solid transparent;
     transition:border-color .4s var(--ease);
   }
-  .gallery-item:hover::after{ border-color:var(--gold); }
+  .gallery-item:hover::after{ border-color:var(--primary); }
 
   .service-media.service-media--plain{
     aspect-ratio:auto;
@@ -677,6 +914,690 @@
     max-width:340px;
   }
 
+  /* ---------- Marquee strip (Pita Marquee Editorial) ----------
+     Strip tipis, garis pembatas putih samar, teks serif miring besar
+     yang nyaris tenggelam di latar gelap — menyala emas saat disentuh.
+     48 detik per putaran penuh, translateX(-50%) atas track yang isinya
+     digandakan 2x (lihat renderMarquee) supaya loop terlihat mulus tanpa
+     patahan/jeda saat kembali ke awal. */
+  .marquee-strip{
+    position:relative;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--card);
+    overflow:hidden;
+    padding:clamp(5px,.8vw,10px) 0;
+  }
+  .marquee-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    animation:marquee-scroll 48s linear infinite;
+    will-change:transform;
+  }
+  .marquee-track:hover{ animation-play-state:paused; }
+  .marquee-item{
+    display:inline-block;
+    font-family:'Lora', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(.62rem,1.3vw,.9rem);
+    letter-spacing:.01em;
+    color:rgba(156,163,175,0.22);
+    white-space:nowrap;
+    transition:color .5s var(--ease), text-shadow .5s var(--ease);
+    cursor:default;
+  }
+  .marquee-item:hover{
+    color:var(--accent);
+    text-shadow:0 0 18px rgba(212,175,55,0.4), 0 0 46px rgba(212,175,55,0.16);
+  }
+  .marquee-sep{
+    display:inline-block;
+    margin:0 clamp(7px,1vw,16px);
+    font-size:.5em;
+    color:var(--primary);
+    opacity:.7;
+    vertical-align:middle;
+  }
+  @keyframes marquee-scroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+
+  /* ---------- Reveal-on-scroll (memudar naik saat masuk viewport) ---------- */
+  .reveal-up{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+    transition-delay:calc(var(--i,0) * 70ms);
+  }
+  .reveal-up.is-visible{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Galeri Karya (editorial) ---------- */
+  #galeri{
+    padding:clamp(70px,10vw,120px) 0;
+  }
+  /* Cahaya spotlight emas samar jatuh dari atas seksi — dipakai ulang di Galeri & Layanan */
+  .spotlight{
+    position:relative;
+    overflow:hidden;
+  }
+  .spotlight::before{
+    content:"";
+    position:absolute;
+    top:-160px; left:50%;
+    width:min(980px,140%);
+    height:460px;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 42%, transparent 72%);
+    filter:blur(6px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .spotlight .container{ position:relative; z-index:1; }
+  .section-eyebrow-num{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  .section-head h2 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--accent);
+  }
+
+  /* Kartu kategori — grid dua kolom, tiap kartu mewakili satu kategori
+     acara (Wedding, Patuaekkon, dst). Lencana jumlah foto di kiri-atas,
+     judul + tombol "Lihat Galeri" menyatu di bawah lewat gradasi gelap
+     di atas foto, selalu terlihat (tidak menunggu hover). */
+  .gallery-cat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:clamp(18px,3vw,28px);
+  }
+  .cat-card{
+    position:relative;
+    display:block;
+    width:100%;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    aspect-ratio:4/3;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--border);
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .cat-card:hover, .cat-card:focus-visible{
+    border-color:var(--primary);
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px rgba(212,175,55,0.14);
+  }
+  .cat-card-media{ position:absolute; inset:0; overflow:hidden; }
+  .cat-card-media img{
+    position:absolute;
+    inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(.9) brightness(.72);
+    opacity:0;
+    transform:scale(1);
+    transition:opacity 2.8s cubic-bezier(.45,0,.2,1), filter .6s var(--ease);
+    /* Efek Ken Burns (zoom in - zoom out pelan). Animasinya SELALU
+       ter-attach ke tiap foto (tidak pernah dilepas), tapi cuma DIJALANKAN
+       (animation-play-state:running) pada foto yang sedang aktif — foto
+       lain di-"pause" (bukan dihentikan/reset) supaya saat memudar KELUAR
+       tidak ada skala yang loncat balik ke ukuran normal.
+       Untuk foto yang baru MUNCUL, animasinya sengaja di-restart paksa
+       dari awal lewat JS (lihat startCatCardSlideshows) tiap kali dia
+       jadi aktif, supaya selalu tumbuh pelan dari ukuran normal — bukan
+       muncul dalam kondisi sudah separuh ter-zoom dari giliran
+       sebelumnya, yang sebelumnya bikin transisi terasa mendadak/tersentak.
+       Durasi tiap foto diberi variasi acak lewat inline style (lihat
+       renderGalleryCategories), supaya tiap foto "bernapas" dengan
+       ritme sendiri-sendiri, tidak seragam. */
+    animation-name:catCoverKenBurns;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count:infinite;
+    animation-direction:alternate;
+    animation-play-state:paused;
+  }
+  @keyframes catCoverKenBurns{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.1); }
+  }
+  .cat-card-media img.is-active{
+    opacity:1;
+    animation-play-state:running;
+    will-change:transform, opacity;
+  }
+  .cat-card:hover .cat-card-media img,
+  .cat-card:focus-visible .cat-card-media img{
+    filter:saturate(1) brightness(.8);
+  }
+  .cat-card-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 28%, rgba(11,12,14,0.92) 100%);
+    pointer-events:none;
+  }
+  .cat-card-badge{
+    position:absolute;
+    top:18px; left:18px;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--badge);
+    background:rgba(11,12,14,0.6);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  .cat-card-badge svg{ width:14px; height:14px; stroke:currentColor; flex-shrink:0; }
+  .cat-card-info{
+    position:absolute; left:0; right:0; bottom:0;
+    z-index:1;
+    padding:clamp(18px,3vw,28px);
+  }
+  .cat-card-info h3{
+    font-size:clamp(1.4rem,2.8vw,1.9rem);
+    color:var(--foreground);
+    margin:0 0 14px;
+    line-height:1.2;
+  }
+  .cat-card-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border:1px solid var(--primary);
+    border-radius:var(--radius-full);
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:var(--accent);
+    background:rgba(11,12,14,0.35);
+    transition:gap .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+  }
+  .cat-card-cta svg{ width:14px; height:14px; stroke:currentColor; transition:transform .3s var(--ease); }
+  .cat-card:hover .cat-card-cta,
+  .cat-card:focus-visible .cat-card-cta{
+    gap:12px;
+    background:var(--primary);
+    color:var(--background);
+  }
+  @media (max-width:760px){
+    .gallery-cat-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Lightbox 2 (galeri editorial: foto + panel cerita) ---------- */
+  .lightbox2{
+    position:fixed; inset:0; z-index:120;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(11,12,14,0.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    opacity:0; visibility:hidden;
+    transition:opacity .45s var(--ease), visibility .45s var(--ease);
+  }
+  .lightbox2.open{ opacity:1; visibility:visible; }
+  .lightbox2-panel{
+    position:relative;
+    max-width:92vw;
+    max-height:88vh;
+    transform:scale(.94);
+    opacity:0;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+  }
+  .lightbox2.open .lightbox2-panel{ transform:scale(1); opacity:1; }
+  .lightbox2-media{
+    display:block;
+    line-height:0;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--background);
+    box-shadow:var(--shadow);
+  }
+  .lightbox2-media img{
+    display:block;
+    max-width:92vw;
+    max-height:88vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+  }
+  .lightbox2-close{
+    position:absolute; top:20px; right:20px; z-index:3;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border);
+    background:rgba(11,12,14,0.55);
+    border-radius:50%;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .lightbox2-close:hover{ border-color:var(--primary); transform:rotate(90deg); }
+  .lightbox2-close svg{ width:16px; height:16px; }
+
+  @media (max-width:760px){
+    .lightbox2{ padding:14px; }
+    .lightbox2-close{ top:14px; right:14px; width:38px; height:38px; }
+  }
+
+  /* ---------- Modal Galeri Kategori (grid foto per kategori) ---------- */
+  .cat-modal{
+    position:fixed; inset:0; z-index:110;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(11,12,14,0.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    opacity:0; visibility:hidden;
+    transition:opacity .45s var(--ease), visibility .45s var(--ease);
+  }
+  .cat-modal.open{ opacity:1; visibility:visible; }
+  .cat-modal-panel{
+    position:relative;
+    width:min(1100px,94vw);
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transform:scale(.94);
+    opacity:0;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+  }
+  .cat-modal.open .cat-modal-panel{ transform:scale(1); opacity:1; }
+  .cat-modal-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    padding:clamp(22px,3.4vw,34px) clamp(22px,3.4vw,34px) clamp(18px,2.6vw,26px);
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .cat-modal-eyebrow{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.7rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+  .cat-modal-head h3{ font-size:clamp(1.6rem,3vw,2.1rem); margin:0; line-height:1.2; }
+  .cat-modal-close{
+    flex-shrink:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border);
+    background:transparent;
+    border-radius:50%;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .cat-modal-close:hover{ border-color:var(--primary); transform:rotate(90deg); }
+  .cat-modal-close svg{ width:16px; height:16px; }
+  .cat-modal-grid{
+    padding:clamp(20px,3.4vw,34px);
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:clamp(18px,2.6vw,26px);
+  }
+  .cat-photo-card{
+    display:block;
+    width:100%;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    text-align:left;
+    background:none;
+    cursor:pointer;
+  }
+  .cat-photo-media{
+    display:block;
+    position:relative;
+    aspect-ratio:4/3;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--background);
+  }
+  .cat-photo-media img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(.92) brightness(.82);
+    transition:transform .6s var(--ease), filter .5s var(--ease);
+  }
+  .cat-photo-card:hover .cat-photo-media img,
+  .cat-photo-card:focus-visible .cat-photo-media img{
+    transform:scale(1.06);
+    filter:saturate(1) brightness(.9);
+  }
+  .cat-photo-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 45%, rgba(11,12,14,0.92) 100%);
+    pointer-events:none;
+  }
+  .cat-photo-cap{
+    position:absolute; left:0; right:0; bottom:0;
+    z-index:1;
+    padding:16px 18px;
+  }
+  .cat-photo-cap h4{ font-size:1.05rem; color:var(--foreground); margin:0 0 4px; line-height:1.25; }
+  .cat-photo-cap span{ font-size:.74rem; color:var(--muted-foreground); }
+
+  @media (max-width:760px){
+    .cat-modal{ padding:14px; }
+    .cat-modal-panel{ max-height:92vh; }
+    .cat-modal-grid{ grid-template-columns:1fr; }
+    .cat-modal-close{ width:38px; height:38px; }
+  }
+
+  /* ---------- Manifesto block ---------- */
+  #manifesto{
+    padding:clamp(70px,10vw,120px) 0;
+    background:var(--section-alt);
+    border-top:1px solid var(--border);
+  }
+  .manifesto-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:clamp(40px,7vw,90px);
+    align-items:start;
+  }
+  /* Kolom kiri: judul + potret tetap diam (sticky) selagi bab di kanan discroll */
+  .manifesto-sticky-col{ position:relative; }
+  .manifesto-sticky-inner{
+    position:sticky;
+    top:112px;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+  }
+  .manifesto-title{
+    font-size:clamp(1.8rem,3.6vw,2.5rem);
+    max-width:15ch;
+    line-height:1.18;
+  }
+  .manifesto-title em{ font-style:italic; color:var(--accent); }
+  /* Bingkai terpotong berisi potret studio yang bergerak parallax di dalam klipnya sendiri */
+  .manifesto-portrait{
+    position:relative;
+    aspect-ratio:3/4;
+    overflow:hidden;
+    clip-path:polygon(0 0, 100% 0, 100% 84%, 84% 100%, 0 100%);
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .manifesto-portrait::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(13,14,17,0) 45%, rgba(13,14,17,0.6) 100%);
+    pointer-events:none;
+  }
+  .manifesto-portrait img{
+    position:absolute;
+    top:50%; left:0;
+    width:100%;
+    height:132%;
+    object-fit:cover;
+    transform:translateY(-50%);
+    filter:grayscale(1) contrast(1.05) brightness(.9);
+    will-change:transform;
+  }
+  /* Kolom kanan: tiga bab bernomor dipisah garis tipis */
+  .manifesto-chapters{ display:flex; flex-direction:column; }
+  .manifesto-chapter{ padding:clamp(30px,4.5vw,48px) 0; }
+  .manifesto-chapter + .manifesto-chapter{ border-top:1px solid var(--border); }
+  .manifesto-chapter-num{
+    display:block;
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(2.8rem,7vw,4.5rem);
+    line-height:1;
+    color:rgba(245,245,247,0.08);
+    margin-bottom:14px;
+    transition:color .5s var(--ease), text-shadow .5s var(--ease);
+  }
+  .manifesto-chapter:hover .manifesto-chapter-num,
+  .manifesto-chapter:focus-within .manifesto-chapter-num{
+    color:var(--accent);
+    text-shadow:0 0 30px rgba(212,175,55,0.45);
+  }
+  .manifesto-chapter h3{
+    font-size:clamp(1.15rem,2.2vw,1.5rem);
+    margin-bottom:12px;
+    max-width:28ch;
+  }
+  .manifesto-chapter p{
+    color:var(--muted-foreground);
+    font-size:.98rem;
+    line-height:1.85;
+    max-width:54ch;
+    margin:0;
+  }
+
+  /* ---------- Service cards ("Lebih dari Sekadar Lensa") ---------- */
+  #layanan{ padding:clamp(70px,10vw,120px) 0; }
+  .svc-cards-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(18px,3vw,28px);
+  }
+  .svc-card{
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--card);
+    transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .svc-card:focus-visible{
+    border-color:var(--primary);
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px rgba(212,175,55,0.14);
+  }
+  .svc-card-media{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .svc-card-media img{
+    width:100%;height:100%;object-fit:cover;
+    filter:saturate(.92) brightness(.82);
+    transition:transform .8s var(--ease), filter .6s var(--ease);
+  }
+  .svc-card-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 45%, rgba(11,12,14,0.85) 100%);
+    pointer-events:none;
+  }
+  /* Lencana emas kaca buram di atas foto */
+  .svc-card-badge{
+    position:absolute;
+    top:18px; left:18px;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--badge);
+    background:rgba(11,12,14,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  /* Tombol panah bulat emas: tersembunyi lalu muncul & berputar 45° saat kartu disentuh */
+  .svc-card-arrow{
+    position:absolute;
+    top:18px; right:18px;
+    z-index:1;
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid var(--primary);
+    background:rgba(11,12,14,0.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transform:scale(.7) rotate(0deg);
+    transition:opacity .4s var(--ease), transform .45s var(--ease), background .4s var(--ease);
+  }
+  .svc-card-arrow svg{ width:18px; height:18px; stroke:var(--accent); transition:transform .45s var(--ease); }
+  .svc-card:focus-visible .svc-card-arrow{
+    opacity:1;
+    transform:scale(1) rotate(45deg);
+    background:var(--primary);
+  }
+  .svc-card:focus-visible .svc-card-arrow svg{ stroke:var(--background); }
+  .svc-card-body{
+    padding:clamp(22px,3.5vw,32px);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+  }
+  .svc-card-body svg{ width:26px; height:26px; stroke:var(--accent); margin-bottom:4px; }
+  .svc-card-body h3{ font-size:clamp(1.4rem,2.6vw,1.8rem); }
+  .svc-card-body p{ color:var(--muted-foreground); font-size:.9rem; line-height:1.7; flex:1; margin:0; }
+  .svc-card-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:6px;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    transition:gap .3s var(--ease), color .3s var(--ease);
+  }
+  .svc-card-cta svg{ width:14px; height:14px; stroke:currentColor; transition:transform .3s var(--ease); }
+
+  /* Animasi hover (kartu terangkat, foto zoom, panah muncul, jarak CTA
+     melebar) SENGAJA cuma dinyalakan lewat "@media (hover:hover)" —
+     yaitu khusus perangkat yang benar-benar punya kursor mouse (laptop/
+     PC/trackpad). Di HP/tablet, kalau dipakai ":hover" biasa, begitu
+     tombol disentuh efeknya suka "nyangkut" tetap aktif karena di layar
+     sentuh tidak ada gerakan kursor yang bisa "menjauh" dari tombol
+     untuk mematikannya lagi. Dengan pembatasan ini, animasinya betul-
+     betul hanya menyala SELAMA kursor ada di atas tombol, dan langsung
+     mati saat kursor menjauh — sesuai perilaku hover yang seharusnya. */
+  @media (hover:hover) and (pointer:fine){
+    .svc-card:hover{
+      border-color:var(--primary);
+      transform:translateY(-4px);
+      box-shadow:0 24px 48px rgba(212,175,55,0.14);
+    }
+    .svc-card:hover .svc-card-media img{ transform:scale(1.08); filter:saturate(1) brightness(.9); }
+    .svc-card:hover .svc-card-arrow{
+      opacity:1;
+      transform:scale(1) rotate(45deg);
+      background:var(--primary);
+    }
+    .svc-card:hover .svc-card-arrow svg{ stroke:var(--background); }
+    .svc-card:hover .svc-card-cta{ gap:13px; color:var(--primary); }
+    /* Efek TAMBAHAN, khusus saat kursor pas persis di atas lingkaran
+       panahnya (bukan cuma di area kartu secara umum): panahnya membesar
+       sedikit lagi + muncul cincin cahaya di sekelilingnya, sebagai umpan
+       balik "ini yang bakal kamu klik". Tetap jalan bareng animasi kartu
+       di atas (yang sudah bikin panahnya kelihatan & berputar), ini cuma
+       penekanan ekstra pas kursor benar-benar di atasnya. */
+    .svc-card-arrow:hover,
+    .svc-card:hover .svc-card-arrow:hover{
+      transform:scale(1.16) rotate(45deg);
+      box-shadow:0 0 0 8px rgba(212,175,55,0.18);
+    }
+  }
+  /* Di HP/tablet (tanpa hover mouse), tetap beri umpan balik singkat
+     selagi tombol DITEKAN (bukan setelah dilepas) supaya tetap terasa
+     interaktif tanpa risiko "nyangkut". */
+  @media (hover:none){
+    .svc-card:active{
+      border-color:var(--primary);
+      transform:translateY(-2px);
+      box-shadow:0 24px 48px rgba(212,175,55,0.14);
+    }
+    .svc-card:active .svc-card-media img{ transform:scale(1.04); filter:saturate(1) brightness(.9); }
+    .svc-card:active .svc-card-arrow{
+      opacity:1;
+      transform:scale(1) rotate(45deg);
+      background:var(--primary);
+    }
+    .svc-card:active .svc-card-arrow svg{ stroke:var(--background); }
+    .svc-card:active .svc-card-cta{ gap:13px; color:var(--primary); }
+  }
+
+  /* ---------- Contact info cards ---------- */
+  .kontak-info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    width:100%;
+    max-width:700px;
+    margin:0 auto;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    overflow:hidden;
+  }
+  .kontak-info-item{
+    padding:26px 18px 4px;
+    text-align:center;
+    background:var(--card-alt);
+  }
+  .kontak-info-item h4{
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+    font-weight:400;
+  }
+  .kontak-info-item p{
+    font-size:.9rem;
+    color:var(--muted-foreground);
+    line-height:1.6;
+    margin:0;
+  }
+
   /* Book Now button */
   .btn-wa{
     position:relative;
@@ -686,8 +1607,8 @@
     min-height:44px;
     gap:10px;
     padding:12px 24px;
-    border:1px solid var(--gold);
-    color:var(--ivory);
+    border:1px solid var(--primary);
+    color:var(--foreground);
     font-size:.82rem;
     letter-spacing:.05em;
     overflow:hidden;
@@ -697,21 +1618,21 @@
   .btn-wa::before{
     content:"";
     position:absolute; inset:0;
-    background:var(--gold);
+    background:var(--primary);
     transform:translateX(-101%);
     transition:transform .5s var(--ease);
     z-index:-1;
   }
-  .btn-wa:hover{ color:var(--bg); }
+  .btn-wa:hover{ color:var(--background); }
   .btn-wa:hover::before{ transform:translateX(0); }
   .btn-wa svg{ width:15px;height:15px; }
 
   /* ---------- About / values ---------- */
   #tentang{
     padding:clamp(60px,10vw,110px) 0;
-    background:linear-gradient(180deg, var(--bg-alt), var(--bg));
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, var(--card), var(--background));
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
   }
   .about-grid{
     display:grid;
@@ -720,7 +1641,7 @@
     align-items:center;
   }
   .about-copy p{
-    color:var(--muted);
+    color:var(--muted-foreground);
     line-height:1.85;
     font-size:1rem;
     margin-top:16px;
@@ -734,18 +1655,18 @@
     display:flex;
     gap:16px;
     padding-bottom:20px;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid var(--border);
   }
   .value-row:last-child{ border-bottom:none; padding-bottom:0; }
-  .value-row svg{ width:26px;height:26px; flex-shrink:0; stroke:var(--gold-light); margin-top:2px; }
+  .value-row svg{ width:26px;height:26px; flex-shrink:0; stroke:var(--accent); margin-top:2px; }
   .value-row h3{ font-size:1.2rem; }
-  .value-row p{ color:var(--muted); font-size:.88rem; margin-top:4px; line-height:1.6; }
+  .value-row p{ color:var(--muted-foreground); font-size:.88rem; margin-top:4px; line-height:1.6; }
 
   /* ---------- Testimoni ---------- */
   #testimoni{
     padding:clamp(60px,10vw,110px) 0;
     text-align:center;
-    border-top:1px solid var(--line);
+    border-top:1px solid var(--border);
   }
   #testimoni .section-head{
     max-width:46ch;
@@ -767,29 +1688,29 @@
   .form-row label{
     font-size:.85rem;
     letter-spacing:.03em;
-    color:var(--gold-light);
+    color:var(--accent);
   }
-  .form-row label .req{ color:var(--gold); margin-left:2px; }
+  .form-row label .req{ color:var(--primary); margin-left:2px; }
   .form-row input[type="text"],
   .form-row select,
   .form-row textarea{
     width:100%;
-    background:var(--bg-panel);
-    border:1px solid var(--line);
-    border-radius:10px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
     padding:12px 14px;
-    color:#f2ece0;
+    color:var(--foreground);
     font-family:inherit;
     font-size:.92rem;
     transition:border-color .3s var(--ease);
   }
   .form-row input[type="text"]::placeholder,
-  .form-row textarea::placeholder{ color:var(--muted); opacity:.8; }
+  .form-row textarea::placeholder{ color:var(--muted-foreground); opacity:.8; }
   .form-row input[type="text"]:focus,
   .form-row select:focus,
   .form-row textarea:focus{
     outline:none;
-    border-color:var(--gold);
+    border-color:var(--primary);
   }
   .form-row textarea{ resize:vertical; min-height:110px; }
   .form-row select{
@@ -800,7 +1721,7 @@
     background-position:right 14px center;
     background-size:16px;
   }
-  .form-row select option{ background:var(--bg-panel); color:#f2ece0; }
+  .form-row select option{ background:var(--card); color:var(--foreground); }
   .star-rating{
     display:flex;
     flex-direction:row-reverse;
@@ -816,17 +1737,17 @@
   .star-rating label{
     font-size:1.7rem;
     line-height:1;
-    color:var(--line);
+    color:var(--muted-foreground);
     cursor:pointer;
     transition:color .2s var(--ease), transform .2s var(--ease);
   }
   .star-rating input:checked ~ label,
   .star-rating label:hover,
   .star-rating label:hover ~ label{
-    color:var(--gold);
+    color:var(--primary);
   }
   .star-rating input:focus-visible + label{
-    outline:2px solid var(--gold);
+    outline:2px solid var(--primary);
     outline-offset:3px;
     border-radius:4px;
   }
@@ -843,15 +1764,15 @@
   .testimoni-note{
     margin-top:6px;
     font-size:.78rem;
-    color:var(--muted);
+    color:var(--muted-foreground);
   }
   .testimoni-status{
     margin-top:2px;
     font-size:.82rem;
     min-height:1.2em;
   }
-  .testimoni-status.is-error{ color:#e08a7d; }
-  .testimoni-status.is-ok{ color:var(--gold-light); }
+  .testimoni-status.is-error{ color:var(--destructive); }
+  .testimoni-status.is-ok{ color:var(--accent); }
 
   /* ---------- Daftar testimoni (tampil dari Google Spreadsheet) ---------- */
   .testimoni-list{
@@ -863,9 +1784,9 @@
     text-align:left;
   }
   .testimoni-card{
-    background:var(--bg-panel);
-    border:1px solid var(--line);
-    border-radius:14px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
     padding:20px 22px;
     position:relative;
   }
@@ -877,28 +1798,28 @@
     flex-wrap:wrap;
   }
   .testimoni-card-name{
-    font-family:'Fraunces', serif;
+    font-family:'Lora', serif;
     font-size:1.02rem;
-    color:var(--ivory);
+    color:var(--foreground);
     font-weight:600;
   }
   .testimoni-card-sub{
     font-size:.76rem;
     letter-spacing:.03em;
     text-transform:uppercase;
-    color:var(--gold-dim);
+    color:var(--selection);
     margin-top:3px;
   }
   .testimoni-card-stars{
     margin-top:6px;
-    color:var(--line);
+    color:var(--muted-foreground);
     letter-spacing:2px;
     font-size:13px;
   }
-  .testimoni-card-stars .on{ color:var(--gold); }
+  .testimoni-card-stars .on{ color:var(--primary); }
   .testimoni-card-date{
     font-size:.72rem;
-    color:var(--muted);
+    color:var(--muted-foreground);
     white-space:nowrap;
     padding-top:2px;
   }
@@ -906,14 +1827,14 @@
     font-style:italic;
     font-size:.9rem;
     line-height:1.65;
-    color:var(--muted);
+    color:var(--muted-foreground);
     margin-top:12px;
     white-space:pre-wrap;
   }
   .testimoni-empty, .testimoni-loading{
     text-align:center;
     font-size:.86rem;
-    color:var(--muted);
+    color:var(--muted-foreground);
     padding:1.6rem .6rem;
   }
 
@@ -923,9 +1844,9 @@
     max-width:560px;
     text-align:center;
     padding:2.2rem 1.4rem;
-    border:1px solid var(--line);
-    border-radius:14px;
-    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    background:var(--card);
   }
   .testimoni-success .ts-icon{
     width:46px;
@@ -935,16 +1856,16 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(198,161,91,0.14);
-    color:var(--gold);
+    background:rgba(212,175,55,0.14);
+    color:var(--primary);
   }
   .testimoni-success h3{
     font-size:1.3rem;
-    color:var(--ivory);
+    color:var(--foreground);
     margin-bottom:8px;
   }
   .testimoni-success p{
-    color:var(--muted);
+    color:var(--muted-foreground);
     font-size:.9rem;
     line-height:1.65;
   }
@@ -953,120 +1874,201 @@
   }
 
   /* ---------- Contact strip ---------- */
+  /* ---------- Kontak (bola cahaya emas ambient + tata letak rata tengah) ---------- */
   #kontak{
-    padding:clamp(60px,10vw,110px) 0;
-    text-align:center;
-  }
-  #kontak h2{
-    font-size:clamp(2rem,5vw,3.2rem);
-    max-width:16ch;
-    margin:0 auto;
-  }
-  #kontak p{
-    color:var(--muted);
-    max-width:46ch;
-    margin:18px auto 0;
-    line-height:1.75;
-  }
-  .kontak-actions{
-    margin-top:30px;
-    display:flex;
-    justify-content:center;
-    gap:16px;
-    flex-wrap:wrap;
-  }
-  .kontak-map{
-    margin:40px auto 0;
-    max-width:760px;
-    border:1px solid var(--line);
-    border-radius:14px;
+    position:relative;
     overflow:hidden;
-    background:var(--bg-panel);
+    padding:clamp(90px,12vw,150px) 0;
+    text-align:center;
+    background:var(--section-alt);
+  }
+  .kontak-glow{
+    position:absolute;
+    top:50%; left:50%;
+    width:min(64vw,760px);
+    height:min(64vw,760px);
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(212,175,55,0.32) 0%, rgba(212,175,55,0.1) 45%, transparent 72%);
+    filter:blur(120px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .kontak-inner{
+    position:relative;
+    z-index:1;
+    max-width:1024px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .kontak-title{
+    font-size:clamp(2rem,6vw,3.75rem);
+    max-width:16ch;
+    margin:18px 0 36px;
+    line-height:1.15;
+  }
+  .kontak-title em{ font-style:italic; color:var(--accent); }
+  .kontak-actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    margin-bottom:clamp(40px,6vw,60px);
+  }
+  /* Tombol hijau WhatsApp: membesar lembut saat disentuh, bayangan hijau */
+  .btn-wa-lg{
+    display:inline-flex;
+    align-items:center;
+    gap:11px;
+    padding:18px 32px;
+    background:var(--success);
+    color:var(--success-foreground);
+    font-size:.98rem;
+    font-weight:500;
+    border-radius:var(--radius-full);
+    box-shadow:0 14px 34px rgba(37,211,102,0.32);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .btn-wa-lg svg{ width:21px;height:21px; flex-shrink:0; }
+  .btn-wa-lg:hover, .btn-wa-lg:focus-visible{
+    transform:scale(1.06);
+    box-shadow:0 18px 44px rgba(37,211,102,0.48);
+  }
+  /* Tombol salin nomor */
+  .btn-copy-number{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:17px 26px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    background:rgba(245,245,247,0.03);
+    color:var(--foreground);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.9rem;
+    transition:border-color .35s var(--ease), color .35s var(--ease), background .35s var(--ease);
+  }
+  .btn-copy-number svg{ width:16px;height:16px; stroke:var(--accent); flex-shrink:0; transition:transform .35s var(--ease); }
+  .btn-copy-number:hover, .btn-copy-number:focus-visible{
+    border-color:var(--primary);
+    color:var(--accent);
+    background:rgba(212,175,55,0.06);
+  }
+  .btn-copy-number.copied svg{ transform:scale(1.2); }
+
+  /* Toast notifikasi salin nomor */
+  .copy-toast{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    z-index:200;
+    transform:translate(-50%,14px);
+    padding:13px 24px;
+    border:1px solid var(--primary);
+    border-radius:var(--radius-full);
+    background:rgba(11,12,14,0.94);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--foreground);
+    font-size:.85rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s var(--ease), transform .4s var(--ease);
+  }
+  .copy-toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  /* Peta lokasi, ditempatkan di bawah kartu info, tetap rata tengah */
+  .kontak-map{
+    width:100%;
+    max-width:760px;
+    margin:clamp(40px,6vw,60px) auto 0;
+    border:1px solid var(--border);
+    overflow:hidden;
+    background:var(--card);
+    text-align:left;
   }
   .kontak-map iframe{
     display:block;
     width:100%;
-    height:340px;
+    height:300px;
     border:0;
+    filter:grayscale(.25) contrast(1.05);
   }
   .kontak-map-caption{
     padding:14px 18px;
-    text-align:left;
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
     flex-wrap:wrap;
-    border-top:1px solid var(--line);
+    border-top:1px solid var(--border);
   }
-  .kontak-map-caption p{
-    margin:0;
-    color:var(--muted);
-    font-size:.85rem;
-    max-width:none;
-  }
-  .kontak-map-caption a{
-    font-size:.85rem;
-    color:var(--gold-light);
-    white-space:nowrap;
-  }
-  .kontak-map-caption a:hover{ color:var(--gold); }
+  .kontak-map-caption p{ margin:0; color:var(--muted-foreground); font-size:.85rem; }
+  .kontak-map-caption a{ font-size:.85rem; color:var(--accent); white-space:nowrap; transition:color .3s var(--ease); }
+  .kontak-map-caption a:hover{ color:var(--primary); }
 
-  /* ---------- Footer ---------- */
+  /* ---------- Footer (sederhana, rata tengah) ---------- */
   footer{
-    border-top:1px solid var(--line);
-    padding:clamp(40px,6vw,60px) 0 26px;
+    border-top:1px solid var(--border);
+    padding:clamp(30px,5vw,40px) 0 26px;
   }
-  .footer-grid{
-    display:grid;
-    grid-template-columns:1.3fr 1fr 1fr;
-    gap:clamp(28px,5vw,50px);
+  .footer-social-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px 12px;
+    padding-bottom:24px;
+    margin-bottom:24px;
+    border-bottom:1px solid var(--border);
   }
-  .footer-brand .logo{ margin-bottom:14px; }
-  .footer-brand p{ color:var(--muted); font-size:.88rem; max-width:32ch; line-height:1.7; }
-  .footer-col h4{
-    font-family:'Jost',sans-serif;
-    font-weight:500;
-    font-size:.82rem;
-    letter-spacing:.06em;
-    color:var(--gold-light);
-    margin-bottom:16px;
-  }
-  .footer-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
-  .footer-col a{ font-size:.9rem; color:var(--muted); transition:color .3s var(--ease); }
-  .footer-col a:hover{ color:var(--gold-light); }
-  .footer-social{ display:flex; flex-wrap:wrap; gap:10px 12px; margin-top:16px; }
-  .footer-social a{
-    display:flex;align-items:center;gap:9px;
+  .footer-social-row a{
+    display:flex; align-items:center; gap:9px;
     padding:6px 14px 6px 6px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    transition:border-color .3s var(--ease), transform .3s var(--ease);
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    color:var(--muted-foreground);
+    font-size:.82rem;
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
   }
-  .footer-social a:hover{ border-color:var(--gold); transform:translateY(-3px); }
-  .footer-social .social-icon{
+  .footer-social-row a:hover, .footer-social-row a:focus-visible{
+    border-color:var(--primary);
+    color:var(--accent);
+    transform:translateY(-3px);
+  }
+  .footer-social-icon{
     width:26px;height:26px;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;
-    border:1px solid var(--line);
+    border:1px solid var(--border);
     border-radius:50%;
     transition:border-color .3s var(--ease);
   }
-  .footer-social a:hover .social-icon{ border-color:var(--gold); }
-  .footer-social svg{ width:14px;height:14px; }
-  .footer-social span{ font-size:.82rem; color:var(--muted); white-space:nowrap; transition:color .3s var(--ease); }
-  .footer-social a:hover span{ color:var(--gold-light); }
-  .footer-bottom{
-    margin-top:clamp(34px,6vw,54px);
-    padding-top:20px;
-    border-top:1px solid var(--line);
+  .footer-social-row a:hover .footer-social-icon{ border-color:var(--primary); }
+  .footer-social-icon svg{ width:14px;height:14px; }
+  .footer-simple{
     display:flex;
+    align-items:center;
     justify-content:space-between;
     flex-wrap:wrap;
-    gap:10px;
-    font-size:.78rem;
-    color:var(--gold-dim);
-    letter-spacing:.03em;
+    gap:14px;
   }
+  .footer-simple .logo{ flex-shrink:0; }
+  .footer-copyright{
+    flex:1;
+    text-align:center;
+    color:var(--muted-foreground);
+    font-size:.8rem;
+    letter-spacing:.02em;
+  }
+  .footer-wa-number{
+    flex-shrink:0;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.85rem;
+    color:var(--muted-foreground);
+    transition:color .35s var(--ease);
+  }
+  .footer-wa-number:hover, .footer-wa-number:focus-visible{ color:var(--accent); }
 
   /* ---------- Floating WA ---------- */
   .float-wa{
@@ -1075,50 +2077,38 @@
     z-index:45;
     width:56px;height:56px;
     display:flex;align-items:center;justify-content:center;
-    background:var(--gold);
-    color:var(--bg);
-    border:1px solid var(--gold-light);
-    box-shadow:0 12px 30px rgba(0,0,0,0.5);
+    background:var(--primary);
+    color:var(--background);
+    border:1px solid var(--accent);
+    box-shadow:0 12px 30px rgba(212,175,55,0.22);
     transition:transform .4s var(--ease), box-shadow .4s var(--ease);
   }
-  .float-wa:hover{ transform:translateY(-4px) scale(1.05); box-shadow:0 16px 36px rgba(198,161,91,0.35); }
+  .float-wa:hover{ transform:translateY(-4px) scale(1.05); box-shadow:0 16px 36px rgba(212,175,55,0.35); }
   .float-wa svg{ width:24px;height:24px; }
 
-  /* ---------- Lightbox ---------- */
-  .lightbox{
-    position:fixed; inset:0; z-index:90;
-    background:rgba(10,8,6,0.94);
-    display:flex; align-items:center; justify-content:center;
-    padding:40px;
-    opacity:0; visibility:hidden;
-    transition:opacity .4s var(--ease), visibility .4s var(--ease);
+  /* ---------- Grain overlay: tekstur film tipis tembus pandang di atas seluruh halaman ---------- */
+  .grain-overlay{
+    position:fixed;
+    inset:0;
+    z-index:90;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .lightbox.open{ opacity:1; visibility:visible; }
-  .lightbox img{
-    max-width:min(900px,90vw);
-    max-height:84vh;
-    object-fit:contain;
-    border:1px solid var(--line);
-    transform:scale(.94);
-    transition:transform .4s var(--ease);
-  }
-  .lightbox.open img{ transform:scale(1); }
-  .lightbox-close{
-    position:absolute; top:26px; right:26px;
-    width:40px;height:40px;
-    display:flex;align-items:center;justify-content:center;
-    border:1px solid var(--line);
-    transition:border-color .3s var(--ease), transform .3s var(--ease);
-  }
-  .lightbox-close:hover{ border-color:var(--gold); transform:rotate(90deg); }
-  .lightbox-close svg{ width:16px;height:16px; }
 
   /* ---------- Responsive ---------- */
   @media (max-width:960px){
-    .hero-grid{ grid-template-columns:1fr; }
-    .hero-aside{ border-left:none; border-top:1px solid var(--line); padding-left:0; padding-top:24px; }
     .about-grid{ grid-template-columns:1fr; }
-    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .svc-cards-grid{ grid-template-columns:1fr; }
+  }
+
+  /* lg: 1024px — di bawah ini layout sticky manifesto & badge hero belum aktif */
+  @media (max-width:1023px){
+    .hero-float-card{ display:none; }
+    .manifesto-grid{ grid-template-columns:1fr; gap:36px; }
+    .manifesto-sticky-inner{ position:static; top:auto; }
+    .manifesto-portrait{ aspect-ratio:16/9; }
   }
 
   /* ===== Fokus utama: kenyamanan di layar HP (≤760px) ===== */
@@ -1126,8 +2116,7 @@
     nav.main-nav{ display:none; }
     .hamburger{ display:flex; }
 
-    header{ padding:14px 18px; }
-    header.scrolled{ padding:10px 18px; }
+    header{ padding:0 18px; }
     .logo{ font-size:1.15rem; }
     .logo svg{ width:22px;height:22px; }
     .header-cta{ gap:12px; }
@@ -1140,14 +2129,14 @@
 
     .container{ padding:0 18px; }
 
-    .hero{ padding:44px 0 48px; }
-    .hero-eyebrow-line{ margin-bottom:16px; }
+    .hero{ min-height:auto; padding:120px 0 44px; align-items:flex-start; }
+    .hero-tagline{ margin-bottom:14px; }
     .hero h1{ font-size:2.1rem; max-width:none; }
     .hero p{ font-size:.94rem; margin-top:16px; }
     .hero-actions{ margin-top:26px; flex-direction:column; align-items:stretch; }
     .hero-actions a{ justify-content:center; min-height:46px; }
-    .hero-aside{ padding-top:20px; }
-    .hero-stats{ gap:28px; }
+    .hero-badges{ margin-top:26px; gap:8px; }
+    .hero-badge{ padding:9px 16px; font-size:.72rem; }
 
     .section-head{ margin-bottom:26px; }
     .section-head h2{ font-size:1.7rem; max-width:none; }
@@ -1163,24 +2152,30 @@
     .service-footer{ padding-bottom:30px; }
     .service-footer .btn-wa{ max-width:none; }
 
-    .gallery-grid{ grid-template-columns:repeat(2,1fr); gap:6px; }
+    .gallery-filters{ flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch; }
+    .gallery-filters::-webkit-scrollbar{ display:none; }
+
+    #manifesto{ padding:48px 0; }
+    .manifesto-grid{ grid-template-columns:1fr; gap:30px; }
+    .manifesto-chapter{ padding:24px 0; }
+    .manifesto-chapter-num{ font-size:2.6rem; margin-bottom:8px; }
+
+    .svc-cards-grid{ grid-template-columns:1fr; }
 
     #tentang{ padding:48px 0; }
     .value-row{ gap:14px; padding-bottom:18px; }
     .value-row svg{ width:22px;height:22px; }
 
-    #kontak{ padding:52px 0; }
-    #kontak h2{ font-size:1.9rem; }
+    #kontak{ padding:64px 0; }
     .kontak-actions{ flex-direction:column; align-items:stretch; }
-    .kontak-actions a{ justify-content:center; min-height:46px; }
+    .kontak-actions a, .kontak-actions button{ justify-content:center; }
+    .kontak-info-grid{ grid-template-columns:1fr; }
+    .kontak-map iframe{ height:220px; }
 
-    .footer-grid{ grid-template-columns:1fr; gap:30px; }
-    .footer-bottom{ flex-direction:column; align-items:flex-start; }
+    .footer-simple{ flex-direction:column; text-align:center; }
+    .footer-copyright{ order:2; }
 
     .float-wa{ right:16px; bottom:16px; width:52px; height:52px; }
-
-    .lightbox{ padding:16px; }
-    .lightbox-close{ top:14px; right:14px; width:38px; height:38px; }
   }
 
   @media (max-width:480px){
@@ -1223,7 +2218,7 @@
     <p class="splash-tagline">Fotografi Adat &amp; Momen Keluarga — Padang Lawas Utara</p>
     <p class="splash-welcome">Selamat datang di rumah cerita kami</p>
 
-    <button class="btn-enter" id="enterBtn">
+    <button class="btn-enter" id="enterBtn" data-testid="splash-enter-button">
       <span>Masuk</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
         <path d="M5 12h14M13 6l6 6-6 6"/>
@@ -1237,29 +2232,25 @@
 
   <!-- HEADER -->
   <header id="siteHeader">
-    <a href="#beranda" class="logo">
-      <svg viewBox="0 0 100 100" fill="none" stroke-width="1.4">
-        <circle cx="50" cy="50" r="34"/>
-        <circle cx="50" cy="50" r="12"/>
-      </svg>
-      <span>Ka<em>one</em> Studio</span>
+    <a href="#beranda" class="logo" data-testid="header-logo-link">
+      <span class="logo-badge">K</span>
+      <span>Kaone <em>Studio</em></span>
     </a>
 
     <nav class="main-nav">
-      <a href="#beranda">Beranda</a>
-      <a href="#layanan">Layanan</a>
-      <a href="#tentang">Tentang</a>
-      <a href="#testimoni">Testimoni</a>
-      <a href="#kontak">Kontak</a>
+      <a href="#galeri" data-testid="nav-link-karya">Karya</a>
+      <a href="#manifesto" data-testid="nav-link-manifesto">Manifesto</a>
+      <a href="#layanan" data-testid="nav-link-layanan">Layanan</a>
+      <a href="#kontak" data-testid="nav-link-kontak">Kontak</a>
     </nav>
 
     <div class="header-cta">
-      <a class="btn-gold" target="_blank" rel="noopener"
+      <a class="btn-gold" target="_blank" rel="noopener" data-testid="nav-whatsapp-button"
          href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20bertanya%20tentang%20jasa%20foto.">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
-        <span class="btn-gold-label">Book Now</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span class="btn-gold-label">Hubungi Kami</span>
       </a>
-      <button class="hamburger" id="hamburger" aria-label="Buka menu">
+      <button class="hamburger" id="hamburger" aria-label="Buka menu" data-testid="nav-menu-toggle">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -1267,56 +2258,125 @@
 
   <div class="scrim" id="scrim"></div>
   <nav class="mobile-nav" id="mobileNav">
-    <a href="#beranda">Beranda</a>
-    <a href="#layanan">Layanan</a>
-    <a href="#tentang">Tentang</a>
-    <a href="#testimoni">Testimoni</a>
-    <a href="#kontak">Kontak</a>
+    <a href="#galeri" data-testid="mobile-nav-link-karya">Karya</a>
+    <a href="#manifesto" data-testid="mobile-nav-link-manifesto">Manifesto</a>
+    <a href="#layanan" data-testid="mobile-nav-link-layanan">Layanan</a>
+    <a href="#tentang" data-testid="mobile-nav-link-tentang">Tentang</a>
+    <a href="#testimoni" data-testid="mobile-nav-link-testimoni">Testimoni</a>
+    <a href="#kontak" data-testid="mobile-nav-link-kontak">Kontak</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero" id="beranda">
-    <div class="container hero-grid">
-      <div>
-        <div class="hero-eyebrow-line"><i></i><span>Kaone Studio</span></div>
-        <h1>Cerita adat, diabadikan <span class="accent">selayak</span> pusaka.</h1>
-        <p>Kami memotret pernikahan, upacara adat Batak, dan momen keluarga di Padang Lawas Utara dan sekitarnya — dengan pendekatan yang tenang, dekat, dan menghormati setiap prosesi yang sedang berlangsung.</p>
+    <div class="hero-media">
+      <img src="https://images.unsplash.com/photo-1731566971965-acfb1151fc34?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=1600&amp;auto=format" alt="Pasangan pengantin Kaone Studio" loading="eager">
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-tagline">Kaone Studio — Fotografi &amp; Adat</span>
+        <h1>
+          <span class="line-mask"><span class="line-inner">Mengabadikan</span></span>
+          <span class="line-mask"><span class="line-inner">Setiap <span class="accent">Jiwa</span> &amp;</span></span>
+          <span class="line-mask"><span class="line-inner"><span class="accent">Warisan</span> Adat.</span></span>
+        </h1>
+        <p>Dari sakralnya Patuaekkon dan gemuruh Margondang hingga resepsi pernikahan modern — kami memotret bukan sekadar gambar, melainkan pusaka keluarga Anda.</p>
         <div class="hero-actions">
-          <a class="btn-gold" href="#layanan">
-            <span>Lihat Layanan</span>
+          <a class="btn-gold" href="#galeri" data-testid="hero-explore-gallery-button">
+            <span>Jelajahi Karya</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
           </a>
-          <a class="btn-outline" target="_blank" rel="noopener"
+          <a class="btn-outline" target="_blank" rel="noopener" data-testid="hero-whatsapp-button"
              href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20konsultasi%20jadwal%20pemotretan.">
-            <span>Konsultasi via WhatsApp</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>Konsultasi Gratis</span>
           </a>
         </div>
+        <div class="hero-badges">
+          <span class="hero-badge" data-testid="hero-stat-momen-sakral"><strong>500+</strong> Momen Sakral</span>
+          <span class="hero-badge" data-testid="hero-stat-kategori-karya"><strong>8</strong> Kategori Karya</span>
+          <span class="hero-badge" data-testid="hero-stat-tahun-berkarya"><strong>6 Th</strong> Berkarya</span>
+        </div>
       </div>
-      <div class="hero-aside">
-        <p>Setiap acara punya bahasanya sendiri — gondang yang mengalun, ulos yang diselempangkan, tangis haru orang tua. Kami datang untuk mendengarkan sebelum memotret.</p>
-        <div class="hero-stats">
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true"><span class="scroll-dot"></span></div>
+
+    <div class="hero-float-card" data-testid="hero-featured-work-card">
+      <img src="https://images.unsplash.com/photo-1650377509428-11e7fe8614a9?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=600&amp;auto=format" alt="Busana Adat &amp; Ulos" loading="lazy" decoding="async">
+      <div class="hero-float-card-body">
+        <div class="hero-float-card-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="14" r="3.4"/></svg>
+          <span>Karya Unggulan</span>
+        </div>
+        <div class="hero-float-card-title">Busana Adat &amp; Ulos — 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE STRIP -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <!-- GALERI -->
+  <section id="galeri" class="spotlight">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="section-eyebrow-num reveal-up">01 — GALERI</span>
+          <h2 class="reveal-up" style="--i:1">Karya yang <em>Bercerita</em></h2>
+        </div>
+        <p class="reveal-up" style="--i:2">Delapan kategori, delapan cara bercerita. Pilih satu kategori, lalu jelajahi seluruh galerinya.</p>
+      </div>
+
+      <div class="gallery-cat-grid" id="galleryCatGrid"></div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section id="manifesto">
+    <div class="container manifesto-grid">
+      <div class="manifesto-sticky-col">
+        <div class="manifesto-sticky-inner">
           <div>
-            <div class="figure">9</div>
-            <div style="font-size:.8rem;color:var(--muted);margin-top:4px;">jenis layanan</div>
+            <span class="section-eyebrow-num reveal-up">02 — MANIFESTO</span>
+            <h2 class="manifesto-title reveal-up" style="--i:1">Mengapa Kami <em>Ada</em></h2>
           </div>
-          <div>
-            <div class="figure">Padang Lawas Utara</div>
-            <div style="font-size:.8rem;color:var(--muted);margin-top:4px;">basis studio</div>
+          <div class="manifesto-portrait reveal-up" style="--i:2">
+            <img id="manifestoPortraitImg" src="https://images.unsplash.com/photo-1535579710123-3c0f261c474e?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=1000&amp;auto=format" alt="Potret dramatis studio Kaone" loading="lazy" decoding="async">
           </div>
+        </div>
+      </div>
+
+      <div class="manifesto-chapters">
+        <div class="manifesto-chapter reveal-up" style="--i:1">
+          <span class="manifesto-chapter-num">01</span>
+          <h3>Keaslian Ritual &amp; Adat</h3>
+          <p>Kami lahir dan besar di tanah Batak. Kami tahu kapan gondang mulai ditabuh, kapan ulos disematkan, dan kapan mata seorang tulang berkaca-kaca. Pengetahuan itu membuat kami memotret dari dalam, bukan dari luar.</p>
+        </div>
+        <div class="manifesto-chapter reveal-up" style="--i:2">
+          <span class="manifesto-chapter-num">02</span>
+          <h3>Komposisi Sinematik &amp; Cahaya Dramatis</h3>
+          <p>Setiap frame diperlakukan seperti adegan film: pencahayaan diarahkan, warna di-grading dengan palet kami sendiri, dan momen ditunggu — bukan dipaksa. Hasilnya adalah foto yang terasa seperti napas yang tertahan.</p>
+        </div>
+        <div class="manifesto-chapter reveal-up" style="--i:3">
+          <span class="manifesto-chapter-num">03</span>
+          <h3>Kenangan Abadi Lintas Generasi</h3>
+          <p>Foto yang baik adalah pusaka. Kami menyerahkan karya dalam kualitas arsip tertinggi — agar cucu Anda kelak bisa melihat bagaimana kakek-neneknya menari tortor di hari bahagianya.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- LAYANAN / GALERI -->
-  <section id="layanan">
+  <!-- LAYANAN (SERVICE CARDS) -->
+  <section id="layanan" class="spotlight">
     <div class="container">
       <div class="section-head">
-        <h2>Layanan &amp; galeri kami</h2>
-        <p>Ketuk sebuah acara untuk membuka galerinya, lalu hubungi kami langsung lewat WhatsApp untuk memesan tanggal Anda.</p>
+        <h2>Lebih dari <em>Sekadar Lensa</em></h2>
+        <p>Satu atap untuk hari bahagia Anda: dokumentasi, busana, hingga undangan.</p>
       </div>
-
-      <div id="servicesList"></div>
+      <div class="svc-cards-grid" id="svcCardsGrid"></div>
     </div>
   </section>
 
@@ -1330,21 +2390,21 @@
         <p>Kami bekerja dengan tim kecil agar setiap keluarga mendapat perhatian penuh, dari gladi adat hingga foto terakhir selesai diedit.</p>
       </div>
       <div class="values">
-        <div class="value-row">
+        <div class="value-row" data-testid="about-value-dekat-keluarga">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
           <div>
             <h3>Dekat dengan keluarga</h3>
             <p>Kami mendengar rangkaian acara Anda dulu, baru menyusun sudut pengambilan gambar.</p>
           </div>
         </div>
-        <div class="value-row">
+        <div class="value-row" data-testid="about-value-paham-adat">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           <div>
             <h3>Paham rangkaian adat</h3>
             <p>Dari Patuaekkon hingga Margondang, kami tahu momen mana yang tidak boleh terlewat.</p>
           </div>
         </div>
-        <div class="value-row">
+        <div class="value-row" data-testid="about-value-hasil-tepat-waktu">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M4 4h16v12H4z"/><path d="M8 20h8M12 16v4"/></svg>
           <div>
             <h3>Hasil rapi &amp; tepat waktu</h3>
@@ -1374,15 +2434,15 @@
         <div class="testimoni-loading">Memuat testimoni…</div>
       </div>
 
-      <form class="testimoni-form" id="testimoniForm">
+      <form class="testimoni-form" id="testimoniForm" data-testid="testimoni-form">
         <div class="form-row">
           <label for="t-nama">Nama<span class="req">*</span></label>
-          <input type="text" id="t-nama" name="nama" placeholder="Nama Anda" required>
+          <input type="text" id="t-nama" name="nama" placeholder="Nama Anda" required data-testid="testimoni-input-nama">
         </div>
 
         <div class="form-row">
           <label for="t-jenis">Jenis Boking<span class="req">*</span></label>
-          <select id="t-jenis" name="jenis" required>
+          <select id="t-jenis" name="jenis" required data-testid="testimoni-select-jenis">
             <option value="" disabled selected>Pilih jenis booking</option>
             <option>Wedding</option>
             <option>Prewedding</option>
@@ -1396,26 +2456,26 @@
 
         <div class="form-row">
           <label id="t-bintang-label">Pilih Bintang<span class="req">*</span></label>
-          <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label">
-            <input type="radio" id="star5" name="bintang" value="5" required>
+          <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label" data-testid="testimoni-star-rating">
+            <input type="radio" id="star5" name="bintang" value="5" required data-testid="testimoni-star-5">
             <label for="star5" aria-label="5 bintang">★</label>
-            <input type="radio" id="star4" name="bintang" value="4">
+            <input type="radio" id="star4" name="bintang" value="4" data-testid="testimoni-star-4">
             <label for="star4" aria-label="4 bintang">★</label>
-            <input type="radio" id="star3" name="bintang" value="3">
+            <input type="radio" id="star3" name="bintang" value="3" data-testid="testimoni-star-3">
             <label for="star3" aria-label="3 bintang">★</label>
-            <input type="radio" id="star2" name="bintang" value="2">
+            <input type="radio" id="star2" name="bintang" value="2" data-testid="testimoni-star-2">
             <label for="star2" aria-label="2 bintang">★</label>
-            <input type="radio" id="star1" name="bintang" value="1">
+            <input type="radio" id="star1" name="bintang" value="1" data-testid="testimoni-star-1">
             <label for="star1" aria-label="1 bintang">★</label>
           </div>
         </div>
 
         <div class="form-row">
           <label for="t-pesan">Isi Pesan<span class="req">*</span></label>
-          <textarea id="t-pesan" name="pesan" rows="4" placeholder="Ceritakan pengalaman Anda bersama Kaone Studio..." required></textarea>
+          <textarea id="t-pesan" name="pesan" rows="4" placeholder="Ceritakan pengalaman Anda bersama Kaone Studio..." required data-testid="testimoni-textarea-pesan"></textarea>
         </div>
 
-        <button type="submit" class="btn-gold" id="testimoniSubmitBtn">
+        <button type="submit" class="btn-gold" id="testimoniSubmitBtn" data-testid="testimoni-submit-button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
           <span>Kirim Testimoni</span>
         </button>
@@ -1429,117 +2489,149 @@
         </div>
         <h3>Terima Kasih!</h3>
         <p>Testimoni Anda sudah kami terima. Setelah ditinjau, testimoni ini bisa ditampilkan di halaman ini.</p>
-        <button type="button" class="btn-outline" id="testimoniResetBtn">Kirim Testimoni Lain</button>
+        <button type="button" class="btn-outline" id="testimoniResetBtn" data-testid="testimoni-reset-button">Kirim Testimoni Lain</button>
       </div>
     </div>
   </section>
 
   <!-- KONTAK -->
   <section id="kontak">
-    <div class="container">
-      <svg class="divider-lattice lattice" viewBox="0 0 200 24" fill="none">
-        <line x1="0" y1="12" x2="70" y2="12"/>
-        <path d="M75 12 L88 2 L101 12 L88 22 Z"/>
-        <line x1="106" y1="12" x2="200" y2="12"/>
-      </svg>
-      <h2>Ada tanggal yang ingin diabadikan?</h2>
-      <p>Ceritakan acara Anda, dan kami akan bantu susun paket serta jadwal pemotretan yang sesuai.</p>
-      <div class="kontak-actions">
-        <a class="btn-gold" target="_blank" rel="noopener"
+    <div class="kontak-glow" aria-hidden="true"></div>
+    <div class="container kontak-inner">
+      <span class="section-eyebrow-num reveal-up">04 — KONTAK</span>
+      <h2 class="kontak-title reveal-up" style="--i:1">Mari Ciptakan <em>Mahakarya</em> Bersama</h2>
+
+      <div class="kontak-actions reveal-up" style="--i:2">
+        <a class="btn-wa-lg" target="_blank" rel="noopener" data-testid="contact-whatsapp-button"
            href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20booking%20jadwal%20foto.">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
-          <span>Chat via WhatsApp</span>
+          <span>Chat WhatsApp Sekarang</span>
         </a>
+        <button type="button" class="btn-copy-number" id="copyNumberBtn" data-number="6285117071704" data-testid="contact-copy-number-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+          <span>+62 851-1707-1704</span>
+        </button>
       </div>
 
-      <div class="kontak-map">
+      <div class="kontak-info-grid reveal-up" style="--i:3">
+        <div class="kontak-info-item">
+          <h4>Jam Studio</h4>
+          <p>Senin&ndash;Sabtu<br>09.00&ndash;18.00 WIB</p>
+        </div>
+        <div class="kontak-info-item">
+          <h4>Wilayah Layanan</h4>
+          <p>Sumatera Utara<br>&amp; sekitarnya</p>
+        </div>
+        <div class="kontak-info-item">
+          <h4>Reservasi</h4>
+          <p>Disarankan<br>H-30 sebelum acara</p>
+        </div>
+      </div>
+
+      <div class="kontak-map reveal-up" style="--i:4">
         <iframe
           src="https://www.google.com/maps?q=1.4586592746408342,99.644089&hl=id&z=15&output=embed"
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="Lokasi Kaone Studio"></iframe>
         <div class="kontak-map-caption">
           <p>Aek Haruaya, Portibi, Padang Lawas Utara</p>
-          <a href="https://www.google.com/maps?q=1.4586592746408342,99.644089" target="_blank" rel="noopener">Buka di Google Maps →</a>
+          <a href="https://www.google.com/maps?q=1.4586592746408342,99.644089" target="_blank" rel="noopener" data-testid="contact-open-maps-link">Buka di Google Maps →</a>
         </div>
       </div>
     </div>
   </section>
 
+  <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Nomor WhatsApp tersalin</div>
+
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="#beranda" class="logo">
-            <svg viewBox="0 0 100 100" fill="none" stroke-width="1.4">
-              <circle cx="50" cy="50" r="34"/>
-              <circle cx="50" cy="50" r="12"/>
-            </svg>
-            <span>Ka<em>one</em> Studio</span>
-          </a>
-          <p>Fotografi pernikahan, adat Batak, dan momen keluarga — dikerjakan dengan hati-hati, disimpan untuk diwariskan.</p>
-          <div class="footer-social">
-            <a href="https://instagram.com/kaonestudio" aria-label="Instagram @kaonestudio" title="@kaonestudio" target="_blank" rel="noopener">
-              <span class="social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-              <span>@kaonestudio</span>
-            </a>
-            <a href="https://instagram.com/kaonemotret" aria-label="Instagram @kaonemotret" title="@kaonemotret" target="_blank" rel="noopener">
-              <span class="social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-              <span>@kaonemotret</span>
-            </a>
-            <a href="https://instagram.com/bertaut.ids" aria-label="Instagram @bertaut.ids" title="@bertaut.ids" target="_blank" rel="noopener">
-              <span class="social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-              <span>@bertaut.ids</span>
-            </a>
-            <a href="https://instagram.com/buktisarjana" aria-label="Instagram @buktisarjana" title="@buktisarjana" target="_blank" rel="noopener">
-              <span class="social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-              <span>@buktisarjana</span>
-            </a>
-            <a href="https://wa.me/6285117071704" target="_blank" rel="noopener" aria-label="WhatsApp">
-              <span class="social-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"/></svg></span>
-              <span>WhatsApp</span>
-            </a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Navigasi</h4>
-          <ul>
-            <li><a href="#beranda">Beranda</a></li>
-            <li><a href="#layanan">Layanan</a></li>
-            <li><a href="#tentang">Tentang</a></li>
-            <li><a href="#testimoni">Testimoni</a></li>
-            <li><a href="#kontak">Kontak</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Kontak</h4>
-          <ul>
-            <li><a href="https://wa.me/6285117071704" target="_blank" rel="noopener">+62 851-1707-1704</a></li>
-            <li><a href="#kontak">Aek Haruaya, Portibi, Padang Lawas Utara</a></li>
-          </ul>
-        </div>
+      <div class="footer-social-row">
+        <a href="https://instagram.com/kaonestudio" aria-label="Instagram @kaonestudio" title="@kaonestudio" target="_blank" rel="noopener" data-testid="social-instagram-kaonestudio">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@kaonestudio</span>
+        </a>
+        <a href="https://instagram.com/kaonemotret" aria-label="Instagram @kaonemotret" title="@kaonemotret" target="_blank" rel="noopener" data-testid="social-instagram-kaonemotret">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@kaonemotret</span>
+        </a>
+        <a href="https://instagram.com/bertaut.ids" aria-label="Instagram @bertaut.ids" title="@bertaut.ids" target="_blank" rel="noopener" data-testid="social-instagram-bertaut-ids">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@bertaut.ids</span>
+        </a>
+        <a href="https://instagram.com/buktisarjana" aria-label="Instagram @buktisarjana" title="@buktisarjana" target="_blank" rel="noopener" data-testid="social-instagram-buktisarjana">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@buktisarjana</span>
+        </a>
       </div>
-      <div class="footer-bottom">
-        <span>© <span id="year"></span> Kaone Studio</span>
-        <span>Dibuat dengan perhatian pada detail</span>
+      <div class="footer-simple">
+        <a href="#beranda" class="logo" data-testid="footer-logo-link">
+          <span class="logo-badge">K</span>
+          <span>Kaone <em>Studio</em></span>
+        </a>
+        <span class="footer-copyright">© <span id="year"></span> Kaone Studio. Seluruh hak cipta dilindungi.</span>
+        <a class="footer-wa-number" href="https://wa.me/6285117071704" target="_blank" rel="noopener" data-testid="footer-whatsapp-number">+62 851-1707-1704</a>
       </div>
     </div>
   </footer>
 </div>
 
+<div class="grain-overlay" aria-hidden="true"></div>
+
 <!-- Floating WhatsApp -->
-<a class="float-wa" target="_blank" rel="noopener" aria-label="Chat WhatsApp"
+<a class="float-wa" target="_blank" rel="noopener" aria-label="Chat WhatsApp" data-testid="floating-whatsapp-button"
    href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20bertanya.">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
 </a>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Tutup">
+<!-- Lightbox Galeri (foto utuh) -->
+<div class="lightbox2" id="lightbox2" data-testid="gallery-lightbox">
+  <button class="lightbox2-close" id="lightbox2Close" aria-label="Tutup" data-testid="lightbox-close-button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg>
   </button>
-  <img id="lightboxImg" src="" alt="" loading="lazy" decoding="async">
+  <div class="lightbox2-panel">
+    <div class="lightbox2-media">
+      <img id="lightbox2Img" src="" alt="" loading="lazy" decoding="async">
+    </div>
+  </div>
 </div>
+
+<!-- Modal Galeri Kategori (grid foto per kategori, dibuka dari kartu kategori) -->
+<div class="cat-modal" id="catModal" data-testid="category-gallery-modal">
+  <div class="cat-modal-panel">
+    <div class="cat-modal-head">
+      <div>
+        <span class="cat-modal-eyebrow" id="catModalEyebrow">Galeri</span>
+        <h3 id="catModalTitle">&mdash;</h3>
+      </div>
+      <button class="cat-modal-close" id="catModalClose" aria-label="Tutup" data-testid="category-modal-close-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="cat-modal-grid" id="catModalGrid"></div>
+  </div>
+</div>
+
+<!-- Lenis: scroll global dengan inersia berat ala layar sinema, durasi 1.25s -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.16/dist/lenis.min.js"></script>
+<script>
+(function(){
+  if(typeof Lenis === "undefined") return;
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var lenis = new Lenis({
+    duration: 1.25,
+    /* setara cubic-bezier(.22,1,.36,1) / easeOutExpo, sama seperti var(--ease) di CSS */
+    easing: function(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+    smoothWheel: true
+  });
+  function raf(time){
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+  window.__lenis = lenis;
+})();
+</script>
 
 <script>
 /* =========================================================================
@@ -1614,6 +2706,16 @@ function buildImgHtml(entry, alt, extraAttrs){
    satu-satu lagi. Kalau "driveFolder" dikosongkan (""), layanan itu tetap
    memakai mainImage/gallery manual seperti biasa.
 
+   "driveFolder" yang sama ini JUGA otomatis dipakai untuk kategori terkait
+   di section Galeri "Karya yang Bercerita" (kartu kategori + modal galeri
+   saat kartu diklik) — jadi cukup isi SATU link folder Drive per kategori,
+   tidak perlu isi dua tempat berbeda. Foto sampul kartu kategori akan
+   menampilkan sampai 5 foto pertama (urutan nama file A-Z) yang bergantian
+   dengan efek fade (lihat renderGalleryCategories & startCatCardSlideshows
+   di bawah), dan SEMUA foto folder tsb bisa dibuka lewat modal galeri
+   kategori. Kalau "driveFolder" dikosongkan, kategori itu tetap memakai
+   foto contoh manual di "galeriWorks" di bawah.
+
    CARA PAKAI:
    1. Buat 1 folder di Google Drive khusus untuk tiap layanan (isinya
       cuma foto-foto JPG/PNG layanan itu saja).
@@ -1678,22 +2780,97 @@ async function fetchDriveFolderImages(folderId){
   return found.map(f => driveThumbUrl(f.id, 1600));
 }
 
-/* Setelah halaman tampil dengan foto awal (manual/placeholder), diam-diam
-   ambil foto dari folder Drive untuk tiap layanan yang driveFolder-nya
-   diisi, lalu render ulang HANYA kartu layanan itu begitu fotonya siap —
-   supaya halaman tetap langsung terlihat, tidak menunggu Drive selesai. */
-async function applyDriveGalleries(){
-  for(let i = 0; i < services.length; i++){
-    const svc = services[i];
-    const folderId = extractDriveFolderId(svc.driveFolder);
-    if(!folderId) continue;
-    const urls = await fetchDriveFolderImages(folderId);
-    if(!urls.length) continue;
-    svc.mainImage = urls[0];
-    svc.gallery = urls.slice(1);
-    const el = document.querySelector('.service[data-key="' + svc.key + '"]');
-    if(el) el.outerHTML = buildServiceHTML(svc, i);
+/* applyDriveGalleries() didefinisikan ulang di bawah (setelah data
+   "services" & fungsi render Marquee/Galeri/Kartu Layanan), supaya
+   ia bisa langsung memicu render ulang tampilan baru begitu foto
+   dari Google Drive selesai dimuat. */
+
+/* =========================================================================
+   FOTO UTAMA (HERO, KARTU "KARYA UNGGULAN", POTRET MANIFESTO)
+   -------------------------------------------------------------------------
+   Sama seperti galeri tiap layanan di bawah: isi "driveFolder" dengan
+   link/ID folder Google Drive supaya foto di bagian itu otomatis diambil
+   dari sana. Kosongkan ("") untuk tetap memakai foto contoh (fallback).
+
+   - hero.driveFolder → 1 FOTO SAJA (foto pertama/A-Z) di folder itu,
+     tampil statis (tanpa slideshow) di header.
+   - featuredBadge.driveFolder → 1 foto (pertama/A-Z) untuk kartu "Karya
+     Unggulan" di pojok kanan bawah hero.
+   - manifestoPortrait.driveFolder → 1 foto untuk potret di section
+     Manifesto ("Mengapa Kami Ada").
+
+   Catatan: slideshow foto bergantian dengan efek fade sekarang ada di
+   foto sampul tiap kartu kategori Galeri (lihat renderGalleryCategories
+   & startCatCardSlideshows di bawah), bukan lagi di header.
+   ========================================================================= */
+const heroMedia = {
+  driveFolder: "", // <- tempel link/ID folder Google Drive Hero di sini (dipakai 1 foto pertama saja)
+  fallback: [
+    "https://images.unsplash.com/photo-1731566971965-acfb1151fc34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1600&auto=format"
+  ]
+};
+const featuredBadgeMedia = {
+  driveFolder: "", // <- tempel link/ID folder Google Drive kartu "Karya Unggulan" di sini
+  fallback: "https://images.unsplash.com/photo-1650377509428-11e7fe8614a9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=600&auto=format"
+};
+const manifestoMedia = {
+  driveFolder: "", // <- tempel link/ID folder Google Drive potret Manifesto di sini
+  fallback: "https://images.unsplash.com/photo-1535579710123-3c0f261c474e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1000&auto=format"
+};
+
+/* Ambil sampai "count" URL foto: dari folder Drive kalau diisi & berhasil
+   dimuat, atau dari daftar fallback kalau tidak. */
+async function resolveMediaUrls(mediaCfg, count){
+  const folderId = extractDriveFolderId(mediaCfg.driveFolder);
+  if(folderId){
+    const found = await fetchDriveFolderImages(folderId);
+    if(found.length) return found.slice(0, count);
   }
+  const fb = Array.isArray(mediaCfg.fallback) ? mediaCfg.fallback : [mediaCfg.fallback];
+  return fb.slice(0, count);
+}
+
+let heroSlideTimer = null;
+
+/* Render slideshow hero: tumpuk beberapa <img>, lalu ganti kelas
+   "is-active" tiap beberapa detik supaya bertransisi fade (diatur lewat
+   CSS "transition:opacity" pada ".hero-media img"). */
+function renderHeroSlides(urls){
+  const container = document.querySelector(".hero-media");
+  if(!container || !urls.length) return;
+  container.innerHTML = urls.map((u, i) =>
+    `<img src="${u}" alt="Pasangan pengantin Kaone Studio" loading="${i === 0 ? "eager" : "lazy"}" decoding="async" class="${i === 0 ? "is-active" : ""}">`
+  ).join("");
+  const slides = Array.from(container.querySelectorAll("img"));
+  if(heroSlideTimer) clearInterval(heroSlideTimer);
+  if(slides.length <= 1) return;
+  let activeIndex = 0;
+  heroSlideTimer = setInterval(() => {
+    const nextIndex = (activeIndex + 1) % slides.length;
+    slides[activeIndex].classList.remove("is-active");
+    slides[nextIndex].classList.add("is-active");
+    activeIndex = nextIndex;
+  }, 5000);
+}
+
+async function initHeroMedia(){
+  renderHeroSlides(heroMedia.fallback.slice(0, 1)); // tampil dulu, tak perlu menunggu Drive
+  const folderId = extractDriveFolderId(heroMedia.driveFolder);
+  if(!folderId) return;
+  const urls = await resolveMediaUrls(heroMedia, 1);
+  if(urls.length) renderHeroSlides(urls);
+}
+
+async function initFeaturedBadgeMedia(){
+  const urls = await resolveMediaUrls(featuredBadgeMedia, 1);
+  const img = document.querySelector(".hero-float-card img");
+  if(img && urls[0]) img.src = urls[0];
+}
+
+async function initManifestoMedia(){
+  const urls = await resolveMediaUrls(manifestoMedia, 1);
+  const img = document.getElementById("manifestoPortraitImg");
+  if(img && urls[0]) img.src = urls[0];
 }
 
 const services = [
@@ -1702,8 +2879,8 @@ const services = [
     title: "Wedding",
     desc: "Dokumentasi hari pernikahan, dari persiapan hingga resepsi, dengan sudut pandang yang natural dan tenang.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Wedding.",
-    mainImage: "https://picsum.photos/seed/kaone-wedding-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Wedding di sini
+    mainImage: "https://images.unsplash.com/photo-1542598688-76ad90c5b01e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Wedding di sini (otomatis dipakai juga untuk galeri kategori "Wedding")
     gallery: [
       "https://picsum.photos/seed/kaone-wedding-1/700/900",
       "https://picsum.photos/seed/kaone-wedding-2/700/900",
@@ -1719,7 +2896,7 @@ const services = [
     desc: "Sesi foto pranikah yang santai dan personal, di lokasi pilihan Anda maupun di dalam studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Prewedding.",
     mainImage: "https://picsum.photos/seed/kaone-prewedding-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Prewedding di sini
+    driveFolder: "", // <- tempel link/ID folder Google Drive Prewedding di sini (otomatis dipakai juga untuk galeri kategori "Prewedding")
     gallery: [
       "https://picsum.photos/seed/kaone-prewedding-1/700/900",
       "https://picsum.photos/seed/kaone-prewedding-2/700/900",
@@ -1734,8 +2911,8 @@ const services = [
     title: "Patuaekkon",
     desc: "Prosesi adat Batak yang sarat makna kekeluargaan — kami rekam setiap tahap dengan seksama dan penuh hormat.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Patuaekkon.",
-    mainImage: "https://picsum.photos/seed/kaone-patuaekkon-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Patuaekkon di sini
+    mainImage: "https://images.unsplash.com/photo-1650377509454-1bbd8392e122?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Patuaekkon di sini (otomatis dipakai juga untuk galeri kategori "Patuaekkon")
     gallery: [
       "https://picsum.photos/seed/kaone-patuaekkon-1/700/900",
       "https://picsum.photos/seed/kaone-patuaekkon-2/700/900",
@@ -1750,8 +2927,8 @@ const services = [
     title: "Margondang",
     desc: "Upacara adat dengan iringan gondang — momen tari dan doa keluarga besar yang layak diabadikan utuh.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Margondang.",
-    mainImage: "https://picsum.photos/seed/kaone-margondang-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Margondang di sini
+    mainImage: "https://images.unsplash.com/photo-1735301709065-d0e8fc055baa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Margondang di sini (otomatis dipakai juga untuk galeri kategori "Margondang")
     gallery: [
       "https://picsum.photos/seed/kaone-margondang-1/700/900",
       "https://picsum.photos/seed/kaone-margondang-2/700/900",
@@ -1766,8 +2943,8 @@ const services = [
     title: "Mangayun / Aqiqah",
     desc: "Perayaan kelahiran buah hati — dari prosesi mangayun hingga aqiqah, penuh kehangatan keluarga.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Mangayun/Aqiqah.",
-    mainImage: "https://picsum.photos/seed/kaone-mangayun-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Mangayun di sini
+    mainImage: "https://images.unsplash.com/photo-1662103619880-0dae9bf7ddb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHw0fHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Mangayun di sini (otomatis dipakai juga untuk galeri kategori "Mangayun/Aqiqah")
     gallery: [
       "https://picsum.photos/seed/kaone-mangayun-1/700/900",
       "https://picsum.photos/seed/kaone-mangayun-2/700/900",
@@ -1782,8 +2959,8 @@ const services = [
     title: "Graduation",
     desc: "Merayakan pencapaian akademik dengan sesi foto yang rapi, di kampus maupun studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Graduation.",
-    mainImage: "https://picsum.photos/seed/kaone-graduation-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Graduation di sini
+    mainImage: "https://images.unsplash.com/photo-1624727828618-ee42ef2ec5cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Graduation di sini (otomatis dipakai juga untuk galeri kategori "Graduation")
     gallery: [
       "https://picsum.photos/seed/kaone-graduation-1/700/900",
       "https://picsum.photos/seed/kaone-graduation-2/700/900",
@@ -1799,7 +2976,7 @@ const services = [
     desc: "Sesi foto studio santai untuk diri sendiri, teman, atau keluarga — cocok untuk konten pribadi maupun kado spesial.",
     waText: "Halo Kaone Studio, saya ingin booking jasa Selfphoto.",
     mainImage: "https://drive.google.com/thumbnail?id=1ZT3MuGmnaLnmBfAGa9tCYoKNXB4B8EfQ&sz=w1600",
-    driveFolder: "https://drive.google.com/drive/folders/117XFwcdgt1-1_PsxmVzxedHjV-ARzsRt?usp=drive_link", // <- tempel link/ID folder Google Drive Selfphoto di sini (kalau diisi, ini akan menggantikan mainImage manual di atas)
+    driveFolder: "https://drive.google.com/drive/folders/1qO4dFKwydJ9clrvbRrcGJJdR2Yx0Sl7s?usp=sharing", // <- tempel link/ID folder Google Drive Selfphoto di sini (kalau diisi, ini akan menggantikan mainImage manual di atas, dan otomatis dipakai juga untuk galeri kategori "Selfphoto")
     gallery: [
       "https://picsum.photos/seed/kaone-selfphoto-1/700/900",
       "https://picsum.photos/seed/kaone-selfphoto-2/700/900",
@@ -1814,8 +2991,8 @@ const services = [
     title: "Rental Gaun",
     desc: "Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.",
     waText: "Halo Kaone Studio, saya ingin sewa Rental Gaun.",
-    mainImage: "https://picsum.photos/seed/kaone-rentalgaun-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Rental Gaun di sini
+    mainImage: "https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    driveFolder: "", // <- tempel link/ID folder Google Drive Rental Gaun di sini (otomatis dipakai juga untuk galeri kategori "Rental Gaun")
     gallery: [
       "https://picsum.photos/seed/kaone-rentalgaun-1/700/900",
       "https://picsum.photos/seed/kaone-rentalgaun-2/700/900",
@@ -1842,99 +3019,452 @@ function buildGalleryHTML(svc){
   ).join("");
 }
 
-function buildServiceHTML(svc, idx){
-  const num = String(idx+1).padStart(2,"0");
+/* Layanan yang punya foto (dipakai untuk Marquee).
+   "Undangan Digital" (noMedia) sengaja tidak dimasukkan ke daftar ini. */
+const mediaServices = services.filter(s => !s.noMedia);
 
-  if(svc.noMedia){
-    return `
-    <div class="service" data-key="${svc.key}">
-      <div class="service-media service-media--plain">
-        <div class="service-caption">
-          <span class="service-index">${num}</span>
-          <h3 class="service-title">${svc.title}</h3>
-        </div>
-      </div>
-      <div class="service-body">
-        <p class="service-desc">${svc.desc}</p>
-      </div>
-      <div class="service-footer">
-        <a class="btn-wa service-book" target="_blank" rel="noopener" href="${waBase}${encodeURIComponent(svc.waText)}">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
-          <span>Book Now</span>
-        </a>
-      </div>
-    </div>`;
-  }
+/* =========================================================================
+   GALERI KARYA — "Karya yang Bercerita"
+   -------------------------------------------------------------------------
+   Daftar pil filter persis seperti yang diminta, dan 18 karya kurasi untuk
+   dinding galeri masonry. Tiap karya punya narasi singkat + metadata yang
+   ditampilkan di lightbox saat diklik. "cat" harus cocok dengan salah satu
+   data-filter di galeriFilters. "catToServiceKey" dipakai supaya tombol
+   "Pesan Sesi Seperti Ini" di lightbox otomatis memakai nomor & teks WA
+   yang sama dengan layanan terkait di atas — tidak perlu diisi manual.
+   ========================================================================= */
+const galeriFilters = [
+  { key: "all", label: "Semua" },
+  { key: "wedding", label: "Wedding" },
+  { key: "patuaekkon", label: "Patuaekkon" },
+  { key: "margondang", label: "Margondang" },
+  { key: "mangayun", label: "Mangayun/Aqiqah" },
+  { key: "graduation", label: "Graduation" },
+  { key: "prewedding", label: "Prewedding" },
+  { key: "selfphoto", label: "Selfphoto" },
+  { key: "rental-gaun", label: "Rental Gaun" },
+  { key: "undangan-digital", label: "Undangan Digital" }
+];
 
-  const mainImg = svc.mainImage;
-  return `
-  <div class="service" data-open="false" data-key="${svc.key}">
-    <div class="service-media">
-      ${buildImgHtml(mainImg, `Foto utama ${svc.title}`)}
-      <div class="service-caption">
-        <span class="service-index">${num}</span>
-        <h3 class="service-title">${svc.title}</h3>
-      </div>
-    </div>
-    <div class="service-body">
-      <p class="service-desc">${svc.desc}</p>
-      <button class="service-toggle" data-toggle="${svc.key}">
-        <span class="toggle-label">Lihat Galeri</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-    </div>
-    <div class="service-panel">
-      <div class="service-panel-inner">
-        <div class="gallery-grid">${buildGalleryHTML(svc)}</div>
-      </div>
-    </div>
-    <div class="service-footer">
-      <a class="btn-wa service-book" target="_blank" rel="noopener" href="${waBase}${encodeURIComponent(svc.waText)}">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
-        <span>Book Now</span>
-      </a>
-    </div>
-  </div>`;
+const catToServiceKey = {
+  wedding: "wedding",
+  patuaekkon: "patuaekkon",
+  margondang: "margondang",
+  mangayun: "mangayun",
+  graduation: "graduation",
+  prewedding: "prewedding",
+  selfphoto: "selfphoto",
+  "rental-gaun": "rental-gaun",
+  "undangan-digital": "undangan-digital"
+};
+
+let galeriWorks = [
+  { cat:"wedding", catLabel:"Wedding", title:"Janji Suci di Bawah Sorot", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.2", orientation:"landscape", img:"https://images.unsplash.com/photo-1542598688-76ad90c5b01e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Momen akad yang diabadikan dengan satu sorotan cahaya panggung — gelap di sekeliling, terang pada dua insan yang berjanji." },
+  { cat:"wedding", catLabel:"Wedding", title:"Buket & Janji", loc:"Tarutung, Tapanuli", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1519741497674-611481863552?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Detail kecil yang menceritakan segalanya: buket di tangan pengantin, cincin di jari, dan cahaya senja yang jatuh perlahan." },
+  { cat:"wedding", catLabel:"Wedding", title:"Dalam Dekapan Selubung", loc:"Samosir, Danau Toba", year:"2024", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1519741196428-6a2175fa2557?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwyfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Di balik selubung pengantin, bisikan doa dan tawa kecil — keintiman yang hanya bisa ditangkap dengan kesabaran." },
+  { cat:"wedding", catLabel:"Wedding", title:"Siluet Sang Kekasih", loc:"Berastagi, Karo", year:"2025", lens:"70-200mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1524194838522-6264794f485d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxicmlkZSUyMGdyb29tJTIwc2lsaG91ZXR0ZSUyMGJhY2tsaWdodCUyMGRyYW1hdGljfGVufDB8fHx8MTc4ODY3MDM5OXww&ixlib=rb-4.1.0&q=85", story:"Ciuman di kening, siluet melawan langit senja Toba — komposisi sinematik favorit para mempelai kami." },
+
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Patuaekkon: Restu Pariban", loc:"Balige, Toba", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"https://images.unsplash.com/photo-1650377509454-1bbd8392e122?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Prosesi patuaekkon — lamaran adat Batak Toba tempat dua keluarga bertemu, berunding, dan merestui. Setiap gestur kami jaga keasliannya." },
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Busana Adat & Ulos", loc:"Siantar, Simalungun", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1650377509488-724221735c19?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Keanggunan busana adat lengkap dengan ulos yang disematkan penuh makna — warisan yang layak diabadikan selamanya." },
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Ritual Mangokal Holi", loc:"Laguboti, Toba", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1623991614441-2b124385eb63?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwzfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Detail ritual sakral yang diwariskan lintas generasi — kami memotretnya dengan hormat, tanpa mengganggu sakralnya prosesi." },
+
+  { cat:"margondang", catLabel:"Margondang", title:"Margondang Pesta Adat", loc:"Muara, Tapanuli Utara", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1735301709065-d0e8fc055baa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Kemeriahan margondang — barisan penari dengan pakaian adat penuh warna, diiringi gondang yang menggetarkan tanah." },
+  { cat:"margondang", catLabel:"Margondang", title:"Penari Tortor", loc:"Tomok, Samosir", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1554785007-399e80f5cb72?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHw0fHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Gerakan tortor yang sarat doa — setiap ayunan tangan adalah bahasa syukur yang kami bekukan dalam bingkai." },
+
+  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Mangayun: Sambut Buah Hati", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1662103619880-0dae9bf7ddb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHw0fHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Sukacita keluarga menyambut anggota baru — mangayun penuh doa, tawa nenek, dan pelukan pertama yang tak terlupakan." },
+  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Aqiqah Keluarga Sitorus", loc:"Pematang Siantar", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1622996061359-0da030a44e6b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwzfHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Gendongan ayah, senyum ibu, dan doa yang mengalir — aqiqah yang hangat dan penuh kekeluargaan." },
+
+  { cat:"graduation", catLabel:"Graduation", title:"Wisuda: Lempar Toga", loc:"USU, Medan", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1624727828618-ee42ef2ec5cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Toga melayang, perjuangan empat tahun terbayar — momen euforia yang kami buru dengan kecepatan rana tinggi." },
+  { cat:"graduation", catLabel:"Graduation", title:"Senyum Sang Sarjana", loc:"Nommensen, Medan", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1618355776464-8666794d2520?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwyfHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Potret wisuda outdoor dengan cahaya alami keemasan — bangga, haru, dan siap menyongsong dunia." },
+
+  { cat:"prewedding", catLabel:"Prewedding", title:"Sesi Pranikah di Tepi Sawah", loc:"Padang Lawas Utara", year:"2024", lens:"50mm f/1.8", orientation:"portrait", img:"https://picsum.photos/seed/kaone-galeri-prewedding-1/750/1000", story:"Sesi foto pranikah yang santai, memanfaatkan cahaya keemasan sore hari di tengah hamparan sawah." },
+  { cat:"prewedding", catLabel:"Prewedding", title:"Prewedding di Tepi Danau Toba", loc:"Samosir, Danau Toba", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"https://picsum.photos/seed/kaone-galeri-prewedding-2/1000/750", story:"Momen santai calon pengantin di tepi Danau Toba — menangkap tawa dan kedekatan sebelum hari besar tiba." },
+  { cat:"selfphoto", catLabel:"Selfphoto", title:"Potret Monokrom", loc:"Studio Kaone, Medan", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1633381521050-26bb467d9d5a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHw0fHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Hitam-putih yang jujur — satu lampu, satu karakter, tak ada tempat bersembunyi. Sesi selfphoto paling personal kami." },
+  { cat:"selfphoto", catLabel:"Selfphoto", title:"Cahaya & Bayang", loc:"Studio Kaone, Medan", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"https://images.unsplash.com/photo-1606143412458-acc5f86de897?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwzfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Chiaroscuro ala lukisan klasik diterjemahkan ke dalam sesi foto pribadi — elegan, tenang, dan berwibawa." },
+
+  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Gaun Pengantin Eksklusif", loc:"Koleksi Kaone Studio", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Koleksi gaun rental premium kami — ekor panjang, renda halus, dan potongan yang membuat setiap pengantin menjadi ratu sehari." },
+  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Detail Gaun Pagi Hari", loc:"Koleksi Kaone Studio", year:"2024", lens:"100mm f/2.8 Macro", orientation:"portrait", img:"https://images.unsplash.com/photo-1594552072238-b8a33785b261?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Setiap gaun dirawat dan difoto detail sebelum disewakan — renda, payet, dan jatuhnya kain adalah janji kualitas kami." },
+
+  { cat:"undangan-digital", catLabel:"Undangan Digital", title:"Undangan Digital Premium", loc:"Layanan Kaone Studio", year:"2025", lens:"Desain & Motion", orientation:"landscape", img:"https://images.unsplash.com/photo-1632610992723-82d7c212f6d7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwc3RhdGlvbmVyeSUyMGludml0YXRpb24lMjBnb2xkfGVufDB8fHx8MTc4ODY3MDQzNXww&ixlib=rb-4.1.0&q=85", story:"Undangan digital interaktif dengan galeri foto, musik, dan RSVP — disebar lewat satu tautan, dikenang selamanya." }
+];
+
+/* ---- 3) Marquee strip (Pita Marquee Editorial) ----
+   Tiap layanan jadi satu kata/frasa, dipisah pembatas berlian emas ✦.
+   Digandakan 2x supaya animasi translateX(-50%) terlihat menyambung
+   mulus tanpa patah saat track kembali ke posisi awal. */
+function renderMarquee(){
+  const labels = mediaServices.map(s => s.title.toUpperCase());
+  const itemsHTML = labels
+    .map(t => `<span class="marquee-item">${t}</span><span class="marquee-sep" aria-hidden="true">&#10022;</span>`)
+    .join("");
+  document.getElementById("marqueeTrack").innerHTML = itemsHTML + itemsHTML;
 }
 
-document.getElementById("servicesList").innerHTML =
-  services.map((s,i)=>buildServiceHTML(s,i)).join("");
+/* ---- 4) Galeri Karya: kartu kategori (dua kolom) ----
+   Tiap kartu mewakili satu kategori (Wedding, Patuaekkon, dst),
+   dengan sampul foto pertama kategori tsb, lencana jumlah foto, dan
+   tombol "Lihat Galeri" yang membuka modal berisi seluruh foto
+   kategori itu (lihat renderCatModalGrid & bagian Modal Galeri Kategori). */
+function galeriWorksByCat(catKey){
+  return galeriWorks.filter(w => w.cat === catKey);
+}
+
+function renderGalleryCategories(){
+  const wrap = document.getElementById("galleryCatGrid");
+  const cats = galeriFilters.filter(f => f.key !== "all");
+  wrap.innerHTML = cats.map((f,i) => {
+    const works = galeriWorksByCat(f.key);
+    /* Sampul kartu = sampai 5 foto pertama kategori ini, ditumpuk lalu
+       bergantian dengan efek fade (lihat startCatCardSlideshows). Kalau
+       kategori cuma punya 1 foto, otomatis statis (tak ada yang perlu
+       digilir). */
+    const covers = works.slice(0, 5).map(w => w.img);
+    const coversHtml = covers.map((src, ci) => {
+      const r = resolveImgSrc(src);
+      /* Durasi zoom (13–19 detik) dibuat berbeda-beda per foto supaya
+         tiap foto "bernapas" dengan ritme sendiri, terlihat lebih unik —
+         TANPA animation-delay acak (sengaja dihapus): dengan delay acak,
+         foto yang baru muncul bisa kebetulan "sudah separuh ter-zoom"
+         dari fase acaknya, sehingga kelihatan tersentak. Titik mulai yang
+         konsisten (selalu dari skala normal, lihat juga restart paksa di
+         startCatCardSlideshows) membuat tiap foto muncul dengan mulus. */
+      const zoomDuration = (13 + Math.random() * 6).toFixed(2);
+      const zoomStyle = `animation-duration:${zoomDuration}s;`;
+      return `<img src="${r.src}" alt="Galeri ${f.label}" loading="lazy" decoding="async" style="${zoomStyle}" class="${ci === 0 ? "is-active" : ""}">`;
+    }).join("");
+    return `
+    <button type="button" class="cat-card reveal-up" style="--i:${i % 6}" data-cat="${f.key}" data-testid="cat-card-${f.key}">
+      <div class="cat-card-media">
+        ${coversHtml}
+      </div>
+      <span class="cat-card-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="15" height="14" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v11"/></svg>
+        ${works.length} Foto
+      </span>
+      <span class="cat-card-info">
+        <h3>${f.label}</h3>
+        <span class="cat-card-cta">
+          Lihat Galeri
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </span>
+      </span>
+    </button>`;
+  }).join("");
+  setupReveal();
+  startCatCardSlideshows();
+}
+
+let catCardSlideTimers = [];
+
+/* Hentikan semua timer slideshow kartu kategori sebelumnya (dipanggil
+   ulang tiap renderGalleryCategories, termasuk saat render ulang
+   setelah foto dari Google Drive selesai dimuat) supaya tak menumpuk
+   timer ganda. Dipakai setTimeout (bukan setInterval), jadi di-clear
+   dengan clearTimeout. */
+function stopCatCardSlideshows(){
+  catCardSlideTimers.forEach(t => clearTimeout(t));
+  catCardSlideTimers = [];
+}
+
+/* Gilir foto sampul tiap kartu kategori Galeri dengan efek fade
+   (memakai kelas "is-active" + CSS "transition:opacity" pada
+   ".cat-card-media img"), sama seperti pola slideshow yang dulu
+   dipakai di header.
+
+   Sengaja pakai setTimeout yang menjadwalkan ulang dirinya sendiri
+   dengan durasi ACAK tiap putaran (bukan satu setInterval tetap untuk
+   semua kartu) + jeda mulai awal yang juga acak. Efeknya: tiap kartu
+   kategori berganti foto di waktu yang berbeda-beda, tidak serentak
+   bersamaan — terasa lebih hidup/organik, bukan seperti "diaba-abakan". */
+function startCatCardSlideshows(){
+  stopCatCardSlideshows();
+  document.querySelectorAll(".cat-card-media").forEach(container => {
+    const slides = Array.from(container.querySelectorAll("img"));
+    if(slides.length <= 1) return;
+    let activeIndex = 0;
+
+    function scheduleNext(){
+      const wait = 5200 + Math.random() * 2600; // 5.2–7.8 detik, beda tiap putaran
+      const timer = setTimeout(() => {
+        const nextIndex = (activeIndex + 1) % slides.length;
+        const outgoing = slides[activeIndex];
+        const incoming = slides[nextIndex];
+        outgoing.classList.remove("is-active");
+        /* Paksa restart animasi zoom foto yang baru muncul, supaya SELALU
+           mulai dari skala normal (bukan melanjutkan dari fase acak/sisa
+           putaran sebelumnya) — trik reflow standar: matikan animasi,
+           paksa browser membaca ulang layout (offsetWidth), baru nyalakan
+           lagi. Ini yang bikin foto baru terasa tumbuh pelan & mulus tiap
+           kali muncul, bukan tersentak seolah sudah separuh ter-zoom. */
+        incoming.style.animationName = "none";
+        void incoming.offsetWidth;
+        incoming.style.animationName = "catCoverKenBurns";
+        incoming.classList.add("is-active");
+        activeIndex = nextIndex;
+        scheduleNext();
+      }, wait);
+      catCardSlideTimers.push(timer);
+    }
+
+    const initialDelay = Math.random() * 3000; // jeda mulai awal acak per kartu
+    catCardSlideTimers.push(setTimeout(scheduleNext, initialDelay));
+  });
+}
+
+function renderGallery(){
+  renderGalleryCategories();
+}
+
+/* ---- 6) Service cards: dua layanan pendamping (Rental Gaun & Undangan Digital) ---- */
+function renderServiceCards(){
+  const cards = [
+    {
+      key: "rental-gaun",
+      title: "Rental Gaun Eksklusif",
+      badge: "Koleksi Premium",
+      desc: "Puluhan gaun pengantin dan kebaya adat pilihan — dirawat, difoto detail, dan siap dikenakan di hari istimewa Anda. Termasuk fitting dan penyesuaian ukuran.",
+      img: "https://images.unsplash.com/photo-1622277430358-f4d134452e2e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+      wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Rental Gaun Eksklusif.",
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 1 1 2 2"/><path d="M12 5v3"/><path d="M12 8l9 6a2 2 0 0 1-1 3.7H4A2 2 0 0 1 3 13.9z"/></svg>`
+    },
+    {
+      key: "undangan-digital",
+      title: "Undangan Digital Interaktif",
+      badge: "Desain & Motion",
+      desc: "Undangan web yang hidup: galeri foto, hitung mundur, musik, peta lokasi, dan RSVP tamu — semua dalam satu tautan yang mudah dibagikan ke seluruh undangan.",
+      img: "https://images.unsplash.com/photo-1625046584009-a6a8370c55f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwyfHxlbGVnYW50JTIwc3RhdGlvbmVyeSUyMGludml0YXRpb24lMjBnb2xkfGVufDB8fHx8MTc4ODY3MDQzNXww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+      wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Undangan Digital Interaktif.",
+      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10.5 17h3"/><path d="M10 8.5 14 11l-4 2.5z"/></svg>`
+    }
+  ];
+  document.getElementById("svcCardsGrid").innerHTML = cards.map(c => `
+    <a class="svc-card" target="_blank" rel="noopener" href="${waBase}${encodeURIComponent(c.wa)}" data-testid="service-card-${c.key}">
+      <div class="svc-card-media">
+        ${buildImgHtml(c.img, c.title)}
+        <span class="svc-card-badge">${c.badge}</span>
+        <span class="svc-card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+        </span>
+      </div>
+      <div class="svc-card-body">
+        ${c.icon}
+        <h3>${c.title}</h3>
+        <p>${c.desc}</p>
+        <span class="svc-card-cta">
+          TANYA KETERSEDIAAN
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </a>`).join("");
+}
+
+/* ---- Reveal-on-scroll: memudar naik saat elemen ".reveal-up" masuk
+   viewport (dipakai oleh judul/label Galeri, pil filter, dan tiap
+   kartu di dinding galeri). Satu observer global dipakai ulang supaya
+   ringan meski dipanggil lagi setelah render ulang (mis. filter/Drive). */
+const revealObserved = new WeakSet();
+let revealIO = null;
+function setupReveal(){
+  const els = document.querySelectorAll(".reveal-up");
+  if(!("IntersectionObserver" in window)){
+    els.forEach(el => el.classList.add("is-visible"));
+    return;
+  }
+  if(!revealIO){
+    revealIO = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("is-visible");
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold:0.15, rootMargin:"0px 0px -60px 0px" });
+  }
+  els.forEach(el=>{
+    if(!revealObserved.has(el)){
+      revealObserved.add(el);
+      revealIO.observe(el);
+    }
+  });
+}
+
+renderMarquee();
+renderGallery();
+renderServiceCards();
+setupReveal();
+initHeroMedia();
+initFeaturedBadgeMedia();
+initManifestoMedia();
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+/* ---- Kontak: tombol salin nomor WhatsApp + toast notifikasi ----
+   Memakai Clipboard API kalau tersedia, dengan fallback textarea
+   sementara untuk browser lama, lalu menampilkan toast singkat di
+   bawah layar sebagai konfirmasi. */
+const copyNumberBtn = document.getElementById("copyNumberBtn");
+const copyToast = document.getElementById("copyToast");
+let copyToastTimer = null;
+if(copyNumberBtn){
+  copyNumberBtn.addEventListener("click", async ()=>{
+    const number = "+" + (copyNumberBtn.dataset.number || "6285117071704");
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(number);
+      } else {
+        throw new Error("Clipboard API tidak tersedia");
+      }
+    } catch(err){
+      const temp = document.createElement("textarea");
+      temp.value = number;
+      temp.style.position = "fixed";
+      temp.style.opacity = "0";
+      document.body.appendChild(temp);
+      temp.select();
+      try{ document.execCommand("copy"); } catch(e){ /* diabaikan */ }
+      document.body.removeChild(temp);
+    }
+    copyNumberBtn.classList.add("copied");
+    setTimeout(()=> copyNumberBtn.classList.remove("copied"), 500);
+    if(copyToast){
+      copyToast.classList.add("show");
+      clearTimeout(copyToastTimer);
+      copyToastTimer = setTimeout(()=> copyToast.classList.remove("show"), 2600);
+    }
+  });
+}
+
 /* Ambil foto dari folder Google Drive (kalau ada layanan yang diisi
-   driveFolder-nya) dan ganti kartu layanan terkait begitu foto siap. */
+   driveFolder-nya), lalu render ulang Marquee/Galeri/Kartu Layanan
+   begitu foto siap — supaya halaman tetap langsung terlihat, tidak
+   menunggu Drive selesai. */
+async function applyDriveGalleries(){
+  let changed = false;
+  for(let i = 0; i < services.length; i++){
+    const svc = services[i];
+    if(svc.noMedia) continue;
+    const folderId = extractDriveFolderId(svc.driveFolder);
+    if(!folderId) continue;
+    const urls = await fetchDriveFolderImages(folderId);
+    if(!urls.length) continue;
+    svc.mainImage = urls[0];
+    svc.gallery = urls.slice(1);
+
+    /* Ganti SEMUA foto kategori ini di "Karya yang Bercerita" (galeriWorks)
+       dengan foto dari folder Drive yang sama (key kategori = key layanan,
+       lihat catToServiceKey). Sampul kartu kategori otomatis memakai
+       sampai 5 foto pertama (urutan nama file A-Z, lihat
+       renderGalleryCategories) dengan efek fade bergantian, dan SEMUA
+       foto folder ini tetap bisa dibuka lewat modal galeri kategori. */
+    const filterInfo = galeriFilters.find(f => f.key === svc.key);
+    const catLabel = filterInfo ? filterInfo.label : svc.title;
+    const driveWorks = urls.map((url, idx) => ({
+      cat: svc.key,
+      catLabel: catLabel,
+      title: `${svc.title} ${idx + 1}`,
+      loc: "",
+      year: "",
+      lens: "",
+      orientation: "portrait",
+      img: url,
+      story: ""
+    }));
+    galeriWorks = galeriWorks.filter(w => w.cat !== svc.key).concat(driveWorks);
+
+    changed = true;
+  }
+  if(changed){
+    renderGallery();
+    renderServiceCards();
+  }
+}
 applyDriveGalleries();
 
-/* ---- Toggle galeri ----
-   Dipasang via event delegation di #servicesList (bukan per-tombol),
-   supaya tetap berfungsi walau sebuah kartu layanan diganti ulang oleh
-   applyDriveGalleries() setelah foto dari Google Drive selesai dimuat. */
-document.getElementById("servicesList").addEventListener("click",(e)=>{
-  const btn = e.target.closest(".service-toggle");
-  if(!btn) return;
-  const parent = btn.closest(".service");
-  const isOpen = parent.getAttribute("data-open") === "true";
-  parent.setAttribute("data-open", isOpen ? "false" : "true");
-  btn.querySelector(".toggle-label").textContent = isOpen ? "Lihat Galeri" : "Tutup Galeri";
+/* ---- Lightbox Galeri: menampilkan foto utuh saja ---- */
+const lightbox2 = document.getElementById("lightbox2");
+const lightbox2Img = document.getElementById("lightbox2Img");
+
+function openWorkLightbox(card){
+  const rawImg = card.getAttribute("data-img");
+  const dims = rawImg.match(/\/(\d+)\/(\d+)$/);
+  lightbox2Img.src = dims
+    ? rawImg.replace(/\/(\d+)\/(\d+)$/, `/1400/${Math.round(1400 * (+dims[2] / +dims[1]))}`)
+    : rawImg;
+  lightbox2Img.alt = card.getAttribute("data-title");
+
+  lightbox2.classList.add("open");
+  document.body.classList.add("locked");
+}
+function closeLightbox2(){
+  lightbox2.classList.remove("open");
+  if(!catModal.classList.contains("open")) document.body.classList.remove("locked");
+}
+document.getElementById("lightbox2Close").addEventListener("click", closeLightbox2);
+lightbox2.addEventListener("click", (e)=>{ if(e.target === lightbox2) closeLightbox2(); });
+
+/* ---- Modal Galeri Kategori: grid foto per kategori (dibuka dari kartu kategori) ---- */
+const catModal = document.getElementById("catModal");
+const catModalEyebrow = document.getElementById("catModalEyebrow");
+const catModalTitle = document.getElementById("catModalTitle");
+const catModalGrid = document.getElementById("catModalGrid");
+
+function openCatModal(catKey){
+  const filterInfo = galeriFilters.find(f => f.key === catKey);
+  const works = galeriWorksByCat(catKey);
+  const catCounter = {};
+
+  catModalEyebrow.textContent = `Galeri — ${works.length} Foto`;
+  catModalTitle.textContent = filterInfo ? filterInfo.label : "";
+
+  catModalGrid.innerHTML = works.map((w,i) => {
+    catCounter[w.cat] = (catCounter[w.cat] || 0) + 1;
+    const testid = `work-card-${w.cat}-${catCounter[w.cat]}`;
+    /* Foto yang datang dari folder Drive tidak punya lokasi/tahun manual —
+       jangan tampilkan tanda hubung kosong kalau keduanya tidak diisi. */
+    const metaLine = [w.loc, w.year].filter(Boolean).join(" &mdash; ");
+    return `
+    <button type="button" class="cat-photo-card" data-cat="${w.cat}"
+            data-title="${w.title}" data-cat-label="${w.catLabel}" data-loc="${w.loc}"
+            data-year="${w.year}" data-lens="${w.lens}" data-story="${w.story}" data-img="${w.img}"
+            aria-label="Lihat detail karya ${w.title}" data-testid="${testid}">
+      <span class="cat-photo-media">
+        ${buildImgHtml(w.img, `Foto ${w.catLabel} — ${w.title}`)}
+        <span class="cat-photo-cap">
+          <h4>${w.title}</h4>
+          ${metaLine ? `<span>${metaLine}</span>` : ""}
+        </span>
+      </span>
+    </button>`;
+  }).join("");
+
+  catModal.classList.add("open");
+  document.body.classList.add("locked");
+}
+function closeCatModal(){
+  catModal.classList.remove("open");
+  if(!lightbox2.classList.contains("open")) document.body.classList.remove("locked");
+}
+
+document.getElementById("galleryCatGrid").addEventListener("click",(e)=>{
+  const card = e.target.closest(".cat-card");
+  if(!card) return;
+  openCatModal(card.getAttribute("data-cat"));
 });
 
-/* ---- Lightbox ---- */
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-document.getElementById("servicesList").addEventListener("click",(e)=>{
-  const item = e.target.closest(".gallery-item");
-  if(!item) return;
-  const img = item.querySelector("img");
-  lightboxImg.src = img.src.replace("/700/900","/1400/1800");
-  lightboxImg.alt = img.alt;
-  lightbox.classList.add("open");
+catModalGrid.addEventListener("click",(e)=>{
+  const card = e.target.closest(".cat-photo-card");
+  if(!card) return;
+  openWorkLightbox(card);
 });
-function closeLightbox(){ lightbox.classList.remove("open"); }
-document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-lightbox.addEventListener("click", (e)=>{ if(e.target === lightbox) closeLightbox(); });
 
-document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeLightbox(); });
+document.getElementById("catModalClose").addEventListener("click", closeCatModal);
+catModal.addEventListener("click", (e)=>{ if(e.target === catModal) closeCatModal(); });
+
+document.addEventListener("keydown", (e)=>{
+  if(e.key !== "Escape") return;
+  if(lightbox2.classList.contains("open")) closeLightbox2();
+  else if(catModal.classList.contains("open")) closeCatModal();
+});
 
 /* ---- Splash: particle motes ---- */
 const particleWrap = document.getElementById("particles");
@@ -1980,6 +3510,128 @@ const header = document.getElementById("siteHeader");
 window.addEventListener("scroll", ()=>{
   header.classList.toggle("scrolled", window.scrollY > 40);
 });
+
+/* ---- Hero: parallax + zoom pada foto, dan fade konten saat discroll ----
+   Foto hero bergeser lebih lambat dari kontennya (parallax) sekaligus
+   membesar (zoom) untuk kesan kedalaman seperti kamera dolly. Seluruh
+   konten hero (teks, tombol, chip) memudar begitu discroll melewatinya. */
+const heroSection = document.querySelector(".hero");
+const heroMediaEl = document.querySelector(".hero-media");
+const heroContentEl = document.querySelector(".hero-content");
+let heroFxTicking = false;
+function updateHeroScrollFX(){
+  heroFxTicking = false;
+  if(!heroSection || !heroMediaEl) return;
+  const heroHeight = heroSection.offsetHeight || 1;
+  const scrollY = window.scrollY;
+  const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1);
+  const scale = 1 + progress * 0.22;
+  const imgOpacity = 1 - progress * 0.75;
+  const parallaxY = scrollY * 0.18; // foto bergerak lebih lambat dari scroll halaman
+  heroMediaEl.style.transform = `scale(${scale}) translateY(${parallaxY}px)`;
+  heroMediaEl.style.opacity = imgOpacity;
+  if(heroContentEl){
+    heroContentEl.style.opacity = Math.max(1 - progress * 1.4, 0);
+    heroContentEl.style.transform = `translateY(${progress * -26}px)`;
+  }
+}
+window.addEventListener("scroll", ()=>{
+  if(!heroFxTicking){
+    heroFxTicking = true;
+    requestAnimationFrame(updateHeroScrollFX);
+  }
+}, { passive:true });
+updateHeroScrollFX();
+
+/* ---- Manifesto: potret studio bergerak parallax di dalam bingkai
+   terpotongnya sendiri, mengikuti posisi scroll relatif terhadap
+   seluruh section (bukan seluruh halaman) sehingga gambar bergeser
+   perlahan selama pembaca melewati ketiga bab di kolom kanan. */
+const manifestoSection = document.querySelector("#manifesto");
+const manifestoPortraitImg = document.querySelector("#manifestoPortraitImg");
+let manifestoFxTicking = false;
+function updateManifestoParallax(){
+  manifestoFxTicking = false;
+  if(!manifestoSection || !manifestoPortraitImg) return;
+  const rect = manifestoSection.getBoundingClientRect();
+  const vh = window.innerHeight || 1;
+  const total = rect.height + vh;
+  const progress = Math.min(Math.max((vh - rect.top) / total, 0), 1);
+  const shift = (progress - 0.5) * 100; // px pergeseran vertikal di dalam klip
+  manifestoPortraitImg.style.transform = `translateY(calc(-50% + ${shift}px))`;
+}
+window.addEventListener("scroll", ()=>{
+  if(!manifestoFxTicking){
+    manifestoFxTicking = true;
+    requestAnimationFrame(updateManifestoParallax);
+  }
+}, { passive:true });
+updateManifestoParallax();
+
+/* ---- Hero: kartu "Karya Unggulan" miring 3D mengikuti kursor ----
+   Hanya aktif di layar lebar (>960px), sesuai tampilnya kartu ini.
+   Gerakan dihaluskan lewat simulasi pegas (mass-spring, semi-implicit
+   Euler) dengan stiffness 120 & damping 18, dijalankan per-frame lewat
+   requestAnimationFrame — bukan transisi CSS instan. */
+const heroFloatCard = document.querySelector(".hero-float-card");
+if(heroFloatCard && window.matchMedia("(min-width:961px)").matches){
+  const tiltSpring = { stiffness:120, damping:18, mass:1 };
+  let tiltTargetRX = 0, tiltTargetRY = 0, tiltTargetScale = 1;
+  let tiltCurRX = 0, tiltCurRY = 0, tiltCurScale = 1;
+  let tiltVelRX = 0, tiltVelRY = 0, tiltVelScale = 0;
+  let tiltRafId = null, tiltLastTime = null;
+
+  function springStep(current, target, velocity, dt){
+    const force = -tiltSpring.stiffness * (current - target) - tiltSpring.damping * velocity;
+    velocity += (force / tiltSpring.mass) * dt;
+    current += velocity * dt;
+    return [current, velocity];
+  }
+
+  function tiltTick(time){
+    if(tiltLastTime === null) tiltLastTime = time;
+    const dt = Math.min((time - tiltLastTime) / 1000, 0.032);
+    tiltLastTime = time;
+
+    [tiltCurRX, tiltVelRX] = springStep(tiltCurRX, tiltTargetRX, tiltVelRX, dt);
+    [tiltCurRY, tiltVelRY] = springStep(tiltCurRY, tiltTargetRY, tiltVelRY, dt);
+    [tiltCurScale, tiltVelScale] = springStep(tiltCurScale, tiltTargetScale, tiltVelScale, dt);
+
+    heroFloatCard.style.transform =
+      `perspective(900px) rotateX(${tiltCurRX}deg) rotateY(${tiltCurRY}deg) scale(${tiltCurScale})`;
+
+    const settled =
+      Math.abs(tiltCurRX - tiltTargetRX) < 0.01 && Math.abs(tiltVelRX) < 0.01 &&
+      Math.abs(tiltCurRY - tiltTargetRY) < 0.01 && Math.abs(tiltVelRY) < 0.01 &&
+      Math.abs(tiltCurScale - tiltTargetScale) < 0.001 && Math.abs(tiltVelScale) < 0.001;
+
+    if(settled){ tiltRafId = null; return; }
+    tiltRafId = requestAnimationFrame(tiltTick);
+  }
+
+  function ensureTiltLoop(){
+    if(tiltRafId === null){
+      tiltLastTime = null;
+      tiltRafId = requestAnimationFrame(tiltTick);
+    }
+  }
+
+  heroSection.addEventListener("mousemove", (e)=>{
+    const rect = heroFloatCard.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    const dx = (e.clientX - cx) / (rect.width/2);
+    const dy = (e.clientY - cy) / (rect.height/2);
+    tiltTargetRY = Math.max(Math.min(dx * 10, 10), -10);
+    tiltTargetRX = Math.max(Math.min(-dy * 10, 10), -10);
+    tiltTargetScale = 1.03;
+    ensureTiltLoop();
+  });
+  heroSection.addEventListener("mouseleave", ()=>{
+    tiltTargetRX = 0; tiltTargetRY = 0; tiltTargetScale = 1;
+    ensureTiltLoop();
+  });
+}
 
 /* ---- Mobile nav ---- */
 const hamburger = document.getElementById("hamburger");
@@ -2139,9 +3791,9 @@ function renderTestimoniList(list){
     wrap.innerHTML = '<div class="testimoni-empty">Belum ada testimoni yang ditampilkan. Jadilah yang pertama memberi penilaian!</div>';
     return;
   }
-  wrap.innerHTML = list.map(function(u){
+  wrap.innerHTML = list.map(function(u, idx){
     return "" +
-      '<div class="testimoni-card">' +
+      '<div class="testimoni-card" data-testid="testimoni-card-' + (idx + 1) + '">' +
         '<div class="testimoni-card-top">' +
           "<div>" +
             '<div class="testimoni-card-name">' + testimoniEscapeHtml(u.nama || "Klien") + "</div>" +
