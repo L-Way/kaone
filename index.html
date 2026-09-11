@@ -37,7 +37,7 @@
 <meta property="og:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
 <meta property="og:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta property="og:url" content="https://kaone.web.id/">
-<meta property="og:image" content="https://picsum.photos/seed/kaone-wedding-utama/1200/630">
+<meta property="og:image" content="">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
@@ -45,7 +45,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
 <meta name="twitter:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
-<meta name="twitter:image" content="https://picsum.photos/seed/kaone-wedding-utama/1200/630">
+<meta name="twitter:image" content="">
 
 <!-- Structured Data (schema.org) untuk Google -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -83,7 +83,7 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Kaone Studio",
-  "image": "https://picsum.photos/seed/kaone-wedding-utama/1200/630",
+  "image": "",
   "description": "Jasa fotografi Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak (Patuaekkon, Margondang, Mangayun/Aqiqah) di Padang Lawas Utara.",
   "telephone": "+6285117071704",
   "address": {
@@ -1800,11 +1800,16 @@
     background-size:16px;
   }
   .form-row select option{ background:var(--card); color:var(--foreground); }
+  .star-rating-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
   .star-rating{
     display:flex;
     flex-direction:row-reverse;
     justify-content:flex-end;
-    gap:6px;
+    gap:2px;
   }
   .star-rating input{
     position:absolute;
@@ -1813,21 +1818,60 @@
     height:0;
   }
   .star-rating label{
-    font-size:1.7rem;
+    position:relative;
+    display:inline-block;
+    font-size:1.9rem;
     line-height:1;
+    padding:4px;
     color:var(--muted-foreground);
     cursor:pointer;
-    transition:color .2s var(--ease), transform .2s var(--ease);
+    transform:scale(1);
+    transition:color .22s var(--ease), transform .28s cubic-bezier(.34,1.56,.64,1), filter .22s var(--ease);
   }
+  /* Efek "cascade" — makin jauh dari bintang yang di-hover, makin lambat & kecil responsnya */
   .star-rating input:checked ~ label,
-  .star-rating label:hover,
-  .star-rating label:hover ~ label{
+  .star-rating:hover label:hover,
+  .star-rating:hover label:hover ~ label{
     color:var(--primary);
+    filter:drop-shadow(0 0 6px rgba(198,161,91,.55));
+  }
+  .star-rating label:hover{
+    transform:scale(1.32) rotate(-6deg);
+    transition-delay:0s;
+  }
+  .star-rating:hover label:hover ~ label{
+    transform:scale(1.14);
+  }
+  .star-rating input:checked + label{
+    animation:starPop .42s cubic-bezier(.34,1.56,.64,1);
+  }
+  .star-rating input:checked ~ label{
+    animation:starPop .42s cubic-bezier(.34,1.56,.64,1) backwards;
+  }
+  @keyframes starPop{
+    0%{ transform:scale(1); }
+    45%{ transform:scale(1.4) rotate(-8deg); }
+    100%{ transform:scale(1); }
   }
   .star-rating input:focus-visible + label{
     outline:2px solid var(--primary);
     outline-offset:3px;
-    border-radius:4px;
+    border-radius:6px;
+  }
+  .star-rating-feedback{
+    min-height:1.2em;
+    font-family:'DM Sans', sans-serif;
+    font-size:.85rem;
+    font-weight:600;
+    letter-spacing:.02em;
+    color:var(--primary);
+    opacity:0;
+    transform:translateY(-4px);
+    transition:opacity .25s var(--ease), transform .25s var(--ease);
+  }
+  .star-rating-feedback.is-visible{
+    opacity:1;
+    transform:translateY(0);
   }
   .testimoni-form .btn-gold{
     align-self:flex-start;
@@ -2364,7 +2408,7 @@
   <!-- HERO -->
   <section class="hero" id="beranda">
     <div class="hero-media">
-      <img src="https://images.unsplash.com/photo-1731566971965-acfb1151fc34?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=1600&amp;auto=format" alt="Pasangan pengantin Kaone Studio" loading="eager">
+      <img src="" alt="Pasangan pengantin Kaone Studio" loading="eager">
     </div>
 
     <div class="container">
@@ -2428,7 +2472,7 @@
             <h2 class="manifesto-title reveal-up" style="--i:1" data-ck="manifesto.heading">Mengapa Kami <em>Ada</em></h2>
           </div>
           <div class="manifesto-portrait reveal-up" style="--i:2">
-            <img id="manifestoPortraitImg" src="https://images.unsplash.com/photo-1535579710123-3c0f261c474e?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=1000&amp;auto=format" alt="Potret dramatis studio Kaone" loading="lazy" decoding="async">
+            <img id="manifestoPortraitImg" src="" alt="Potret dramatis studio Kaone" loading="lazy" decoding="async">
           </div>
         </div>
       </div>
@@ -2546,17 +2590,20 @@
 
         <div class="form-row">
           <label id="t-bintang-label">Pilih Bintang<span class="req">*</span></label>
-          <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label" data-testid="testimoni-star-rating">
-            <input type="radio" id="star5" name="bintang" value="5" data-testid="testimoni-star-5">
-            <label for="star5" aria-label="5 bintang">★</label>
-            <input type="radio" id="star4" name="bintang" value="4" data-testid="testimoni-star-4">
-            <label for="star4" aria-label="4 bintang">★</label>
-            <input type="radio" id="star3" name="bintang" value="3" data-testid="testimoni-star-3">
-            <label for="star3" aria-label="3 bintang">★</label>
-            <input type="radio" id="star2" name="bintang" value="2" data-testid="testimoni-star-2">
-            <label for="star2" aria-label="2 bintang">★</label>
-            <input type="radio" id="star1" name="bintang" value="1" data-testid="testimoni-star-1">
-            <label for="star1" aria-label="1 bintang">★</label>
+          <div class="star-rating-wrap">
+            <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label" data-testid="testimoni-star-rating">
+              <input type="radio" id="star5" name="bintang" value="5" data-testid="testimoni-star-5">
+              <label for="star5" aria-label="5 bintang">★</label>
+              <input type="radio" id="star4" name="bintang" value="4" data-testid="testimoni-star-4">
+              <label for="star4" aria-label="4 bintang">★</label>
+              <input type="radio" id="star3" name="bintang" value="3" data-testid="testimoni-star-3">
+              <label for="star3" aria-label="3 bintang">★</label>
+              <input type="radio" id="star2" name="bintang" value="2" data-testid="testimoni-star-2">
+              <label for="star2" aria-label="2 bintang">★</label>
+              <input type="radio" id="star1" name="bintang" value="1" data-testid="testimoni-star-1">
+              <label for="star1" aria-label="1 bintang">★</label>
+            </div>
+            <div class="star-rating-feedback" id="t-bintang-feedback" aria-live="polite"></div>
           </div>
         </div>
 
@@ -2929,17 +2976,15 @@ async function fetchDriveFolderImages(folderId){
    ========================================================================= */
 const heroMedia = {
   driveFolder: "https://drive.google.com/drive/folders/1pdzMgXpSZM8S-Z6dtFLAETqZ286r8HDb?usp=sharing", // <- tempel link/ID folder Google Drive Hero di sini (dipakai 1 foto pertama saja)
-  fallback: [
-    "https://drive.google.com/thumbnail?id=1mMB-XCS1u-nY11hdMwLLD1j982BEB-Tl&sz=w1600"
-  ]
+  fallback: []
 };
 const featuredBadgeMedia = {
   driveFolder: "", // <- tempel link/ID folder Google Drive kartu "Karya Unggulan" di sini
-  fallback: "https://images.unsplash.com/photo-1650377509428-11e7fe8614a9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=600&auto=format"
+  fallback: ""
 };
 const manifestoMedia = {
   driveFolder: "https://drive.google.com/drive/folders/1cfTtk0YpMVAYugDTwBsbFZzMdETzy0AS?usp=sharing", // <- tempel link/ID folder Google Drive potret Manifesto di sini
-  fallback: "https://drive.google.com/thumbnail?id=1zOoV3K2OswNt5KBLuR_oNM0Y11QheWZr&sz=w1000"
+  fallback: ""
 };
 
 /* Ambil sampai "count" URL foto: dari folder Drive kalau diisi & berhasil
@@ -3003,128 +3048,72 @@ const services = [
     title: "Wedding",
     desc: "Dokumentasi hari pernikahan, dari persiapan hingga resepsi, dengan sudut pandang yang natural dan tenang.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Wedding.",
-    mainImage: "https://images.unsplash.com/photo-1542598688-76ad90c5b01e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1KZ68NrOnRBKYvchuA1cLuCPn7NX0KMph?usp=sharing", // <- tempel link/ID folder Google Drive Wedding di sini (otomatis dipakai juga untuk galeri kategori "Wedding")
-    gallery: [
-      "https://picsum.photos/seed/kaone-wedding-1/700/900",
-      "https://picsum.photos/seed/kaone-wedding-2/700/900",
-      "https://picsum.photos/seed/kaone-wedding-3/700/900",
-      "https://picsum.photos/seed/kaone-wedding-4/700/900",
-      "https://picsum.photos/seed/kaone-wedding-5/700/900",
-      "https://picsum.photos/seed/kaone-wedding-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "prewedding",
     title: "Prewedding",
     desc: "Sesi foto pranikah yang santai dan personal, di lokasi pilihan Anda maupun di dalam studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Prewedding.",
-    mainImage: "https://picsum.photos/seed/kaone-prewedding-utama/1200/720",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1LFC1YissOd4CBxYlwCEPgUj96H8bJhKJ?usp=sharing", // <- tempel link/ID folder Google Drive Prewedding di sini (otomatis dipakai juga untuk galeri kategori "Prewedding")
-    gallery: [
-      "https://picsum.photos/seed/kaone-prewedding-1/700/900",
-      "https://picsum.photos/seed/kaone-prewedding-2/700/900",
-      "https://picsum.photos/seed/kaone-prewedding-3/700/900",
-      "https://picsum.photos/seed/kaone-prewedding-4/700/900",
-      "https://picsum.photos/seed/kaone-prewedding-5/700/900",
-      "https://picsum.photos/seed/kaone-prewedding-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "patuaekkon",
     title: "Patuaekkon",
     desc: "Prosesi adat Batak yang sarat makna kekeluargaan — kami rekam setiap tahap dengan seksama dan penuh hormat.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Patuaekkon.",
-    mainImage: "https://images.unsplash.com/photo-1650377509454-1bbd8392e122?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1zUZ9oTsgIrL5i1FWtR--89ldnKYWV3i2?usp=sharing", // <- tempel link/ID folder Google Drive Patuaekkon di sini (otomatis dipakai juga untuk galeri kategori "Patuaekkon")
-    gallery: [
-      "https://picsum.photos/seed/kaone-patuaekkon-1/700/900",
-      "https://picsum.photos/seed/kaone-patuaekkon-2/700/900",
-      "https://picsum.photos/seed/kaone-patuaekkon-3/700/900",
-      "https://picsum.photos/seed/kaone-patuaekkon-4/700/900",
-      "https://picsum.photos/seed/kaone-patuaekkon-5/700/900",
-      "https://picsum.photos/seed/kaone-patuaekkon-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "margondang",
     title: "Margondang",
     desc: "Upacara adat dengan iringan gondang — momen tari dan doa keluarga besar yang layak diabadikan utuh.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Margondang.",
-    mainImage: "https://images.unsplash.com/photo-1735301709065-d0e8fc055baa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/11i5Y-K1Uujny6kd7s9gB0_bwDXq7fflc?usp=sharing", // <- tempel link/ID folder Google Drive Margondang di sini (otomatis dipakai juga untuk galeri kategori "Margondang")
-    gallery: [
-      "https://picsum.photos/seed/kaone-margondang-1/700/900",
-      "https://picsum.photos/seed/kaone-margondang-2/700/900",
-      "https://picsum.photos/seed/kaone-margondang-3/700/900",
-      "https://picsum.photos/seed/kaone-margondang-4/700/900",
-      "https://picsum.photos/seed/kaone-margondang-5/700/900",
-      "https://picsum.photos/seed/kaone-margondang-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "mangayun",
     title: "Mangayun / Aqiqah",
     desc: "Perayaan kelahiran buah hati — dari prosesi mangayun hingga aqiqah, penuh kehangatan keluarga.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Mangayun/Aqiqah.",
-    mainImage: "https://images.unsplash.com/photo-1662103619880-0dae9bf7ddb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHw0fHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1SUPfA4jORyEdeGaEKQjfKgf_ZjrvuT99?usp=sharing", // <- tempel link/ID folder Google Drive Mangayun di sini (otomatis dipakai juga untuk galeri kategori "Mangayun/Aqiqah")
-    gallery: [
-      "https://picsum.photos/seed/kaone-mangayun-1/700/900",
-      "https://picsum.photos/seed/kaone-mangayun-2/700/900",
-      "https://picsum.photos/seed/kaone-mangayun-3/700/900",
-      "https://picsum.photos/seed/kaone-mangayun-4/700/900",
-      "https://picsum.photos/seed/kaone-mangayun-5/700/900",
-      "https://picsum.photos/seed/kaone-mangayun-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "graduation",
     title: "Graduation",
     desc: "Merayakan pencapaian akademik dengan sesi foto yang rapi, di kampus maupun studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Graduation.",
-    mainImage: "https://images.unsplash.com/photo-1624727828618-ee42ef2ec5cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1k8uVn_gjHkqnYikum1Fe4VNzrqz_QNEP?usp=sharing", // <- tempel link/ID folder Google Drive Graduation di sini (otomatis dipakai juga untuk galeri kategori "Graduation")
-    gallery: [
-      "https://picsum.photos/seed/kaone-graduation-1/700/900",
-      "https://picsum.photos/seed/kaone-graduation-2/700/900",
-      "https://picsum.photos/seed/kaone-graduation-3/700/900",
-      "https://picsum.photos/seed/kaone-graduation-4/700/900",
-      "https://picsum.photos/seed/kaone-graduation-5/700/900",
-      "https://picsum.photos/seed/kaone-graduation-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "selfphoto",
     title: "Selfphoto",
     desc: "Sesi foto studio santai untuk diri sendiri, teman, atau keluarga — cocok untuk konten pribadi maupun kado spesial.",
     waText: "Halo Kaone Studio, saya ingin booking jasa Selfphoto.",
-    mainImage: "https://drive.google.com/thumbnail?id=1ZT3MuGmnaLnmBfAGa9tCYoKNXB4B8EfQ&sz=w1600",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1qO4dFKwydJ9clrvbRrcGJJdR2Yx0Sl7s?usp=sharing", // <- tempel link/ID folder Google Drive Selfphoto di sini (kalau diisi, ini akan menggantikan mainImage manual di atas, dan otomatis dipakai juga untuk galeri kategori "Selfphoto")
-    gallery: [
-      "https://picsum.photos/seed/kaone-selfphoto-1/700/900",
-      "https://picsum.photos/seed/kaone-selfphoto-2/700/900",
-      "https://picsum.photos/seed/kaone-selfphoto-3/700/900",
-      "https://picsum.photos/seed/kaone-selfphoto-4/700/900",
-      "https://picsum.photos/seed/kaone-selfphoto-5/700/900",
-      "https://picsum.photos/seed/kaone-selfphoto-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "rental-gaun",
     title: "Rental Gaun",
     desc: "Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.",
     waText: "Halo Kaone Studio, saya ingin sewa Rental Gaun.",
-    mainImage: "https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+    mainImage: "",
     driveFolder: "https://drive.google.com/drive/folders/1mXWvrjUdBRl8G8cF-K28zQrQlgEeXoDl?usp=sharing", // <- tempel link/ID folder Google Drive Rental Gaun di sini (otomatis dipakai juga untuk galeri kategori "Rental Gaun")
-    gallery: [
-      "https://picsum.photos/seed/kaone-rentalgaun-1/700/900",
-      "https://picsum.photos/seed/kaone-rentalgaun-2/700/900",
-      "https://picsum.photos/seed/kaone-rentalgaun-3/700/900",
-      "https://picsum.photos/seed/kaone-rentalgaun-4/700/900",
-      "https://picsum.photos/seed/kaone-rentalgaun-5/700/900",
-      "https://picsum.photos/seed/kaone-rentalgaun-6/700/900"
-    ]
+    gallery: []
   },
   {
     key: "undangan-digital",
@@ -3185,31 +3174,31 @@ const catToServiceKey = {
 };
 
 let galeriWorks = [
-  { cat:"wedding", catLabel:"Wedding", title:"Janji Suci di Bawah Sorot", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.2", orientation:"landscape", img:"https://images.unsplash.com/photo-1542598688-76ad90c5b01e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Momen akad yang diabadikan dengan satu sorotan cahaya panggung — gelap di sekeliling, terang pada dua insan yang berjanji." },
-  { cat:"wedding", catLabel:"Wedding", title:"Buket & Janji", loc:"Tarutung, Tapanuli", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1519741497674-611481863552?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Detail kecil yang menceritakan segalanya: buket di tangan pengantin, cincin di jari, dan cahaya senja yang jatuh perlahan." },
-  { cat:"wedding", catLabel:"Wedding", title:"Dalam Dekapan Selubung", loc:"Samosir, Danau Toba", year:"2024", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1519741196428-6a2175fa2557?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwyfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Di balik selubung pengantin, bisikan doa dan tawa kecil — keintiman yang hanya bisa ditangkap dengan kesabaran." },
-  { cat:"wedding", catLabel:"Wedding", title:"Siluet Sang Kekasih", loc:"Berastagi, Karo", year:"2025", lens:"70-200mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1524194838522-6264794f485d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxicmlkZSUyMGdyb29tJTIwc2lsaG91ZXR0ZSUyMGJhY2tsaWdodCUyMGRyYW1hdGljfGVufDB8fHx8MTc4ODY3MDM5OXww&ixlib=rb-4.1.0&q=85", story:"Ciuman di kening, siluet melawan langit senja Toba — komposisi sinematik favorit para mempelai kami." },
+  { cat:"wedding", catLabel:"Wedding", title:"Janji Suci di Bawah Sorot", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.2", orientation:"landscape", img:"", story:"Momen akad yang diabadikan dengan satu sorotan cahaya panggung — gelap di sekeliling, terang pada dua insan yang berjanji." },
+  { cat:"wedding", catLabel:"Wedding", title:"Buket & Janji", loc:"Tarutung, Tapanuli", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"", story:"Detail kecil yang menceritakan segalanya: buket di tangan pengantin, cincin di jari, dan cahaya senja yang jatuh perlahan." },
+  { cat:"wedding", catLabel:"Wedding", title:"Dalam Dekapan Selubung", loc:"Samosir, Danau Toba", year:"2024", lens:"35mm f/1.4", orientation:"portrait", img:"", story:"Di balik selubung pengantin, bisikan doa dan tawa kecil — keintiman yang hanya bisa ditangkap dengan kesabaran." },
+  { cat:"wedding", catLabel:"Wedding", title:"Siluet Sang Kekasih", loc:"Berastagi, Karo", year:"2025", lens:"70-200mm f/2.8", orientation:"landscape", img:"", story:"Ciuman di kening, siluet melawan langit senja Toba — komposisi sinematik favorit para mempelai kami." },
 
-  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Patuaekkon: Restu Pariban", loc:"Balige, Toba", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"https://images.unsplash.com/photo-1650377509454-1bbd8392e122?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Prosesi patuaekkon — lamaran adat Batak Toba tempat dua keluarga bertemu, berunding, dan merestui. Setiap gestur kami jaga keasliannya." },
-  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Busana Adat & Ulos", loc:"Siantar, Simalungun", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1650377509488-724221735c19?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Keanggunan busana adat lengkap dengan ulos yang disematkan penuh makna — warisan yang layak diabadikan selamanya." },
-  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Ritual Mangokal Holi", loc:"Laguboti, Toba", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1623991614441-2b124385eb63?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwzfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85", story:"Detail ritual sakral yang diwariskan lintas generasi — kami memotretnya dengan hormat, tanpa mengganggu sakralnya prosesi." },
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Patuaekkon: Restu Pariban", loc:"Balige, Toba", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"", story:"Prosesi patuaekkon — lamaran adat Batak Toba tempat dua keluarga bertemu, berunding, dan merestui. Setiap gestur kami jaga keasliannya." },
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Busana Adat & Ulos", loc:"Siantar, Simalungun", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"", story:"Keanggunan busana adat lengkap dengan ulos yang disematkan penuh makna — warisan yang layak diabadikan selamanya." },
+  { cat:"patuaekkon", catLabel:"Patuaekkon", title:"Ritual Mangokal Holi", loc:"Laguboti, Toba", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"", story:"Detail ritual sakral yang diwariskan lintas generasi — kami memotretnya dengan hormat, tanpa mengganggu sakralnya prosesi." },
 
-  { cat:"margondang", catLabel:"Margondang", title:"Margondang Pesta Adat", loc:"Muara, Tapanuli Utara", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1735301709065-d0e8fc055baa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Kemeriahan margondang — barisan penari dengan pakaian adat penuh warna, diiringi gondang yang menggetarkan tanah." },
-  { cat:"margondang", catLabel:"Margondang", title:"Penari Tortor", loc:"Tomok, Samosir", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1554785007-399e80f5cb72?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHw0fHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Gerakan tortor yang sarat doa — setiap ayunan tangan adalah bahasa syukur yang kami bekukan dalam bingkai." },
+  { cat:"margondang", catLabel:"Margondang", title:"Margondang Pesta Adat", loc:"Muara, Tapanuli Utara", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"", story:"Kemeriahan margondang — barisan penari dengan pakaian adat penuh warna, diiringi gondang yang menggetarkan tanah." },
+  { cat:"margondang", catLabel:"Margondang", title:"Penari Tortor", loc:"Tomok, Samosir", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"", story:"Gerakan tortor yang sarat doa — setiap ayunan tangan adalah bahasa syukur yang kami bekukan dalam bingkai." },
 
-  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Mangayun: Sambut Buah Hati", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1662103619880-0dae9bf7ddb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHw0fHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Sukacita keluarga menyambut anggota baru — mangayun penuh doa, tawa nenek, dan pelukan pertama yang tak terlupakan." },
-  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Aqiqah Keluarga Sitorus", loc:"Pematang Siantar", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1622996061359-0da030a44e6b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHwzfHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Gendongan ayah, senyum ibu, dan doa yang mengalir — aqiqah yang hangat dan penuh kekeluargaan." },
+  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Mangayun: Sambut Buah Hati", loc:"Medan, Sumatera Utara", year:"2025", lens:"50mm f/1.8", orientation:"landscape", img:"", story:"Sukacita keluarga menyambut anggota baru — mangayun penuh doa, tawa nenek, dan pelukan pertama yang tak terlupakan." },
+  { cat:"mangayun", catLabel:"Mangayun / Aqiqah", title:"Aqiqah Keluarga Sitorus", loc:"Pematang Siantar", year:"2025", lens:"35mm f/1.4", orientation:"portrait", img:"", story:"Gendongan ayah, senyum ibu, dan doa yang mengalir — aqiqah yang hangat dan penuh kekeluargaan." },
 
-  { cat:"graduation", catLabel:"Graduation", title:"Wisuda: Lempar Toga", loc:"USU, Medan", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"https://images.unsplash.com/photo-1624727828618-ee42ef2ec5cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Toga melayang, perjuangan empat tahun terbayar — momen euforia yang kami buru dengan kecepatan rana tinggi." },
-  { cat:"graduation", catLabel:"Graduation", title:"Senyum Sang Sarjana", loc:"Nommensen, Medan", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1618355776464-8666794d2520?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwyfHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Potret wisuda outdoor dengan cahaya alami keemasan — bangga, haru, dan siap menyongsong dunia." },
+  { cat:"graduation", catLabel:"Graduation", title:"Wisuda: Lempar Toga", loc:"USU, Medan", year:"2025", lens:"24-70mm f/2.8", orientation:"landscape", img:"", story:"Toga melayang, perjuangan empat tahun terbayar — momen euforia yang kami buru dengan kecepatan rana tinggi." },
+  { cat:"graduation", catLabel:"Graduation", title:"Senyum Sang Sarjana", loc:"Nommensen, Medan", year:"2024", lens:"85mm f/1.4", orientation:"portrait", img:"", story:"Potret wisuda outdoor dengan cahaya alami keemasan — bangga, haru, dan siap menyongsong dunia." },
 
-  { cat:"prewedding", catLabel:"Prewedding", title:"Sesi Pranikah di Tepi Sawah", loc:"Padang Lawas Utara", year:"2024", lens:"50mm f/1.8", orientation:"portrait", img:"https://picsum.photos/seed/kaone-galeri-prewedding-1/750/1000", story:"Sesi foto pranikah yang santai, memanfaatkan cahaya keemasan sore hari di tengah hamparan sawah." },
-  { cat:"prewedding", catLabel:"Prewedding", title:"Prewedding di Tepi Danau Toba", loc:"Samosir, Danau Toba", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"https://picsum.photos/seed/kaone-galeri-prewedding-2/1000/750", story:"Momen santai calon pengantin di tepi Danau Toba — menangkap tawa dan kedekatan sebelum hari besar tiba." },
-  { cat:"selfphoto", catLabel:"Selfphoto", title:"Potret Monokrom", loc:"Studio Kaone, Medan", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"https://images.unsplash.com/photo-1633381521050-26bb467d9d5a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHw0fHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Hitam-putih yang jujur — satu lampu, satu karakter, tak ada tempat bersembunyi. Sesi selfphoto paling personal kami." },
-  { cat:"selfphoto", catLabel:"Selfphoto", title:"Cahaya & Bayang", loc:"Studio Kaone, Medan", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"https://images.unsplash.com/photo-1606143412458-acc5f86de897?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwzfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Chiaroscuro ala lukisan klasik diterjemahkan ke dalam sesi foto pribadi — elegan, tenang, dan berwibawa." },
+  { cat:"prewedding", catLabel:"Prewedding", title:"Sesi Pranikah di Tepi Sawah", loc:"Padang Lawas Utara", year:"2024", lens:"50mm f/1.8", orientation:"portrait", img:"", story:"Sesi foto pranikah yang santai, memanfaatkan cahaya keemasan sore hari di tengah hamparan sawah." },
+  { cat:"prewedding", catLabel:"Prewedding", title:"Prewedding di Tepi Danau Toba", loc:"Samosir, Danau Toba", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"", story:"Momen santai calon pengantin di tepi Danau Toba — menangkap tawa dan kedekatan sebelum hari besar tiba." },
+  { cat:"selfphoto", catLabel:"Selfphoto", title:"Potret Monokrom", loc:"Studio Kaone, Medan", year:"2025", lens:"85mm f/1.4", orientation:"portrait", img:"", story:"Hitam-putih yang jujur — satu lampu, satu karakter, tak ada tempat bersembunyi. Sesi selfphoto paling personal kami." },
+  { cat:"selfphoto", catLabel:"Selfphoto", title:"Cahaya & Bayang", loc:"Studio Kaone, Medan", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"", story:"Chiaroscuro ala lukisan klasik diterjemahkan ke dalam sesi foto pribadi — elegan, tenang, dan berwibawa." },
 
-  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Gaun Pengantin Eksklusif", loc:"Koleksi Kaone Studio", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Koleksi gaun rental premium kami — ekor panjang, renda halus, dan potongan yang membuat setiap pengantin menjadi ratu sehari." },
-  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Detail Gaun Pagi Hari", loc:"Koleksi Kaone Studio", year:"2024", lens:"100mm f/2.8 Macro", orientation:"portrait", img:"https://images.unsplash.com/photo-1594552072238-b8a33785b261?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Setiap gaun dirawat dan difoto detail sebelum disewakan — renda, payet, dan jatuhnya kain adalah janji kualitas kami." }
+  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Gaun Pengantin Eksklusif", loc:"Koleksi Kaone Studio", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"", story:"Koleksi gaun rental premium kami — ekor panjang, renda halus, dan potongan yang membuat setiap pengantin menjadi ratu sehari." },
+  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Detail Gaun Pagi Hari", loc:"Koleksi Kaone Studio", year:"2024", lens:"100mm f/2.8 Macro", orientation:"portrait", img:"", story:"Setiap gaun dirawat dan difoto detail sebelum disewakan — renda, payet, dan jatuhnya kain adalah janji kualitas kami." }
 ];
 
 /* ---- 3) Marquee strip (Pita Marquee Editorial) ----
@@ -3347,7 +3336,7 @@ function renderServiceCards(){
       title: "Rental Gaun Eksklusif",
       badge: "Koleksi Premium",
       desc: "Puluhan gaun pengantin dan kebaya adat pilihan — dirawat, difoto detail, dan siap dikenakan di hari istimewa Anda. Termasuk fitting dan penyesuaian ukuran.",
-      img: "https://images.unsplash.com/photo-1622277430358-f4d134452e2e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+      img: "",
       wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Rental Gaun Eksklusif.",
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 1 1 2 2"/><path d="M12 5v3"/><path d="M12 8l9 6a2 2 0 0 1-1 3.7H4A2 2 0 0 1 3 13.9z"/></svg>`
     },
@@ -3356,7 +3345,7 @@ function renderServiceCards(){
       title: "Undangan Digital Interaktif",
       badge: "Desain & Motion",
       desc: "Undangan web yang hidup: galeri foto, hitung mundur, musik, peta lokasi, dan RSVP tamu — semua dalam satu tautan yang mudah dibagikan ke seluruh undangan.",
-      img: "https://images.unsplash.com/photo-1625046584009-a6a8370c55f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwyfHxlbGVnYW50JTIwc3RhdGlvbmVyeSUyMGludml0YXRpb24lMjBnb2xkfGVufDB8fHx8MTc4ODY3MDQzNXww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
+      img: "",
       wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Undangan Digital Interaktif.",
       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10.5 17h3"/><path d="M10 8.5 14 11l-4 2.5z"/></svg>`
     }
@@ -4037,6 +4026,43 @@ function loadTestimoniList(){
 }
 loadTestimoniList();
 
+/* ---- Bintang testimoni: teks feedback dinamis saat hover / pilih ---- */
+const testimoniStarWrap = document.querySelector('[data-testid="testimoni-star-rating"]');
+const testimoniStarFeedback = document.getElementById("t-bintang-feedback");
+const TESTIMONI_STAR_TEKS = {
+  1: "Kurang puas",
+  2: "Cukup",
+  3: "Bagus",
+  4: "Sangat bagus",
+  5: "Luar biasa! ✨"
+};
+function testimoniShowStarFeedback(val){
+  if(!testimoniStarFeedback) return;
+  if(!val){
+    testimoniStarFeedback.textContent = "";
+    testimoniStarFeedback.classList.remove("is-visible");
+    return;
+  }
+  testimoniStarFeedback.textContent = TESTIMONI_STAR_TEKS[val] || "";
+  testimoniStarFeedback.classList.add("is-visible");
+}
+function testimoniCheckedStarValue(){
+  const checked = testimoniForm ? testimoniForm.querySelector('input[name="bintang"]:checked') : null;
+  return checked ? checked.value : "";
+}
+if(testimoniStarWrap){
+  testimoniStarWrap.querySelectorAll("label").forEach(function(lbl){
+    const input = document.getElementById(lbl.getAttribute("for"));
+    if(!input) return;
+    lbl.addEventListener("mouseenter", function(){ testimoniShowStarFeedback(input.value); });
+    lbl.addEventListener("focus", function(){ testimoniShowStarFeedback(input.value); }, true);
+    input.addEventListener("change", function(){ testimoniShowStarFeedback(input.value); });
+  });
+  testimoniStarWrap.addEventListener("mouseleave", function(){
+    testimoniShowStarFeedback(testimoniCheckedStarValue());
+  });
+}
+
 /* ---- Kolom "Lainnya" pada Jenis Boking: buka kolom isian manual ---- */
 const testimoniJenisSelect = document.getElementById("t-jenis");
 const testimoniJenisLainnyaWrap = document.getElementById("t-jenis-lainnya-wrap");
@@ -4133,6 +4159,7 @@ if(testimoniResetBtn){
   testimoniResetBtn.addEventListener("click", function(){
     testimoniForm.reset();
     testimoniSyncJenisLainnya();
+    testimoniShowStarFeedback("");
     document.getElementById("testimoniStatus").textContent = "";
     document.getElementById("testimoniSuccess").style.display = "none";
     testimoniForm.style.display = "flex";
