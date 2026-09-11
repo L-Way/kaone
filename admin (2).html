@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin — Kaone Studio</title>
+<meta name="robots" content="noindex, nofollow">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0C0E; --surface:#15161A; --surface-2:#0F1013; --surface-3:#1A1B20;
+    --border:rgba(255,255,255,.09); --border-strong:rgba(255,255,255,.16);
+    --gold:#D4AF37; --gold-light:#E8C863; --gold-dim:rgba(212,175,55,.14);
+    --text:#F3F2EE; --text-dim:#9B9CA3; --text-faint:#6B6C73;
+    --danger:#E08A7D; --danger-dim:rgba(224,138,125,.14); --ok:#83C29A;
+    --radius:12px; --radius-sm:8px;
+    --font-ui:'Inter', system-ui, -apple-system, sans-serif;
+    --font-display:'Fraunces', Georgia, serif;
+  }
+  *{ box-sizing:border-box; }
+  html{ -webkit-tap-highlight-color:transparent; }
+  body{
+    margin:0; background:var(--bg); color:var(--text); font-family:var(--font-ui);
+    min-height:100vh; -webkit-font-smoothing:antialiased; font-size:15px; line-height:1.5;
+  }
+  a{ color:var(--gold-light); }
+  h1,h2{ font-family:var(--font-display); font-weight:600; letter-spacing:.01em; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  ::selection{ background:var(--gold-dim); color:var(--gold-light); }
+  .hidden{ display:none !important; }
+
+  button, .btn{
+    cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:.88rem;
+    font-weight:600; padding:11px 18px; transition:background .15s ease, border-color .15s ease, color .15s ease, opacity .15s ease;
+    display:inline-flex; align-items:center; justify-content:center; gap:8px; white-space:nowrap;
+  }
+  .btn-gold{ background:var(--gold); color:#0B0C0E; }
+  .btn-gold:hover{ background:var(--gold-light); }
+  .btn-outline{ background:transparent; color:var(--text); border:1px solid var(--border-strong); }
+  .btn-outline:hover{ border-color:var(--gold); color:var(--gold-light); }
+  .btn-sm{ padding:8px 13px; font-size:.78rem; }
+  .btn-block{ width:100%; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
+  .icon{ width:16px; height:16px; flex-shrink:0; }
+  .icon-btn{ padding:9px; background:transparent; color:var(--text-dim); border:1px solid var(--border); border-radius:var(--radius-sm); }
+  .icon-btn:hover{ color:var(--gold-light); border-color:var(--gold); }
+
+  label{ display:block; font-size:.78rem; color:var(--text-dim); margin-bottom:6px; letter-spacing:.01em; }
+  .field{ margin-bottom:16px; }
+  input[type="email"], input[type="password"], input[type="text"], textarea{
+    width:100%; background:var(--surface-2); border:1px solid var(--border); color:var(--text);
+    border-radius:var(--radius-sm); padding:11px 13px; font-size:.9rem; font-family:inherit;
+  }
+  input:hover, textarea:hover{ border-color:var(--border-strong); }
+  input:focus, textarea:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
+  textarea{ resize:vertical; min-height:64px; line-height:1.55; }
+  .field-hint{ font-size:.75rem; color:var(--text-faint); margin:6px 0 0; line-height:1.5; }
+  .error-msg{ color:var(--danger); font-size:.83rem; min-height:1.2em; margin:2px 0 4px; }
+  .ok-msg{ color:var(--ok); font-size:.83rem; }
+
+  /* ===================== AUTH SCREEN ===================== */
+  .auth-screen{
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+    background:radial-gradient(120% 100% at 50% 0%, #17181c 0%, var(--bg) 60%);
+  }
+  .auth-card{
+    width:100%; max-width:380px; background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:36px 30px 30px;
+  }
+  .auth-mark{
+    width:40px; height:40px; border-radius:10px; background:var(--gold); color:#0B0C0E;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--font-display);
+    margin-bottom:18px;
+  }
+  .auth-card h1{ font-size:1.35rem; margin:0 0 2px; }
+  .auth-card h1 em{ font-style:italic; color:var(--gold-light); }
+  .auth-tag{ font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint); margin:0 0 16px; }
+  .auth-card p.sub{ color:var(--text-dim); font-size:.85rem; margin:0 0 24px; line-height:1.6; }
+
+  /* ===================== APP SHELL ===================== */
+  .shell{ display:flex; flex-direction:column; min-height:100vh; }
+  .sidebar{
+    display:flex; align-items:center; gap:16px; padding:14px 18px; background:var(--surface-3);
+    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:30;
+  }
+  .sidebar-brand{ display:flex; align-items:center; gap:10px; font-size:1.02rem; font-weight:600; font-family:var(--font-display); flex-shrink:0; }
+  .sidebar-brand em{ font-style:italic; color:var(--gold-light); }
+  .badge{
+    width:32px; height:32px; border-radius:9px; background:var(--gold); flex-shrink:0;
+    color:#0B0C0E; display:flex; align-items:center; justify-content:center; font-weight:700; font-family:var(--font-display);
+  }
+  .nav{ display:flex; gap:4px; overflow-x:auto; flex:1; scrollbar-width:none; }
+  .nav::-webkit-scrollbar{ display:none; }
+  .nav-btn{
+    background:none; border:1px solid transparent; color:var(--text-dim); padding:9px 14px;
+    font-size:.82rem; font-weight:600; border-radius:var(--radius-sm); white-space:nowrap;
+  }
+  .nav-btn:hover{ color:var(--text); }
+  .nav-btn.active{ color:var(--gold-light); background:var(--gold-dim); border-color:rgba(212,175,55,.28); }
+  .topbar-actions{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .user-pill{
+    font-size:.76rem; color:var(--text-dim); padding:7px 12px; border:1px solid var(--border);
+    border-radius:999px; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+
+  .main{ flex:1; width:100%; }
+  .content{ max-width:920px; margin:0 auto; padding:26px 18px 110px; }
+  .page-head{ margin-bottom:22px; }
+  .page-head h1{ font-size:1.3rem; margin:0 0 4px; }
+  .page-head p{ color:var(--text-dim); font-size:.86rem; margin:0; }
+
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; animation:fade-in .18s ease; }
+  @keyframes fade-in{ from{ opacity:0; transform:translateY(3px); } to{ opacity:1; transform:none; } }
+
+  .section-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px; margin-bottom:16px;
+  }
+  .section-card h2{ font-size:1.02rem; margin:0 0 4px; }
+  .section-card p.desc{ color:var(--text-dim); font-size:.83rem; margin:0 0 18px; line-height:1.5; }
+  .service-block{ border-top:1px solid var(--border); padding-top:16px; margin-top:16px; }
+  .service-block:first-of-type{ border-top:none; padding-top:0; margin-top:0; }
+  .service-block h3{ font-size:.86rem; color:var(--gold-light); margin:0 0 10px; font-weight:600; }
+
+  /* ---- Posisi foto ---- */
+  .device-switch{ display:inline-flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); padding:4px; border-radius:999px; margin-bottom:18px; }
+  .device-btn{
+    background:none; border:none; color:var(--text-dim); padding:7px 15px; font-size:.78rem;
+    font-weight:600; border-radius:999px;
+  }
+  .device-btn.active{ background:var(--gold); color:#0B0C0E; }
+  .device-btn:not(.active):hover{ color:var(--text); }
+  .pos-device-panel{ display:none; }
+  .pos-device-panel.active{ display:block; }
+  .pos-editor{ display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+  .pos-preview{
+    position:relative; border-radius:10px; overflow:hidden; flex-shrink:0;
+    border:1px solid var(--border); background:var(--surface-2);
+  }
+  .pos-preview img{ width:100%; height:100%; display:block; object-fit:cover; filter:grayscale(1) contrast(1.05) brightness(.9); }
+  .pos-preview--desktop{ width:260px; height:146px; }
+  .pos-preview--mobile{ width:118px; height:230px; }
+  .pos-preview-label{
+    position:absolute; top:8px; left:8px; font-size:.65rem; letter-spacing:.04em; font-weight:600;
+    color:var(--text); background:rgba(0,0,0,.55); padding:3px 8px; border-radius:999px;
+  }
+  .pos-controls{ flex:1; min-width:220px; }
+  .slider-row{ margin-bottom:16px; }
+  .slider-row label{ display:flex; justify-content:space-between; margin-bottom:8px; color:var(--text); font-size:.82rem; }
+  .slider-row label span{ color:var(--gold-light); font-variant-numeric:tabular-nums; }
+  input[type="range"]{
+    width:100%; accent-color:var(--gold); height:20px; background:transparent; cursor:pointer;
+  }
+
+  /* ---- Save bar & toast ---- */
+  .save-bar{
+    position:fixed; left:0; right:0; bottom:0; background:rgba(11,12,14,.9); backdrop-filter:blur(10px);
+    border-top:1px solid var(--border); padding:14px 20px; display:flex; justify-content:center;
+    gap:16px; align-items:center; z-index:40;
+  }
+  .save-status{ font-size:.82rem; color:var(--text-dim); min-width:170px; text-align:right; }
+  .save-status.dirty{ color:var(--gold-light); }
+  .toast{
+    position:fixed; top:18px; left:50%; transform:translateX(-50%) translateY(-8px); background:var(--surface);
+    border:1px solid var(--gold); color:var(--text); padding:11px 20px; border-radius:10px;
+    font-size:.85rem; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease; z-index:50;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ===================== DESKTOP LAYOUT ===================== */
+  @media (min-width:900px){
+    .shell{ flex-direction:row; }
+    .sidebar{
+      flex-direction:column; align-items:stretch; width:248px; flex-shrink:0; height:100vh;
+      border-bottom:none; border-right:1px solid var(--border); padding:20px 16px; gap:22px;
+    }
+    .sidebar-brand{ padding:0 6px; }
+    .nav{ flex-direction:column; overflow:visible; }
+    .nav-btn{ text-align:left; padding:10px 12px; }
+    .topbar-actions{ margin-top:auto; flex-direction:column; align-items:stretch; gap:10px; }
+    .user-pill{ max-width:none; text-align:center; }
+    .content{ padding:36px 40px 120px; }
+    .page-head h1{ font-size:1.5rem; }
+    .save-bar{ padding-right:264px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="loginScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-mark">K</div>
+    <h1>Kaone <em>Studio</em></h1>
+    <p class="auth-tag">Panel Admin</p>
+    <p class="sub">Masuk dengan akun admin untuk mengatur link Google Drive, posisi foto, dan teks website. Akun dibuat lewat dashboard Supabase (Authentication → Users), bukan lewat halaman ini.</p>
+    <div class="field">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" autocomplete="username" placeholder="admin@kaonestudio.com">
+    </div>
+    <div class="field">
+      <label for="loginPassword">Kata Sandi</label>
+      <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <p class="error-msg" id="loginError"></p>
+    <button class="btn btn-gold btn-block" id="loginBtn">Masuk</button>
+  </div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashboard" class="shell hidden">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="badge">K</span> Kaone <em>Studio</em></div>
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="drive">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="display:inline;vertical-align:-3px;margin-right:6px;"><path d="M10 13a4 4 0 0 0 5.66 0l2.34-2.34a4 4 0 0 0-5.66-5.66L11 6"/><path d="M14 11a4 4 0 0 0-5.66 0l-2.34 2.34a4 4 0 0 0 5.66 5.66L13 18"/></svg>Link Google Drive
+      </button>
+      <button class="nav-btn" data-tab="posisi">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:6px;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg>Posisi Foto
+      </button>
+      <button class="nav-btn" data-tab="teks">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:6px;"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Teks Website
+      </button>
+    </nav>
+    <div class="topbar-actions">
+      <span class="user-pill" id="userPill"></span>
+      <button class="btn btn-outline" id="logoutBtn">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>Keluar
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <!-- TAB: DRIVE LINKS -->
+      <div class="tab-panel active" id="tab-drive">
+        <div class="page-head">
+          <h1>Link Google Drive</h1>
+          <p>Sumber foto yang tampil di website diambil dari folder Google Drive di bawah ini.</p>
+        </div>
+        <div class="section-card">
+          <h2>Foto Utama</h2>
+          <p class="desc">Tempel link folder Google Drive (folder harus dibagikan "Siapa saja yang memiliki link"). Kosongkan untuk memakai foto contoh bawaan.</p>
+          <div class="field">
+            <label for="mediaHeroDrive">Foto Hero (header paling atas)</label>
+            <input type="text" id="mediaHeroDrive" data-media="hero.driveFolder" placeholder="https://drive.google.com/drive/folders/...">
+          </div>
+          <div class="field">
+            <label for="mediaBadgeDrive">Kartu "Karya Unggulan" (pojok kanan bawah hero)</label>
+            <input type="text" id="mediaBadgeDrive" data-media="featuredBadge.driveFolder" placeholder="https://drive.google.com/drive/folders/...">
+          </div>
+          <div class="field">
+            <label for="mediaManifestoDrive">Potret Manifesto ("Mengapa Kami Ada")</label>
+            <input type="text" id="mediaManifestoDrive" data-media="manifesto.driveFolder" placeholder="https://drive.google.com/drive/folders/...">
+          </div>
+        </div>
+        <div class="section-card">
+          <h2>Folder per Kategori Layanan</h2>
+          <p class="desc">Foto pertama dari tiap folder dipakai sebagai sampul, sisanya jadi galeri kategori tersebut di halaman utama.</p>
+          <div id="serviceDriveList"></div>
+        </div>
+      </div>
+
+      <!-- TAB: POSISI FOTO -->
+      <div class="tab-panel" id="tab-posisi">
+        <div class="page-head">
+          <h1>Posisi Foto</h1>
+          <p>Atur bagian foto mana yang jadi fokus. Posisi bisa diatur berbeda untuk tampilan Desktop dan HP, karena bentuk foto yang terpotong sering berbeda di kedua ukuran layar.</p>
+        </div>
+
+        <div class="section-card">
+          <h2>Posisi Foto Hero</h2>
+          <p class="desc">Geser untuk mengatur bagian foto mana yang jadi fokus (berguna kalau wajah/objek utama terpotong).</p>
+
+          <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto hero">
+            <button class="device-btn active" data-group="hero" data-device="desktop">Desktop</button>
+            <button class="device-btn" data-group="hero" data-device="mobile">HP</button>
+          </div>
+
+          <div class="pos-device-panel active" data-group-panel="hero" data-device-panel="desktop">
+            <div class="pos-editor">
+              <div class="pos-preview pos-preview--desktop">
+                <span class="pos-preview-label">Desktop</span>
+                <img id="heroPosPreviewDesktop" alt="Pratinjau posisi foto hero di tampilan desktop">
+              </div>
+              <div class="pos-controls">
+                <div class="slider-row"><label>Horizontal <span id="heroPosXDesktopVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="heroPosXDesktop"></div>
+                <div class="slider-row"><label>Vertikal <span id="heroPosYDesktopVal">22%</span></label>
+                  <input type="range" min="0" max="100" id="heroPosYDesktop"></div>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka di layar lebar (laptop/komputer).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pos-device-panel" data-group-panel="hero" data-device-panel="mobile">
+            <div class="pos-editor">
+              <div class="pos-preview pos-preview--mobile">
+                <span class="pos-preview-label">HP</span>
+                <img id="heroPosPreviewMobile" alt="Pratinjau posisi foto hero di tampilan HP">
+              </div>
+              <div class="pos-controls">
+                <div class="slider-row"><label>Horizontal <span id="heroPosXMobileVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="heroPosXMobile"></div>
+                <div class="slider-row"><label>Vertikal <span id="heroPosYMobileVal">22%</span></label>
+                  <input type="range" min="0" max="100" id="heroPosYMobile"></div>
+                <button class="btn btn-outline btn-sm" type="button" data-copy-from-desktop="hero">Samakan dengan Desktop</button>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka lewat HP. Bentuk foto di layar HP lebih sempit dan memanjang, jadi seringnya perlu digeser ulang.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h2>Posisi Foto Manifesto</h2>
+          <p class="desc">Mengatur fokus potret di section "Mengapa Kami Ada".</p>
+
+          <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto manifesto">
+            <button class="device-btn active" data-group="manifesto" data-device="desktop">Desktop</button>
+            <button class="device-btn" data-group="manifesto" data-device="mobile">HP</button>
+          </div>
+
+          <div class="pos-device-panel active" data-group-panel="manifesto" data-device-panel="desktop">
+            <div class="pos-editor">
+              <div class="pos-preview pos-preview--desktop">
+                <span class="pos-preview-label">Desktop</span>
+                <img id="manifestoPosPreviewDesktop" alt="Pratinjau posisi foto manifesto di tampilan desktop">
+              </div>
+              <div class="pos-controls">
+                <div class="slider-row"><label>Horizontal <span id="manifestoPosXDesktopVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="manifestoPosXDesktop"></div>
+                <div class="slider-row"><label>Vertikal <span id="manifestoPosYDesktopVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="manifestoPosYDesktop"></div>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka di layar lebar (laptop/komputer).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pos-device-panel" data-group-panel="manifesto" data-device-panel="mobile">
+            <div class="pos-editor">
+              <div class="pos-preview pos-preview--mobile">
+                <span class="pos-preview-label">HP</span>
+                <img id="manifestoPosPreviewMobile" alt="Pratinjau posisi foto manifesto di tampilan HP">
+              </div>
+              <div class="pos-controls">
+                <div class="slider-row"><label>Horizontal <span id="manifestoPosXMobileVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="manifestoPosXMobile"></div>
+                <div class="slider-row"><label>Vertikal <span id="manifestoPosYMobileVal">50%</span></label>
+                  <input type="range" min="0" max="100" id="manifestoPosYMobile"></div>
+                <button class="btn btn-outline btn-sm" type="button" data-copy-from-desktop="manifesto">Samakan dengan Desktop</button>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka lewat HP.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: TEKS -->
+      <div class="tab-panel" id="tab-teks">
+        <div class="page-head">
+          <h1>Teks Website</h1>
+          <p>Ubah kalimat dan judul yang tampil di setiap section halaman utama.</p>
+        </div>
+        <div id="textSections"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="save-bar">
+    <span class="save-status" id="saveStatus"></span>
+    <button class="btn btn-gold" id="saveBtn">Simpan Semua Perubahan</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   KONFIGURASI SUPABASE (proyek konten website)
+   ========================================================================= */
+const SUPABASE_URL = "https://ptaewptlwzdxcghdjdra.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0YWV3cHRsd3pkeGNnaGRqZHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzU5MzUsImV4cCI6MjEwNDY1MTkzNX0.tESXguqZ2J-4iLZ4LdbK4xSgjE6gBkKf_L8IUOYDDYY";
+const TABLE = "kaone_site_content";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* =========================================================================
+   NILAI BAWAAN — sama persis dengan teks/link di file HTML utama.
+   Dipakai untuk mengisi form kalau belum ada data tersimpan di Supabase,
+   atau kalau ada field baru yang belum pernah disimpan admin.
+
+   Catatan: posisi foto (media.hero.pos / media.manifesto.pos) sekarang
+   punya dua set nilai — "desktop" dan "mobile" — supaya bisa diatur
+   berbeda untuk tampilan komputer dan HP.
+   ========================================================================= */
+const DEFAULTS = {
+  media: {
+    hero: {
+      driveFolder: "https://drive.google.com/drive/folders/1pdzMgXpSZM8S-Z6dtFLAETqZ286r8HDb?usp=sharing",
+      pos: { desktop: { x: 50, y: 22 }, mobile: { x: 50, y: 22 } }
+    },
+    featuredBadge: { driveFolder: "" },
+    manifesto: {
+      driveFolder: "https://drive.google.com/drive/folders/1cfTtk0YpMVAYugDTwBsbFZzMdETzy0AS?usp=sharing",
+      pos: { desktop: { x: 50, y: 50 }, mobile: { x: 50, y: 50 } }
+    }
+  },
+  services: [
+    { key:"wedding", title:"Wedding", desc:"Dokumentasi hari pernikahan, dari persiapan hingga resepsi, dengan sudut pandang yang natural dan tenang.", waText:"Halo Kaone Studio, saya ingin booking jasa foto Wedding.", driveFolder:"https://drive.google.com/drive/folders/1KZ68NrOnRBKYvchuA1cLuCPn7NX0KMph?usp=sharing" },
+    { key:"prewedding", title:"Prewedding", desc:"", waText:"", driveFolder:"" },
+    { key:"patuaekkon", title:"Patuaekkon", desc:"", waText:"", driveFolder:"" },
+    { key:"margondang", title:"Margondang", desc:"", waText:"", driveFolder:"" },
+    { key:"mangayun", title:"Mangayun / Aqiqah", desc:"", waText:"", driveFolder:"" },
+    { key:"graduation", title:"Graduation", desc:"", waText:"", driveFolder:"" },
+    { key:"selfphoto", title:"Selfphoto", desc:"", waText:"", driveFolder:"https://drive.google.com/drive/folders/1qO4dFKwydJ9clrvbRrcGJJdR2Yx0Sl7s?usp=sharing" },
+    { key:"rental-gaun", title:"Rental Gaun", desc:"Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.", waText:"Halo Kaone Studio, saya ingin sewa Rental Gaun.", driveFolder:"https://drive.google.com/drive/folders/1mXWvrjUdBRl8G8cF-K28zQrQlgEeXoDl?usp=sharing" },
+    { key:"undangan-digital", title:"Undangan Digital", desc:"Undangan pernikahan digital yang elegan dan mudah dibagikan — lengkap dengan info acara, lokasi, RSVP, dan ucapan, tanpa perlu cetak.", waText:"Halo Kaone Studio, saya ingin booking jasa Undangan Digital.", driveFolder:"" }
+  ],
+  texts: {
+    "nav.brand": "Kaone <em>Studio</em>",
+    "nav.cta": "Hubungi Kami",
+    "hero.tagline": "Kaone Studio — Fotografi &amp; Adat",
+    "hero.h1.line1": "Mengabadikan",
+    "hero.h1.line2": "Setiap <span class=\"accent\">Jiwa</span> &amp;",
+    "hero.h1.line3": "<span class=\"accent\">Warisan</span> Adat.",
+    "hero.paragraph": "Dari sakralnya Patuaekkon dan gemuruh Margondang hingga resepsi pernikahan modern — kami memotret bukan sekadar gambar, melainkan pusaka keluarga Anda.",
+    "hero.cta1": "Jelajahi Karya",
+    "hero.cta2": "Konsultasi Gratis",
+    "hero.badge1.num": "500+", "hero.badge1.label": "Momen Sakral",
+    "hero.badge2.num": "8", "hero.badge2.label": "Kategori Karya",
+    "hero.badge3.num": "6 Th", "hero.badge3.label": "Berkarya",
+    "galeri.eyebrow": "01 — GALERI",
+    "galeri.heading": "Karya yang <em>Bercerita</em>",
+    "galeri.sub": "Delapan kategori, delapan cara bercerita. Pilih satu kategori, lalu jelajahi seluruh galerinya.",
+    "manifesto.eyebrow": "02 — MANIFESTO",
+    "manifesto.heading": "Mengapa Kami <em>Ada</em>",
+    "manifesto.chapter1.title": "Keaslian Ritual &amp; Adat",
+    "manifesto.chapter1.desc": "Kami lahir dan besar di tanah Batak. Kami tahu kapan gondang mulai ditabuh, kapan ulos disematkan, dan kapan mata seorang tulang berkaca-kaca. Pengetahuan itu membuat kami memotret dari dalam, bukan dari luar.",
+    "manifesto.chapter2.title": "Komposisi Sinematik &amp; Cahaya Dramatis",
+    "manifesto.chapter2.desc": "Setiap frame diperlakukan seperti adegan film: pencahayaan diarahkan, warna di-grading dengan palet kami sendiri, dan momen ditunggu — bukan dipaksa. Hasilnya adalah foto yang terasa seperti napas yang tertahan.",
+    "manifesto.chapter3.title": "Kenangan Abadi Lintas Generasi",
+    "manifesto.chapter3.desc": "Foto yang baik adalah pusaka. Kami menyerahkan karya dalam kualitas arsip tertinggi — agar cucu Anda kelak bisa melihat bagaimana kakek-neneknya menari tortor di hari bahagianya.",
+    "layanan.heading": "Lebih dari <em>Sekadar Lensa</em>",
+    "layanan.sub": "Satu atap untuk hari bahagia Anda: dokumentasi, busana, hingga undangan.",
+    "tentang.eyebrow": "Tentang Kami",
+    "tentang.heading": "Dibesarkan di antara adat, tumbuh lewat lensa.",
+    "tentang.p1": "Kaone Studio berangkat dari kecintaan pada upacara adat Batak dan keinginan untuk merekamnya dengan cara yang jujur — bukan sekadar dokumentasi, tapi arsip keluarga yang akan dibuka kembali bertahun-tahun kemudian.",
+    "tentang.p2": "Kami bekerja dengan tim kecil agar setiap keluarga mendapat perhatian penuh, dari gladi adat hingga foto terakhir selesai diedit.",
+    "tentang.value1.title": "Dekat dengan keluarga",
+    "tentang.value1.desc": "Kami mendengar rangkaian acara Anda dulu, baru menyusun sudut pengambilan gambar.",
+    "tentang.value2.title": "Paham rangkaian adat",
+    "tentang.value2.desc": "Dari Patuaekkon hingga Margondang, kami tahu momen mana yang tidak boleh terlewat.",
+    "tentang.value3.title": "Hasil rapi &amp; tepat waktu",
+    "tentang.value3.desc": "Galeri terpilih dan hasil edit kami serahkan sesuai jadwal yang disepakati bersama.",
+    "testimoni.heading": "Apa kata mereka?",
+    "testimoni.sub": "Sudah pernah menggunakan jasa Kaone Studio? Bagikan pengalaman Anda untuk membantu calon klien lain.",
+    "kontak.eyebrow": "04 — KONTAK",
+    "kontak.heading": "Mari Ciptakan <em>Mahakarya</em> Bersama",
+    "kontak.waCta": "Chat WhatsApp Sekarang",
+    "kontak.nomor": "+62 851-1707-1704",
+    "kontak.jam.title": "Jam Studio", "kontak.jam.desc": "Senin&ndash;Sabtu<br>09.00&ndash;18.00 WIB",
+    "kontak.wilayah.title": "Wilayah Layanan", "kontak.wilayah.desc": "Sumatera Utara<br>&amp; sekitarnya",
+    "kontak.reservasi.title": "Reservasi", "kontak.reservasi.desc": "Disarankan<br>H-30 sebelum acara",
+    "kontak.mapCaption": "Aek Haruaya, Portibi, Padang Lawas Utara",
+    "footer.copyright": "© <span id=\"year\"></span> Kaone Studio. Seluruh hak cipta dilindungi."
+  }
+};
+
+const SERVICE_LABELS = {
+  "wedding":"Wedding", "prewedding":"Prewedding", "patuaekkon":"Patuaekkon",
+  "margondang":"Margondang", "mangayun":"Mangayun / Aqiqah", "graduation":"Graduation",
+  "selfphoto":"Selfphoto", "rental-gaun":"Rental Gaun", "undangan-digital":"Undangan Digital (tanpa foto Drive)"
+};
+
+/* Field kecil (input) vs paragraf panjang (textarea), dikelompokkan per section
+   supaya tab "Teks Website" enak dibaca — sesuai section aslinya di halaman. */
+const TEXT_GROUPS = [
+  { title:"Navigasi", fields:[
+    ["nav.brand","Nama brand (header & footer)","text"],
+    ["nav.cta","Tombol \"Hubungi Kami\" di navigasi","text"]
+  ]},
+  { title:"Hero (bagian paling atas)", fields:[
+    ["hero.tagline","Tagline kecil di atas judul","text"],
+    ["hero.h1.line1","Judul baris 1","text"],
+    ["hero.h1.line2","Judul baris 2","text"],
+    ["hero.h1.line3","Judul baris 3","text"],
+    ["hero.paragraph","Paragraf pembuka","textarea"],
+    ["hero.cta1","Tombol \"Jelajahi Karya\"","text"],
+    ["hero.cta2","Tombol \"Konsultasi Gratis\"","text"],
+    ["hero.badge1.num","Angka lencana 1","text"], ["hero.badge1.label","Label lencana 1","text"],
+    ["hero.badge2.num","Angka lencana 2","text"], ["hero.badge2.label","Label lencana 2","text"],
+    ["hero.badge3.num","Angka lencana 3","text"], ["hero.badge3.label","Label lencana 3","text"]
+  ]},
+  { title:"Galeri", fields:[
+    ["galeri.eyebrow","Label kecil di atas judul","text"],
+    ["galeri.heading","Judul section","text"],
+    ["galeri.sub","Subjudul","textarea"]
+  ]},
+  { title:"Manifesto", fields:[
+    ["manifesto.eyebrow","Label kecil di atas judul","text"],
+    ["manifesto.heading","Judul section","text"],
+    ["manifesto.chapter1.title","Bab 1 — Judul","text"], ["manifesto.chapter1.desc","Bab 1 — Isi","textarea"],
+    ["manifesto.chapter2.title","Bab 2 — Judul","text"], ["manifesto.chapter2.desc","Bab 2 — Isi","textarea"],
+    ["manifesto.chapter3.title","Bab 3 — Judul","text"], ["manifesto.chapter3.desc","Bab 3 — Isi","textarea"]
+  ]},
+  { title:"Layanan", fields:[
+    ["layanan.heading","Judul section","text"],
+    ["layanan.sub","Subjudul","textarea"]
+  ]},
+  { title:"Tentang Kami", fields:[
+    ["tentang.eyebrow","Label kecil","text"],
+    ["tentang.heading","Judul section","text"],
+    ["tentang.p1","Paragraf 1","textarea"], ["tentang.p2","Paragraf 2","textarea"],
+    ["tentang.value1.title","Poin 1 — Judul","text"], ["tentang.value1.desc","Poin 1 — Isi","textarea"],
+    ["tentang.value2.title","Poin 2 — Judul","text"], ["tentang.value2.desc","Poin 2 — Isi","textarea"],
+    ["tentang.value3.title","Poin 3 — Judul","text"], ["tentang.value3.desc","Poin 3 — Isi","textarea"]
+  ]},
+  { title:"Testimoni", fields:[
+    ["testimoni.heading","Judul section","text"],
+    ["testimoni.sub","Subjudul","textarea"]
+  ]},
+  { title:"Kontak", fields:[
+    ["kontak.eyebrow","Label kecil","text"],
+    ["kontak.heading","Judul section","text"],
+    ["kontak.waCta","Teks tombol WhatsApp besar","text"],
+    ["kontak.nomor","Nomor yang ditampilkan (tombol salin)","text"],
+    ["kontak.jam.title","Jam Studio — Judul","text"], ["kontak.jam.desc","Jam Studio — Isi (boleh pakai <br>)","textarea"],
+    ["kontak.wilayah.title","Wilayah Layanan — Judul","text"], ["kontak.wilayah.desc","Wilayah Layanan — Isi","textarea"],
+    ["kontak.reservasi.title","Reservasi — Judul","text"], ["kontak.reservasi.desc","Reservasi — Isi","textarea"],
+    ["kontak.mapCaption","Keterangan di bawah peta","text"]
+  ]},
+  { title:"Footer", fields:[
+    ["footer.copyright","Baris hak cipta (boleh pakai <span id=\"year\"></span> untuk tahun otomatis)","text"]
+  ]}
+];
+
+let currentContent = null; // { texts, media, services }
+let isDirty = false;
+
+/* ===================== MERGE + MIGRASI DATA LAMA ===================== */
+/* Data lama (sebelum ada mode desktop/HP) menyimpan posX & posY langsung
+   di media.hero / media.manifesto. Fungsi ini memindahkan nilai lama itu
+   jadi nilai awal untuk desktop maupun HP, supaya tidak ada foto yang
+   tiba-tiba berubah posisi saat admin membuka panel versi baru ini. */
+function mergeMediaItem(defaultItem, savedItem){
+  const merged = Object.assign({}, defaultItem, savedItem || {});
+  const legacyX = savedItem ? savedItem.posX : undefined;
+  const legacyY = savedItem ? savedItem.posY : undefined;
+  const hasLegacy = legacyX !== undefined || legacyY !== undefined;
+  const savedPos = (savedItem && savedItem.pos) || {};
+  const legacyFallback = hasLegacy ? { x: legacyX, y: legacyY } : {};
+  merged.pos = {
+    desktop: Object.assign({}, defaultItem.pos.desktop, legacyFallback, savedPos.desktop || {}),
+    mobile: Object.assign({}, defaultItem.pos.mobile, legacyFallback, savedPos.mobile || {})
+  };
+  delete merged.posX;
+  delete merged.posY;
+  return merged;
+}
+
+function mergeContent(saved){
+  const merged = {
+    texts: Object.assign({}, DEFAULTS.texts, (saved && saved.texts) || {}),
+    media: {
+      hero: mergeMediaItem(DEFAULTS.media.hero, saved && saved.media && saved.media.hero),
+      featuredBadge: Object.assign({}, DEFAULTS.media.featuredBadge, (saved && saved.media && saved.media.featuredBadge) || {}),
+      manifesto: mergeMediaItem(DEFAULTS.media.manifesto, saved && saved.media && saved.media.manifesto)
+    },
+    services: DEFAULTS.services.map(function(def){
+      const savedSvc = (saved && Array.isArray(saved.services)) ? saved.services.find(function(s){ return s.key === def.key; }) : null;
+      return Object.assign({}, def, savedSvc || {});
+    })
+  };
+  return merged;
+}
+
+/* ===================== AUTH ===================== */
+const loginScreen = document.getElementById("loginScreen");
+const dashboard = document.getElementById("dashboard");
+const loginBtn = document.getElementById("loginBtn");
+const loginError = document.getElementById("loginError");
+
+async function checkSession(){
+  const { data } = await sb.auth.getSession();
+  if(data && data.session){
+    showDashboard(data.session);
+  } else {
+    loginScreen.classList.remove("hidden");
+    dashboard.classList.add("hidden");
+  }
+}
+
+loginBtn.addEventListener("click", async function(){
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  loginError.textContent = "";
+  if(!email || !password){ loginError.textContent = "Isi email dan kata sandi."; return; }
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Memeriksa...";
+  const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
+  loginBtn.disabled = false;
+  loginBtn.textContent = "Masuk";
+  if(error){
+    loginError.textContent = "Gagal masuk: email atau kata sandi salah.";
+    return;
+  }
+  showDashboard(data.session);
+});
+
+document.getElementById("loginPassword").addEventListener("keydown", function(e){
+  if(e.key === "Enter") loginBtn.click();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async function(){
+  if(isDirty && !confirm("Ada perubahan yang belum disimpan. Tetap keluar?")) return;
+  await sb.auth.signOut();
+  location.reload();
+});
+
+async function showDashboard(session){
+  loginScreen.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+  document.getElementById("userPill").textContent = session.user.email || "Admin";
+  await loadContent();
+}
+
+/* ===================== MUAT & ISI FORM ===================== */
+async function loadContent(){
+  setSaveStatus("Memuat data...");
+  let saved = null;
+  try{
+    const res = await sb.from(TABLE).select("content").eq("id", 1).maybeSingle();
+    if(res.error) throw res.error;
+    saved = res.data ? res.data.content : null;
+  }catch(err){
+    console.warn("Gagal memuat konten tersimpan, pakai bawaan.", err);
+  }
+  currentContent = mergeContent(saved);
+  buildServiceDriveFields();
+  buildTextFields();
+  fillMediaFields();
+  isDirty = false;
+  setSaveStatus("");
+}
+
+function buildServiceDriveFields(){
+  const wrap = document.getElementById("serviceDriveList");
+  wrap.innerHTML = "";
+  currentContent.services.forEach(function(svc){
+    const block = document.createElement("div");
+    block.className = "service-block";
+    const label = SERVICE_LABELS[svc.key] || svc.key;
+    const fieldId = "svc-drive-" + svc.key;
+    if(svc.key === "undangan-digital"){
+      block.innerHTML = '<h3>' + label + '</h3><p class="field-hint">Layanan ini tidak memakai galeri foto Drive.</p>';
+    } else {
+      block.innerHTML =
+        '<h3><label for="' + fieldId + '" style="display:inline;color:inherit;font:inherit;">' + label + '</label></h3>' +
+        '<input type="text" id="' + fieldId + '" data-service-drive="' + svc.key + '" placeholder="https://drive.google.com/drive/folders/...">';
+    }
+    wrap.appendChild(block);
+  });
+  currentContent.services.forEach(function(svc){
+    const el = wrap.querySelector('[data-service-drive="' + svc.key + '"]');
+    if(el) el.value = svc.driveFolder || "";
+  });
+}
+
+function buildTextFields(){
+  const wrap = document.getElementById("textSections");
+  wrap.innerHTML = "";
+  TEXT_GROUPS.forEach(function(group){
+    const card = document.createElement("div");
+    card.className = "section-card";
+    let html = "<h2>" + group.title + "</h2>";
+    group.fields.forEach(function(f){
+      const key = f[0], label = f[1], type = f[2];
+      const fieldId = "text-" + key.replace(/\./g, "-");
+      html += '<div class="field"><label for="' + fieldId + '">' + label + "</label>";
+      if(type === "textarea"){
+        html += '<textarea id="' + fieldId + '" data-text="' + key + '"></textarea>';
+      } else {
+        html += '<input type="text" id="' + fieldId + '" data-text="' + key + '">';
+      }
+      html += "</div>";
+    });
+    card.innerHTML = html;
+    wrap.appendChild(card);
+  });
+  Object.keys(currentContent.texts).forEach(function(key){
+    const el = wrap.querySelector('[data-text="' + key + '"]');
+    if(el) el.value = currentContent.texts[key];
+  });
+}
+
+function fillMediaFields(){
+  document.getElementById("mediaHeroDrive").value = currentContent.media.hero.driveFolder || "";
+  document.getElementById("mediaBadgeDrive").value = currentContent.media.featuredBadge.driveFolder || "";
+  document.getElementById("mediaManifestoDrive").value = currentContent.media.manifesto.driveFolder || "";
+
+  ["hero", "manifesto"].forEach(function(which){
+    ["desktop", "mobile"].forEach(function(device){
+      const ids = posIds(which, device);
+      document.getElementById(ids.x).value = currentContent.media[which].pos[device].x;
+      document.getElementById(ids.y).value = currentContent.media[which].pos[device].y;
+      updatePosPreview(which, device);
+    });
+  });
+  loadPreviewImages();
+}
+
+function driveFolderIdFromUrl(url){
+  if(!url) return null;
+  const m = url.match(/[-\w]{25,}/);
+  return m ? m[0] : null;
+}
+function driveThumb(url){
+  const id = driveFolderIdFromUrl(url);
+  return id ? ("https://drive.google.com/thumbnail?id=" + id + "&sz=w800") : "";
+}
+
+async function loadPreviewImages(){
+  // Pratinjau pakai foto contoh bawaan (fallback) supaya selalu tampil cepat,
+  // tanpa perlu memanggil Google Drive API dari panel admin.
+  const heroSrc = "https://drive.google.com/thumbnail?id=1mMB-XCS1u-nY11hdMwLLD1j982BEB-Tl&sz=w800";
+  const manifestoSrc = "https://drive.google.com/thumbnail?id=1zOoV3K2OswNt5KBLuR_oNM0Y11QheWZr&sz=w800";
+  document.getElementById("heroPosPreviewDesktop").src = heroSrc;
+  document.getElementById("heroPosPreviewMobile").src = heroSrc;
+  document.getElementById("manifestoPosPreviewDesktop").src = manifestoSrc;
+  document.getElementById("manifestoPosPreviewMobile").src = manifestoSrc;
+}
+
+/* ===================== POSISI FOTO (DESKTOP / HP) ===================== */
+function posIds(which, device){
+  const d = device.charAt(0).toUpperCase() + device.slice(1);
+  return {
+    x: which + "PosX" + d,
+    y: which + "PosY" + d,
+    xVal: which + "PosX" + d + "Val",
+    yVal: which + "PosY" + d + "Val",
+    preview: which + "PosPreview" + d
+  };
+}
+
+function updatePosPreview(which, device){
+  const ids = posIds(which, device);
+  const x = document.getElementById(ids.x).value;
+  const y = document.getElementById(ids.y).value;
+  document.getElementById(ids.xVal).textContent = x + "%";
+  document.getElementById(ids.yVal).textContent = y + "%";
+  document.getElementById(ids.preview).style.objectPosition = x + "% " + y + "%";
+}
+
+["hero", "manifesto"].forEach(function(which){
+  ["desktop", "mobile"].forEach(function(device){
+    const ids = posIds(which, device);
+    document.getElementById(ids.x).addEventListener("input", function(){ updatePosPreview(which, device); });
+    document.getElementById(ids.y).addEventListener("input", function(){ updatePosPreview(which, device); });
+  });
+});
+
+document.querySelectorAll("[data-copy-from-desktop]").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    const which = btn.dataset.copyFromDesktop;
+    const d = posIds(which, "desktop"), m = posIds(which, "mobile");
+    document.getElementById(m.x).value = document.getElementById(d.x).value;
+    document.getElementById(m.y).value = document.getElementById(d.y).value;
+    updatePosPreview(which, "mobile");
+    markDirty();
+    showToast("Posisi HP disamakan dengan Desktop");
+  });
+});
+
+/* Switch Desktop / HP di dalam kartu Posisi Foto */
+document.querySelectorAll(".device-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    const group = btn.dataset.group, device = btn.dataset.device;
+    document.querySelectorAll('.device-btn[data-group="' + group + '"]').forEach(function(b){
+      b.classList.toggle("active", b === btn);
+    });
+    document.querySelectorAll('.pos-device-panel[data-group-panel="' + group + '"]').forEach(function(p){
+      p.classList.toggle("active", p.dataset.devicePanel === device);
+    });
+  });
+});
+
+/* ===================== NAVIGASI TAB ===================== */
+const PAGE_INFO = {
+  drive: { title: "Link Google Drive", desc: "Sumber foto yang tampil di website diambil dari folder Google Drive di bawah ini." },
+  posisi: { title: "Posisi Foto", desc: "Atur bagian foto mana yang jadi fokus, terpisah untuk tampilan Desktop dan HP." },
+  teks: { title: "Teks Website", desc: "Ubah kalimat dan judul yang tampil di setiap section halaman utama." }
+};
+document.querySelectorAll(".nav-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".nav-btn").forEach(function(b){ b.classList.remove("active"); });
+    document.querySelectorAll(".tab-panel").forEach(function(p){ p.classList.remove("active"); });
+    btn.classList.add("active");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
+/* ===================== SIMPAN ===================== */
+function setSaveStatus(msg, isError){
+  const el = document.getElementById("saveStatus");
+  el.textContent = msg;
+  el.style.color = isError ? "var(--danger)" : "";
+  el.classList.toggle("dirty", !isError && isDirty);
+}
+
+function markDirty(){
+  if(isDirty) return;
+  isDirty = true;
+  setSaveStatus("Ada perubahan belum disimpan");
+}
+
+dashboard.addEventListener("input", function(e){
+  if(e.target.matches("input, textarea")) markDirty();
+});
+
+window.addEventListener("beforeunload", function(e){
+  if(isDirty){ e.preventDefault(); e.returnValue = ""; }
+});
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2400);
+}
+
+function collectFormIntoContent(){
+  const texts = {};
+  document.querySelectorAll("[data-text]").forEach(function(el){
+    texts[el.dataset.text] = el.value;
+  });
+  const services = currentContent.services.map(function(svc){
+    const driveEl = document.querySelector('[data-service-drive="' + svc.key + '"]');
+    return Object.assign({}, svc, driveEl ? { driveFolder: driveEl.value.trim() } : {});
+  });
+  function collectPos(which){
+    const d = posIds(which, "desktop"), m = posIds(which, "mobile");
+    return {
+      desktop: { x: Number(document.getElementById(d.x).value), y: Number(document.getElementById(d.y).value) },
+      mobile: { x: Number(document.getElementById(m.x).value), y: Number(document.getElementById(m.y).value) }
+    };
+  }
+  const media = {
+    hero: {
+      driveFolder: document.getElementById("mediaHeroDrive").value.trim(),
+      pos: collectPos("hero")
+    },
+    featuredBadge: {
+      driveFolder: document.getElementById("mediaBadgeDrive").value.trim()
+    },
+    manifesto: {
+      driveFolder: document.getElementById("mediaManifestoDrive").value.trim(),
+      pos: collectPos("manifesto")
+    }
+  };
+  return { texts: texts, media: media, services: services };
+}
+
+document.getElementById("saveBtn").addEventListener("click", async function(){
+  const btn = this;
+  btn.disabled = true;
+  setSaveStatus("Menyimpan...");
+  const content = collectFormIntoContent();
+  try{
+    const { error } = await sb.from(TABLE).upsert({ id: 1, content: content, updated_at: new Date().toISOString() });
+    if(error) throw error;
+    currentContent = content;
+    isDirty = false;
+    setSaveStatus("Tersimpan " + new Date().toLocaleTimeString("id-ID"));
+    showToast("Perubahan berhasil disimpan ✔");
+  }catch(err){
+    console.error(err);
+    setSaveStatus("Gagal menyimpan. Coba lagi.", true);
+    showToast("Gagal menyimpan perubahan");
+  }
+  btn.disabled = false;
+});
+
+checkSession();
+</script>
+</body>
+</html>
