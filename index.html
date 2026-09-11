@@ -49,6 +49,35 @@
 
 <!-- Structured Data (schema.org) untuk Google -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  /* =========================================================================
+     KONTEN DINAMIS DARI PANEL ADMIN (lihat admin.html)
+     -------------------------------------------------------------------------
+     Kredensial di bawah ini adalah project Supabase khusus untuk KONTEN
+     WEBSITE (teks, link folder Google Drive, posisi foto) — beda dari
+     project Supabase testimoni yang sudah ada sebelumnya. Aman dipakai di
+     sisi client karena hanya "anon key" (bukan service role), dan akses
+     tulis/baca diatur lewat Row Level Security di Supabase.
+     Mulai fetch konten SEDINI MUNGKIN (paralel dengan parsing halaman)
+     supaya begitu skrip utama di bawah siap merender, konten dari admin
+     (kalau ada) sudah datang atau segera menyusul. */
+  window.KAONE_ADMIN_SUPABASE_URL = "https://ptaewptlwzdxcghdjdra.supabase.co";
+  window.KAONE_ADMIN_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0YWV3cHRsd3pkeGNnaGRqZHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzU5MzUsImV4cCI6MjEwNDY1MTkzNX0.tESXguqZ2J-4iLZ4LdbK4xSgjE6gBkKf_L8IUOYDDYY";
+  window.KAONE_CONTENT_TABLE = "kaone_site_content";
+  window.__kaoneSiteConfigPromise = (async function(){
+    try{
+      if(!window.supabase || typeof window.supabase.createClient !== "function") return null;
+      var client = window.supabase.createClient(window.KAONE_ADMIN_SUPABASE_URL, window.KAONE_ADMIN_SUPABASE_ANON_KEY);
+      window.kaoneAdminClient = client;
+      var res = await client.from(window.KAONE_CONTENT_TABLE).select("content").eq("id", 1).maybeSingle();
+      if(res.error){ console.warn("Konten admin belum bisa dimuat:", res.error.message || res.error); return null; }
+      return (res.data && res.data.content) ? res.data.content : null;
+    }catch(err){
+      console.warn("Konten admin belum bisa dimuat:", err);
+      return null;
+    }
+  })();
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,6 +116,28 @@
 <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='6' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='7' fill='%23c6a15b'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='6' fill='%23c6a15b'/%3E%3Ccircle cx='71' cy='42' r='3' fill='%23c6a15b'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#0B0C0E">
+<style>
+  /* ===== Posisi foto: desktop vs HP =====
+     Diisi lewat panel admin (media.hero.pos.desktop / .mobile, begitu juga
+     manifesto). Mobile-first: secara default halaman memakai posisi "mobile",
+     lalu begitu lebar layar melewati breakpoint yang sama dengan breakpoint
+     tampilan desktop situs ini (760px), otomatis beralih ke posisi
+     "desktop" — murni lewat cascade CSS, tanpa listener resize di JS. */
+  :root{
+    --hero-pos-x:var(--hero-pos-x-mobile, center);
+    --hero-pos-y:var(--hero-pos-y-mobile, 22%);
+    --manifesto-pos-x:var(--manifesto-pos-x-mobile, center);
+    --manifesto-pos-y:var(--manifesto-pos-y-mobile, center);
+  }
+  @media (min-width:761px){
+    :root{
+      --hero-pos-x:var(--hero-pos-x-desktop, center);
+      --hero-pos-y:var(--hero-pos-y-desktop, 22%);
+      --manifesto-pos-x:var(--manifesto-pos-x-desktop, center);
+      --manifesto-pos-y:var(--manifesto-pos-y-desktop, center);
+    }
+  }
+</style>
 <style>
   /* ===== Font lokal (Fontsource, self-hosted) — tanpa CDN, tanpa gangguan muat ===== */
   /* Lora — suara editorial/emosional: judul besar, nama brand, nomor bab, marquee */
@@ -348,10 +399,18 @@
   /* ================= MAIN SITE ================= */
   #site{
     opacity:0;
-    transform:translateY(10px);
-    transition:opacity .9s var(--ease), transform .9s var(--ease);
+    transition:opacity .9s var(--ease);
+    /* CATATAN PENTING: sengaja TIDAK memakai "transform" di sini (dan di
+       #site.show). Elemen dengan "transform" apa pun (termasuk translateY(0))
+       otomatis menjadi containing block baru bagi semua keturunannya yang
+       "position:fixed" (menu mobile, scrim, lightbox foto, dsb — yang semuanya
+       berada di dalam #site). Akibatnya elemen fixed itu tidak lagi menempel ke
+       layar/viewport, tapi malah "terkunci" ke posisi #site di halaman —
+       persis bug yang membuat menu hamburger muncul terpotong/salah posisi
+       saat halaman sudah discroll ke bawah. Jangan tambahkan transform ke
+       #site lagi kecuali elemen fixed di dalamnya dipindah keluar dari #site. */
   }
-  #site.show{ opacity:1; transform:translateY(0); }
+  #site.show{ opacity:1; }
   body.locked{ overflow:hidden; height:100vh; }
 
   /* ---------- Header ---------- */
@@ -429,6 +488,24 @@
     align-items:center;
     gap:18px;
   }
+  .header-admin-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    color:var(--c-gray-3);
+    opacity:.65;
+    flex-shrink:0;
+    transition:opacity .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .header-admin-link svg{ width:15px; height:15px; }
+  .header-admin-link:hover, .header-admin-link:focus-visible{
+    opacity:1; color:var(--accent); border-color:var(--accent);
+  }
+  @media(max-width:640px){ .header-admin-link{ width:30px; height:30px; } .header-admin-link svg{ width:13px; height:13px; } }
   .btn-gold{
     position:relative;
     display:inline-flex;
@@ -513,7 +590,7 @@
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center 22%;
+    object-position:var(--hero-pos-x, center) var(--hero-pos-y, 22%);
     filter:grayscale(1) contrast(1.05) brightness(.9);
     transform-origin:center 30%;
     opacity:0;
@@ -1366,6 +1443,7 @@
     width:100%;
     height:132%;
     object-fit:cover;
+    object-position:var(--manifesto-pos-x, center) var(--manifesto-pos-y, center);
     transform:translateY(-50%);
     filter:grayscale(1) contrast(1.05) brightness(.9);
     will-change:transform;
@@ -1774,7 +1852,7 @@
   .testimoni-status.is-error{ color:var(--destructive); }
   .testimoni-status.is-ok{ color:var(--accent); }
 
-  /* ---------- Daftar testimoni (tampil dari Google Spreadsheet) ---------- */
+  /* ---------- Daftar testimoni (tampil dari Supabase) ---------- */
   .testimoni-list{
     display:flex;
     flex-direction:column;
@@ -2069,6 +2147,19 @@
     transition:color .35s var(--ease);
   }
   .footer-wa-number:hover, .footer-wa-number:focus-visible{ color:var(--accent); }
+  .footer-admin-link{
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    color:var(--c-gray-3);
+    opacity:.6;
+    transition:opacity .35s var(--ease), color .35s var(--ease);
+  }
+  .footer-admin-link:hover, .footer-admin-link:focus-visible{ opacity:1; color:var(--accent); }
 
   /* ---------- Floating WA ---------- */
   .float-wa{
@@ -2234,21 +2325,25 @@
   <header id="siteHeader">
     <a href="#beranda" class="logo" data-testid="header-logo-link">
       <span class="logo-badge">K</span>
-      <span>Kaone <em>Studio</em></span>
+      <span data-ck="nav.brand">Kaone <em>Studio</em></span>
     </a>
 
     <nav class="main-nav">
       <a href="#galeri" data-testid="nav-link-karya">Karya</a>
       <a href="#manifesto" data-testid="nav-link-manifesto">Manifesto</a>
       <a href="#layanan" data-testid="nav-link-layanan">Layanan</a>
+      <a href="#testimoni" data-testid="nav-link-testimoni">Testimoni</a>
       <a href="#kontak" data-testid="nav-link-kontak">Kontak</a>
     </nav>
 
     <div class="header-cta">
+      <a href="admin.html" class="header-admin-link" title="Login Admin" aria-label="Login Admin" data-testid="header-admin-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </a>
       <a class="btn-gold" target="_blank" rel="noopener" data-testid="nav-whatsapp-button"
          href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20bertanya%20tentang%20jasa%20foto.">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        <span class="btn-gold-label">Hubungi Kami</span>
+        <span class="btn-gold-label" data-ck="nav.cta">Hubungi Kami</span>
       </a>
       <button class="hamburger" id="hamburger" aria-label="Buka menu" data-testid="nav-menu-toggle">
         <span></span><span></span><span></span>
@@ -2274,44 +2369,33 @@
 
     <div class="container">
       <div class="hero-content">
-        <span class="hero-tagline">Kaone Studio — Fotografi &amp; Adat</span>
+        <span class="hero-tagline" data-ck="hero.tagline">Kaone Studio — Fotografi &amp; Adat</span>
         <h1>
-          <span class="line-mask"><span class="line-inner">Mengabadikan</span></span>
-          <span class="line-mask"><span class="line-inner">Setiap <span class="accent">Jiwa</span> &amp;</span></span>
-          <span class="line-mask"><span class="line-inner"><span class="accent">Warisan</span> Adat.</span></span>
+          <span class="line-mask"><span class="line-inner" data-ck="hero.h1.line1">Mengabadikan</span></span>
+          <span class="line-mask"><span class="line-inner" data-ck="hero.h1.line2">Setiap <span class="accent">Jiwa</span> &amp;</span></span>
+          <span class="line-mask"><span class="line-inner" data-ck="hero.h1.line3"><span class="accent">Warisan</span> Adat.</span></span>
         </h1>
-        <p>Dari sakralnya Patuaekkon dan gemuruh Margondang hingga resepsi pernikahan modern — kami memotret bukan sekadar gambar, melainkan pusaka keluarga Anda.</p>
+        <p data-ck="hero.paragraph">Dari sakralnya Patuaekkon dan gemuruh Margondang hingga resepsi pernikahan modern — kami memotret bukan sekadar gambar, melainkan pusaka keluarga Anda.</p>
         <div class="hero-actions">
           <a class="btn-gold" href="#galeri" data-testid="hero-explore-gallery-button">
-            <span>Jelajahi Karya</span>
+            <span data-ck="hero.cta1">Jelajahi Karya</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
           </a>
           <a class="btn-outline" target="_blank" rel="noopener" data-testid="hero-whatsapp-button"
              href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20konsultasi%20jadwal%20pemotretan.">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            <span>Konsultasi Gratis</span>
+            <span data-ck="hero.cta2">Konsultasi Gratis</span>
           </a>
         </div>
         <div class="hero-badges">
-          <span class="hero-badge" data-testid="hero-stat-momen-sakral"><strong>500+</strong> Momen Sakral</span>
-          <span class="hero-badge" data-testid="hero-stat-kategori-karya"><strong>8</strong> Kategori Karya</span>
-          <span class="hero-badge" data-testid="hero-stat-tahun-berkarya"><strong>6 Th</strong> Berkarya</span>
+          <span class="hero-badge" data-testid="hero-stat-momen-sakral"><strong data-ck="hero.badge1.num">500+</strong> <span data-ck="hero.badge1.label">Momen Sakral</span></span>
+          <span class="hero-badge" data-testid="hero-stat-kategori-karya"><strong data-ck="hero.badge2.num">8</strong> <span data-ck="hero.badge2.label">Kategori Karya</span></span>
+          <span class="hero-badge" data-testid="hero-stat-tahun-berkarya"><strong data-ck="hero.badge3.num">6 Th</strong> <span data-ck="hero.badge3.label">Berkarya</span></span>
         </div>
       </div>
     </div>
 
     <div class="scroll-indicator" aria-hidden="true"><span class="scroll-dot"></span></div>
-
-    <div class="hero-float-card" data-testid="hero-featured-work-card">
-      <img src="https://images.unsplash.com/photo-1650377509428-11e7fe8614a9?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=600&amp;auto=format" alt="Busana Adat &amp; Ulos" loading="lazy" decoding="async">
-      <div class="hero-float-card-body">
-        <div class="hero-float-card-tag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="14" r="3.4"/></svg>
-          <span>Karya Unggulan</span>
-        </div>
-        <div class="hero-float-card-title">Busana Adat &amp; Ulos — 2024</div>
-      </div>
-    </div>
   </section>
 
   <!-- MARQUEE STRIP -->
@@ -2324,10 +2408,10 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <span class="section-eyebrow-num reveal-up">01 — GALERI</span>
-          <h2 class="reveal-up" style="--i:1">Karya yang <em>Bercerita</em></h2>
+          <span class="section-eyebrow-num reveal-up" data-ck="galeri.eyebrow">01 — GALERI</span>
+          <h2 class="reveal-up" style="--i:1" data-ck="galeri.heading">Karya yang <em>Bercerita</em></h2>
         </div>
-        <p class="reveal-up" style="--i:2">Delapan kategori, delapan cara bercerita. Pilih satu kategori, lalu jelajahi seluruh galerinya.</p>
+        <p class="reveal-up" style="--i:2" data-ck="galeri.sub">Delapan kategori, delapan cara bercerita. Pilih satu kategori, lalu jelajahi seluruh galerinya.</p>
       </div>
 
       <div class="gallery-cat-grid" id="galleryCatGrid"></div>
@@ -2340,8 +2424,8 @@
       <div class="manifesto-sticky-col">
         <div class="manifesto-sticky-inner">
           <div>
-            <span class="section-eyebrow-num reveal-up">02 — MANIFESTO</span>
-            <h2 class="manifesto-title reveal-up" style="--i:1">Mengapa Kami <em>Ada</em></h2>
+            <span class="section-eyebrow-num reveal-up" data-ck="manifesto.eyebrow">02 — MANIFESTO</span>
+            <h2 class="manifesto-title reveal-up" style="--i:1" data-ck="manifesto.heading">Mengapa Kami <em>Ada</em></h2>
           </div>
           <div class="manifesto-portrait reveal-up" style="--i:2">
             <img id="manifestoPortraitImg" src="https://images.unsplash.com/photo-1535579710123-3c0f261c474e?crop=entropy&amp;cs=srgb&amp;fm=jpg&amp;ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&amp;ixlib=rb-4.1.0&amp;q=85&amp;w=1000&amp;auto=format" alt="Potret dramatis studio Kaone" loading="lazy" decoding="async">
@@ -2352,18 +2436,18 @@
       <div class="manifesto-chapters">
         <div class="manifesto-chapter reveal-up" style="--i:1">
           <span class="manifesto-chapter-num">01</span>
-          <h3>Keaslian Ritual &amp; Adat</h3>
-          <p>Kami lahir dan besar di tanah Batak. Kami tahu kapan gondang mulai ditabuh, kapan ulos disematkan, dan kapan mata seorang tulang berkaca-kaca. Pengetahuan itu membuat kami memotret dari dalam, bukan dari luar.</p>
+          <h3 data-ck="manifesto.chapter1.title">Keaslian Ritual &amp; Adat</h3>
+          <p data-ck="manifesto.chapter1.desc">Kami lahir dan besar di tanah Batak. Kami tahu kapan gondang mulai ditabuh, kapan ulos disematkan, dan kapan mata seorang tulang berkaca-kaca. Pengetahuan itu membuat kami memotret dari dalam, bukan dari luar.</p>
         </div>
         <div class="manifesto-chapter reveal-up" style="--i:2">
           <span class="manifesto-chapter-num">02</span>
-          <h3>Komposisi Sinematik &amp; Cahaya Dramatis</h3>
-          <p>Setiap frame diperlakukan seperti adegan film: pencahayaan diarahkan, warna di-grading dengan palet kami sendiri, dan momen ditunggu — bukan dipaksa. Hasilnya adalah foto yang terasa seperti napas yang tertahan.</p>
+          <h3 data-ck="manifesto.chapter2.title">Komposisi Sinematik &amp; Cahaya Dramatis</h3>
+          <p data-ck="manifesto.chapter2.desc">Setiap frame diperlakukan seperti adegan film: pencahayaan diarahkan, warna di-grading dengan palet kami sendiri, dan momen ditunggu — bukan dipaksa. Hasilnya adalah foto yang terasa seperti napas yang tertahan.</p>
         </div>
         <div class="manifesto-chapter reveal-up" style="--i:3">
           <span class="manifesto-chapter-num">03</span>
-          <h3>Kenangan Abadi Lintas Generasi</h3>
-          <p>Foto yang baik adalah pusaka. Kami menyerahkan karya dalam kualitas arsip tertinggi — agar cucu Anda kelak bisa melihat bagaimana kakek-neneknya menari tortor di hari bahagianya.</p>
+          <h3 data-ck="manifesto.chapter3.title">Kenangan Abadi Lintas Generasi</h3>
+          <p data-ck="manifesto.chapter3.desc">Foto yang baik adalah pusaka. Kami menyerahkan karya dalam kualitas arsip tertinggi — agar cucu Anda kelak bisa melihat bagaimana kakek-neneknya menari tortor di hari bahagianya.</p>
         </div>
       </div>
     </div>
@@ -2373,8 +2457,8 @@
   <section id="layanan" class="spotlight">
     <div class="container">
       <div class="section-head">
-        <h2>Lebih dari <em>Sekadar Lensa</em></h2>
-        <p>Satu atap untuk hari bahagia Anda: dokumentasi, busana, hingga undangan.</p>
+        <h2 data-ck="layanan.heading">Lebih dari <em>Sekadar Lensa</em></h2>
+        <p data-ck="layanan.sub">Satu atap untuk hari bahagia Anda: dokumentasi, busana, hingga undangan.</p>
       </div>
       <div class="svc-cards-grid" id="svcCardsGrid"></div>
     </div>
@@ -2384,31 +2468,31 @@
   <section id="tentang">
     <div class="container about-grid">
       <div class="about-copy">
-        <div class="hero-eyebrow-line"><i></i><span>Tentang Kami</span></div>
-        <h2 style="font-size:clamp(1.9rem,4vw,2.6rem); max-width:16ch;">Dibesarkan di antara adat, tumbuh lewat lensa.</h2>
-        <p>Kaone Studio berangkat dari kecintaan pada upacara adat Batak dan keinginan untuk merekamnya dengan cara yang jujur — bukan sekadar dokumentasi, tapi arsip keluarga yang akan dibuka kembali bertahun-tahun kemudian.</p>
-        <p>Kami bekerja dengan tim kecil agar setiap keluarga mendapat perhatian penuh, dari gladi adat hingga foto terakhir selesai diedit.</p>
+        <div class="hero-eyebrow-line"><i></i><span data-ck="tentang.eyebrow">Tentang Kami</span></div>
+        <h2 style="font-size:clamp(1.9rem,4vw,2.6rem); max-width:16ch;" data-ck="tentang.heading">Dibesarkan di antara adat, tumbuh lewat lensa.</h2>
+        <p data-ck="tentang.p1">Kaone Studio berangkat dari kecintaan pada upacara adat Batak dan keinginan untuk merekamnya dengan cara yang jujur — bukan sekadar dokumentasi, tapi arsip keluarga yang akan dibuka kembali bertahun-tahun kemudian.</p>
+        <p data-ck="tentang.p2">Kami bekerja dengan tim kecil agar setiap keluarga mendapat perhatian penuh, dari gladi adat hingga foto terakhir selesai diedit.</p>
       </div>
       <div class="values">
         <div class="value-row" data-testid="about-value-dekat-keluarga">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
           <div>
-            <h3>Dekat dengan keluarga</h3>
-            <p>Kami mendengar rangkaian acara Anda dulu, baru menyusun sudut pengambilan gambar.</p>
+            <h3 data-ck="tentang.value1.title">Dekat dengan keluarga</h3>
+            <p data-ck="tentang.value1.desc">Kami mendengar rangkaian acara Anda dulu, baru menyusun sudut pengambilan gambar.</p>
           </div>
         </div>
         <div class="value-row" data-testid="about-value-paham-adat">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           <div>
-            <h3>Paham rangkaian adat</h3>
-            <p>Dari Patuaekkon hingga Margondang, kami tahu momen mana yang tidak boleh terlewat.</p>
+            <h3 data-ck="tentang.value2.title">Paham rangkaian adat</h3>
+            <p data-ck="tentang.value2.desc">Dari Patuaekkon hingga Margondang, kami tahu momen mana yang tidak boleh terlewat.</p>
           </div>
         </div>
         <div class="value-row" data-testid="about-value-hasil-tepat-waktu">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M4 4h16v12H4z"/><path d="M8 20h8M12 16v4"/></svg>
           <div>
-            <h3>Hasil rapi &amp; tepat waktu</h3>
-            <p>Galeri terpilih dan hasil edit kami serahkan sesuai jadwal yang disepakati bersama.</p>
+            <h3 data-ck="tentang.value3.title">Hasil rapi &amp; tepat waktu</h3>
+            <p data-ck="tentang.value3.desc">Galeri terpilih dan hasil edit kami serahkan sesuai jadwal yang disepakati bersama.</p>
           </div>
         </div>
       </div>
@@ -2419,17 +2503,15 @@
   <section id="testimoni">
     <div class="container">
       <div class="section-head">
-        <h2>Apa kata mereka?</h2>
-        <p>Sudah pernah menggunakan jasa Kaone Studio? Bagikan pengalaman Anda untuk membantu calon klien lain.</p>
+        <h2 data-ck="testimoni.heading">Apa kata mereka?</h2>
+        <p data-ck="testimoni.sub">Sudah pernah menggunakan jasa Kaone Studio? Bagikan pengalaman Anda untuk membantu calon klien lain.</p>
       </div>
 
-      <!-- Daftar testimoni yang sudah disetujui tampil, digabung dari DUA sumber:
-           1) Supabase (tabel kaone_motret_ulasan) — testimoni yang di rekap job
-              dipublish dengan tujuan "Isi Biodata" otomatis ikut tampil di sini juga.
-           2) Google Spreadsheet (lewat Apps Script, cara lama yang sudah ada dan
-              TIDAK diubah sama sekali).
-           Cara MENGIRIM testimoni baru di halaman ini tetap ke Google Spreadsheet,
-           tidak berubah. Yang berubah hanya cara MENAMPILKANNYA. -->
+      <!-- Daftar testimoni yang sudah disetujui tampil diambil dari Supabase
+           (tabel kaone_motret_ulasan) — sama seperti testimoni yang di rekap
+           job dipublish dengan tujuan "Isi Biodata". Mengirim testimoni baru
+           dari form di bawah ini juga langsung INSERT ke tabel Supabase yang
+           sama. Tidak ada lagi ketergantungan pada Google Spreadsheet. -->
       <div id="testimoniListWrap" class="testimoni-list">
         <div class="testimoni-loading">Memuat testimoni…</div>
       </div>
@@ -2449,15 +2531,23 @@
             <option>Graduation</option>
             <option>Selfphoto</option>
             <option>Rental Gaun</option>
-            <option>Adat Batak (Patuaekkon/Margondang/Mangayun/Aqiqah)</option>
+            <option>Undangan Digital</option>
+            <option>Patuaekkon</option>
+            <option>Margondang</option>
+            <option>Mangayun/Aqiqah</option>
             <option>Lainnya</option>
           </select>
+        </div>
+
+        <div class="form-row" id="t-jenis-lainnya-wrap" style="display:none;">
+          <label for="t-jenis-lainnya">Sebutkan Jenis Booking<span class="req">*</span></label>
+          <input type="text" id="t-jenis-lainnya" name="jenis_lainnya" placeholder="Tulis jenis booking Anda..." data-testid="testimoni-input-jenis-lainnya">
         </div>
 
         <div class="form-row">
           <label id="t-bintang-label">Pilih Bintang<span class="req">*</span></label>
           <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label" data-testid="testimoni-star-rating">
-            <input type="radio" id="star5" name="bintang" value="5" required data-testid="testimoni-star-5">
+            <input type="radio" id="star5" name="bintang" value="5" data-testid="testimoni-star-5">
             <label for="star5" aria-label="5 bintang">★</label>
             <input type="radio" id="star4" name="bintang" value="4" data-testid="testimoni-star-4">
             <label for="star4" aria-label="4 bintang">★</label>
@@ -2498,33 +2588,33 @@
   <section id="kontak">
     <div class="kontak-glow" aria-hidden="true"></div>
     <div class="container kontak-inner">
-      <span class="section-eyebrow-num reveal-up">04 — KONTAK</span>
-      <h2 class="kontak-title reveal-up" style="--i:1">Mari Ciptakan <em>Mahakarya</em> Bersama</h2>
+      <span class="section-eyebrow-num reveal-up" data-ck="kontak.eyebrow">04 — KONTAK</span>
+      <h2 class="kontak-title reveal-up" style="--i:1" data-ck="kontak.heading">Mari Ciptakan <em>Mahakarya</em> Bersama</h2>
 
       <div class="kontak-actions reveal-up" style="--i:2">
         <a class="btn-wa-lg" target="_blank" rel="noopener" data-testid="contact-whatsapp-button"
            href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20booking%20jadwal%20foto.">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
-          <span>Chat WhatsApp Sekarang</span>
+          <span data-ck="kontak.waCta">Chat WhatsApp Sekarang</span>
         </a>
         <button type="button" class="btn-copy-number" id="copyNumberBtn" data-number="6285117071704" data-testid="contact-copy-number-button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
-          <span>+62 851-1707-1704</span>
+          <span data-ck="kontak.nomor">+62 851-1707-1704</span>
         </button>
       </div>
 
       <div class="kontak-info-grid reveal-up" style="--i:3">
         <div class="kontak-info-item">
-          <h4>Jam Studio</h4>
-          <p>Senin&ndash;Sabtu<br>09.00&ndash;18.00 WIB</p>
+          <h4 data-ck="kontak.jam.title">Jam Studio</h4>
+          <p data-ck="kontak.jam.desc">Senin&ndash;Sabtu<br>09.00&ndash;18.00 WIB</p>
         </div>
         <div class="kontak-info-item">
-          <h4>Wilayah Layanan</h4>
-          <p>Sumatera Utara<br>&amp; sekitarnya</p>
+          <h4 data-ck="kontak.wilayah.title">Wilayah Layanan</h4>
+          <p data-ck="kontak.wilayah.desc">Sumatera Utara<br>&amp; sekitarnya</p>
         </div>
         <div class="kontak-info-item">
-          <h4>Reservasi</h4>
-          <p>Disarankan<br>H-30 sebelum acara</p>
+          <h4 data-ck="kontak.reservasi.title">Reservasi</h4>
+          <p data-ck="kontak.reservasi.desc">Disarankan<br>H-30 sebelum acara</p>
         </div>
       </div>
 
@@ -2534,7 +2624,7 @@
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="Lokasi Kaone Studio"></iframe>
         <div class="kontak-map-caption">
-          <p>Aek Haruaya, Portibi, Padang Lawas Utara</p>
+          <p data-ck="kontak.mapCaption">Aek Haruaya, Portibi, Padang Lawas Utara</p>
           <a href="https://www.google.com/maps?q=1.4586592746408342,99.644089" target="_blank" rel="noopener" data-testid="contact-open-maps-link">Buka di Google Maps →</a>
         </div>
       </div>
@@ -2567,10 +2657,14 @@
       <div class="footer-simple">
         <a href="#beranda" class="logo" data-testid="footer-logo-link">
           <span class="logo-badge">K</span>
-          <span>Kaone <em>Studio</em></span>
+          <span data-ck="nav.brand">Kaone <em>Studio</em></span>
         </a>
-        <span class="footer-copyright">© <span id="year"></span> Kaone Studio. Seluruh hak cipta dilindungi.</span>
+        <span class="footer-copyright" data-ck="footer.copyright">© <span id="year"></span> Kaone Studio. Seluruh hak cipta dilindungi.</span>
         <a class="footer-wa-number" href="https://wa.me/6285117071704" target="_blank" rel="noopener" data-testid="footer-whatsapp-number">+62 851-1707-1704</a>
+        <a href="admin.html" class="footer-admin-link" title="Panel Admin" data-testid="footer-admin-link" aria-label="Panel Admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Admin</span>
+        </a>
       </div>
     </div>
   </footer>
@@ -2630,6 +2724,36 @@
   }
   requestAnimationFrame(raf);
   window.__lenis = lenis;
+})();
+</script>
+
+<!-- Animasi scroll halus saat tombol navigasi (header/menu mobile/tombol
+     lain yang mengarah ke "#id-section") diklik — bukan lompat instan,
+     tapi menggulir dengan easing yang sama seperti scroll Lenis di atas. -->
+<script>
+(function(){
+  var HEADER_OFFSET = 64; // tinggi header sticky, lihat CSS "header{height:64px}"
+
+  function smoothScrollToEl(target){
+    if(window.__lenis && typeof window.__lenis.scrollTo === "function"){
+      window.__lenis.scrollTo(target, { offset: -HEADER_OFFSET, duration: 1.25 });
+      return;
+    }
+    var top = target.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+    window.scrollTo({ top: top, behavior: "smooth" });
+  }
+
+  document.addEventListener("click", function(e){
+    var link = e.target.closest && e.target.closest('a[href^="#"]');
+    if(!link) return;
+    var hash = link.getAttribute("href");
+    if(!hash || hash.length < 2) return; // abaikan href="#" polos
+    var target = document.getElementById(hash.slice(1));
+    if(!target) return;
+    e.preventDefault();
+    smoothScrollToEl(target);
+    if(history.pushState) history.pushState(null, "", hash);
+  });
 })();
 </script>
 
@@ -2804,9 +2928,9 @@ async function fetchDriveFolderImages(folderId){
    & startCatCardSlideshows di bawah), bukan lagi di header.
    ========================================================================= */
 const heroMedia = {
-  driveFolder: "", // <- tempel link/ID folder Google Drive Hero di sini (dipakai 1 foto pertama saja)
+  driveFolder: "https://drive.google.com/drive/folders/1pdzMgXpSZM8S-Z6dtFLAETqZ286r8HDb?usp=sharing", // <- tempel link/ID folder Google Drive Hero di sini (dipakai 1 foto pertama saja)
   fallback: [
-    "https://images.unsplash.com/photo-1731566971965-acfb1151fc34?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1600&auto=format"
+    "https://drive.google.com/thumbnail?id=1mMB-XCS1u-nY11hdMwLLD1j982BEB-Tl&sz=w1600"
   ]
 };
 const featuredBadgeMedia = {
@@ -2814,8 +2938,8 @@ const featuredBadgeMedia = {
   fallback: "https://images.unsplash.com/photo-1650377509428-11e7fe8614a9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHw0fHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=600&auto=format"
 };
 const manifestoMedia = {
-  driveFolder: "", // <- tempel link/ID folder Google Drive potret Manifesto di sini
-  fallback: "https://images.unsplash.com/photo-1535579710123-3c0f261c474e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwyfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1000&auto=format"
+  driveFolder: "https://drive.google.com/drive/folders/1cfTtk0YpMVAYugDTwBsbFZzMdETzy0AS?usp=sharing", // <- tempel link/ID folder Google Drive potret Manifesto di sini
+  fallback: "https://drive.google.com/thumbnail?id=1zOoV3K2OswNt5KBLuR_oNM0Y11QheWZr&sz=w1000"
 };
 
 /* Ambil sampai "count" URL foto: dari folder Drive kalau diisi & berhasil
@@ -2880,7 +3004,7 @@ const services = [
     desc: "Dokumentasi hari pernikahan, dari persiapan hingga resepsi, dengan sudut pandang yang natural dan tenang.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Wedding.",
     mainImage: "https://images.unsplash.com/photo-1542598688-76ad90c5b01e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwY2VyZW1vbnklMjBjb3VwbGUlMjBkYXJrJTIwY2luZW1hdGljfGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Wedding di sini (otomatis dipakai juga untuk galeri kategori "Wedding")
+    driveFolder: "https://drive.google.com/drive/folders/1KZ68NrOnRBKYvchuA1cLuCPn7NX0KMph?usp=sharing", // <- tempel link/ID folder Google Drive Wedding di sini (otomatis dipakai juga untuk galeri kategori "Wedding")
     gallery: [
       "https://picsum.photos/seed/kaone-wedding-1/700/900",
       "https://picsum.photos/seed/kaone-wedding-2/700/900",
@@ -2896,7 +3020,7 @@ const services = [
     desc: "Sesi foto pranikah yang santai dan personal, di lokasi pilihan Anda maupun di dalam studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Prewedding.",
     mainImage: "https://picsum.photos/seed/kaone-prewedding-utama/1200/720",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Prewedding di sini (otomatis dipakai juga untuk galeri kategori "Prewedding")
+    driveFolder: "https://drive.google.com/drive/folders/1LFC1YissOd4CBxYlwCEPgUj96H8bJhKJ?usp=sharing", // <- tempel link/ID folder Google Drive Prewedding di sini (otomatis dipakai juga untuk galeri kategori "Prewedding")
     gallery: [
       "https://picsum.photos/seed/kaone-prewedding-1/700/900",
       "https://picsum.photos/seed/kaone-prewedding-2/700/900",
@@ -2912,7 +3036,7 @@ const services = [
     desc: "Prosesi adat Batak yang sarat makna kekeluargaan — kami rekam setiap tahap dengan seksama dan penuh hormat.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Patuaekkon.",
     mainImage: "https://images.unsplash.com/photo-1650377509454-1bbd8392e122?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwd2VkZGluZyUyMGJyaWRlJTIwdHJhZGl0aW9uYWx8ZW58MHx8fHwxNzg4NjcwMzkwfDA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Patuaekkon di sini (otomatis dipakai juga untuk galeri kategori "Patuaekkon")
+    driveFolder: "https://drive.google.com/drive/folders/1zUZ9oTsgIrL5i1FWtR--89ldnKYWV3i2?usp=sharing", // <- tempel link/ID folder Google Drive Patuaekkon di sini (otomatis dipakai juga untuk galeri kategori "Patuaekkon")
     gallery: [
       "https://picsum.photos/seed/kaone-patuaekkon-1/700/900",
       "https://picsum.photos/seed/kaone-patuaekkon-2/700/900",
@@ -2928,7 +3052,7 @@ const services = [
     desc: "Upacara adat dengan iringan gondang — momen tari dan doa keluarga besar yang layak diabadikan utuh.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Margondang.",
     mainImage: "https://images.unsplash.com/photo-1735301709065-d0e8fc055baa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHx0cmFkaXRpb25hbCUyMGRhbmNlJTIwaW5kb25lc2lhJTIwY3VsdHVyZXxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Margondang di sini (otomatis dipakai juga untuk galeri kategori "Margondang")
+    driveFolder: "https://drive.google.com/drive/folders/11i5Y-K1Uujny6kd7s9gB0_bwDXq7fflc?usp=sharing", // <- tempel link/ID folder Google Drive Margondang di sini (otomatis dipakai juga untuk galeri kategori "Margondang")
     gallery: [
       "https://picsum.photos/seed/kaone-margondang-1/700/900",
       "https://picsum.photos/seed/kaone-margondang-2/700/900",
@@ -2944,7 +3068,7 @@ const services = [
     desc: "Perayaan kelahiran buah hati — dari prosesi mangayun hingga aqiqah, penuh kehangatan keluarga.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Mangayun/Aqiqah.",
     mainImage: "https://images.unsplash.com/photo-1662103619880-0dae9bf7ddb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDV8MHwxfHNlYXJjaHw0fHxiYWJ5JTIwYXFpcWFoJTIwbmV3Ym9ybiUyMGZhbWlseSUyMGNlbGVicmF0aW9ufGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Mangayun di sini (otomatis dipakai juga untuk galeri kategori "Mangayun/Aqiqah")
+    driveFolder: "https://drive.google.com/drive/folders/1SUPfA4jORyEdeGaEKQjfKgf_ZjrvuT99?usp=sharing", // <- tempel link/ID folder Google Drive Mangayun di sini (otomatis dipakai juga untuk galeri kategori "Mangayun/Aqiqah")
     gallery: [
       "https://picsum.photos/seed/kaone-mangayun-1/700/900",
       "https://picsum.photos/seed/kaone-mangayun-2/700/900",
@@ -2960,7 +3084,7 @@ const services = [
     desc: "Merayakan pencapaian akademik dengan sesi foto yang rapi, di kampus maupun studio.",
     waText: "Halo Kaone Studio, saya ingin booking jasa foto Graduation.",
     mainImage: "https://images.unsplash.com/photo-1624727828618-ee42ef2ec5cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxncmFkdWF0aW9uJTIwcG9ydHJhaXQlMjBjZWxlYnJhdGlvbnxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Graduation di sini (otomatis dipakai juga untuk galeri kategori "Graduation")
+    driveFolder: "https://drive.google.com/drive/folders/1k8uVn_gjHkqnYikum1Fe4VNzrqz_QNEP?usp=sharing", // <- tempel link/ID folder Google Drive Graduation di sini (otomatis dipakai juga untuk galeri kategori "Graduation")
     gallery: [
       "https://picsum.photos/seed/kaone-graduation-1/700/900",
       "https://picsum.photos/seed/kaone-graduation-2/700/900",
@@ -2992,7 +3116,7 @@ const services = [
     desc: "Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.",
     waText: "Halo Kaone Studio, saya ingin sewa Rental Gaun.",
     mainImage: "https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85&w=1200&auto=format",
-    driveFolder: "", // <- tempel link/ID folder Google Drive Rental Gaun di sini (otomatis dipakai juga untuk galeri kategori "Rental Gaun")
+    driveFolder: "https://drive.google.com/drive/folders/1mXWvrjUdBRl8G8cF-K28zQrQlgEeXoDl?usp=sharing", // <- tempel link/ID folder Google Drive Rental Gaun di sini (otomatis dipakai juga untuk galeri kategori "Rental Gaun")
     gallery: [
       "https://picsum.photos/seed/kaone-rentalgaun-1/700/900",
       "https://picsum.photos/seed/kaone-rentalgaun-2/700/900",
@@ -3042,8 +3166,11 @@ const galeriFilters = [
   { key: "graduation", label: "Graduation" },
   { key: "prewedding", label: "Prewedding" },
   { key: "selfphoto", label: "Selfphoto" },
-  { key: "rental-gaun", label: "Rental Gaun" },
-  { key: "undangan-digital", label: "Undangan Digital" }
+  { key: "rental-gaun", label: "Rental Gaun" }
+  /* "undangan-digital" sengaja tidak dimasukkan ke sini — galeri untuk
+     kategori ini dinonaktifkan karena belum ada foto yang cocok untuk
+     ditampilkan. Tambahkan lagi { key: "undangan-digital", label:
+     "Undangan Digital" } di sini kapan pun foto sudah siap. */
 ];
 
 const catToServiceKey = {
@@ -3054,8 +3181,7 @@ const catToServiceKey = {
   graduation: "graduation",
   prewedding: "prewedding",
   selfphoto: "selfphoto",
-  "rental-gaun": "rental-gaun",
-  "undangan-digital": "undangan-digital"
+  "rental-gaun": "rental-gaun"
 };
 
 let galeriWorks = [
@@ -3083,9 +3209,7 @@ let galeriWorks = [
   { cat:"selfphoto", catLabel:"Selfphoto", title:"Cahaya & Bayang", loc:"Studio Kaone, Medan", year:"2025", lens:"50mm f/1.2", orientation:"portrait", img:"https://images.unsplash.com/photo-1606143412458-acc5f86de897?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwzfHxzdHVkaW8lMjBwb3J0cmFpdCUyMGZhc2hpb24lMjBkcmFtYXRpYyUyMGxpZ2h0fGVufDB8fHx8MTc4ODY3MDM5MHww&ixlib=rb-4.1.0&q=85", story:"Chiaroscuro ala lukisan klasik diterjemahkan ke dalam sesi foto pribadi — elegan, tenang, dan berwibawa." },
 
   { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Gaun Pengantin Eksklusif", loc:"Koleksi Kaone Studio", year:"2025", lens:"35mm f/1.4", orientation:"landscape", img:"https://images.unsplash.com/photo-1549416878-b9ca95e26903?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Koleksi gaun rental premium kami — ekor panjang, renda halus, dan potongan yang membuat setiap pengantin menjadi ratu sehari." },
-  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Detail Gaun Pagi Hari", loc:"Koleksi Kaone Studio", year:"2024", lens:"100mm f/2.8 Macro", orientation:"portrait", img:"https://images.unsplash.com/photo-1594552072238-b8a33785b261?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Setiap gaun dirawat dan difoto detail sebelum disewakan — renda, payet, dan jatuhnya kain adalah janji kualitas kami." },
-
-  { cat:"undangan-digital", catLabel:"Undangan Digital", title:"Undangan Digital Premium", loc:"Layanan Kaone Studio", year:"2025", lens:"Desain & Motion", orientation:"landscape", img:"https://images.unsplash.com/photo-1632610992723-82d7c212f6d7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwc3RhdGlvbmVyeSUyMGludml0YXRpb24lMjBnb2xkfGVufDB8fHx8MTc4ODY3MDQzNXww&ixlib=rb-4.1.0&q=85", story:"Undangan digital interaktif dengan galeri foto, musik, dan RSVP — disebar lewat satu tautan, dikenang selamanya." }
+  { cat:"rental-gaun", catLabel:"Rental Gaun", title:"Detail Gaun Pagi Hari", loc:"Koleksi Kaone Studio", year:"2024", lens:"100mm f/2.8 Macro", orientation:"portrait", img:"https://images.unsplash.com/photo-1594552072238-b8a33785b261?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwzfHx3ZWRkaW5nJTIwZHJlc3MlMjBnb3duJTIwZWxlZ2FudHxlbnwwfHx8fDE3ODg2NzAzOTB8MA&ixlib=rb-4.1.0&q=85", story:"Setiap gaun dirawat dan difoto detail sebelum disewakan — renda, payet, dan jatuhnya kain adalah janji kualitas kami." }
 ];
 
 /* ---- 3) Marquee strip (Pita Marquee Editorial) ----
@@ -3286,6 +3410,98 @@ function setupReveal(){
       revealIO.observe(el);
     }
   });
+}
+
+/* =========================================================================
+   PENERAPAN KONTEN DARI PANEL ADMIN (Supabase)
+   -------------------------------------------------------------------------
+   Halaman selalu tampil dulu dengan teks & link Drive bawaan (di atas),
+   supaya tidak pernah blank/menunggu. Begitu konten admin datang (lihat
+   window.__kaoneSiteConfigPromise di <head>), fungsi ini menimpa teks,
+   link folder Google Drive, dan posisi foto, lalu memicu render ulang
+   bagian-bagian yang datanya berubah. Aman dipanggil walau config kosong
+   atau sebagian saja diisi (field yang tidak diisi admin dibiarkan
+   memakai nilai bawaan di atas). */
+function applySiteTexts(texts){
+  if(!texts) return;
+  Object.keys(texts).forEach(function(key){
+    var val = texts[key];
+    if(val === undefined || val === null) return;
+    document.querySelectorAll('[data-ck="' + key + '"]').forEach(function(el){
+      el.innerHTML = val;
+    });
+  });
+}
+
+/* Mengisi --{which}-pos-x-desktop/-mobile dan --{which}-pos-y-desktop/-mobile
+   dari data admin. Mendukung data baru (item.pos.desktop / item.pos.mobile)
+   maupun data lama sebelum panel admin punya mode desktop/HP terpisah
+   (item.posX / item.posY datar) — data lama dipakai sebagai fallback untuk
+   kedua mode supaya tidak ada foto yang tiba-tiba pindah posisi. */
+function applyPosVars(which, item){
+  if(!item) return;
+  var root = document.documentElement.style;
+  var legacyX = item.posX, legacyY = item.posY;
+  var desktop = (item.pos && item.pos.desktop) || {};
+  var mobile = (item.pos && item.pos.mobile) || {};
+  var dx = desktop.x !== undefined ? desktop.x : legacyX;
+  var dy = desktop.y !== undefined ? desktop.y : legacyY;
+  var mx = mobile.x !== undefined ? mobile.x : legacyX;
+  var my = mobile.y !== undefined ? mobile.y : legacyY;
+  if(dx !== undefined) root.setProperty('--' + which + '-pos-x-desktop', dx + '%');
+  if(dy !== undefined) root.setProperty('--' + which + '-pos-y-desktop', dy + '%');
+  if(mx !== undefined) root.setProperty('--' + which + '-pos-x-mobile', mx + '%');
+  if(my !== undefined) root.setProperty('--' + which + '-pos-y-mobile', my + '%');
+}
+
+function applySiteMedia(media){
+  if(!media) return;
+  if(media.hero){
+    if(media.hero.driveFolder !== undefined) heroMedia.driveFolder = media.hero.driveFolder;
+    applyPosVars('hero', media.hero);
+  }
+  if(media.featuredBadge && media.featuredBadge.driveFolder !== undefined){
+    featuredBadgeMedia.driveFolder = media.featuredBadge.driveFolder;
+  }
+  if(media.manifesto){
+    if(media.manifesto.driveFolder !== undefined) manifestoMedia.driveFolder = media.manifesto.driveFolder;
+    applyPosVars('manifesto', media.manifesto);
+  }
+}
+
+function applySiteServices(list){
+  if(!Array.isArray(list)) return;
+  list.forEach(function(entry){
+    if(!entry || !entry.key) return;
+    var svc = services.find(function(s){ return s.key === entry.key; });
+    if(!svc) return;
+    if(entry.title !== undefined) svc.title = entry.title;
+    if(entry.desc !== undefined) svc.desc = entry.desc;
+    if(entry.waText !== undefined) svc.waText = entry.waText;
+    if(entry.driveFolder !== undefined) svc.driveFolder = entry.driveFolder;
+  });
+}
+
+function applySiteContent(cfg){
+  if(!cfg) return;
+  try{
+    applySiteTexts(cfg.texts);
+    applySiteMedia(cfg.media);
+    applySiteServices(cfg.services);
+    /* Render ulang bagian yang datanya bisa berubah lewat admin */
+    renderServiceCards();
+    initHeroMedia();
+    initFeaturedBadgeMedia();
+    initManifestoMedia();
+    renderGallery();
+    if(typeof applyDriveGalleries === "function") applyDriveGalleries();
+  }catch(err){
+    console.warn("Gagal menerapkan konten admin:", err);
+  }
+}
+
+if(window.__kaoneSiteConfigPromise){
+  window.__kaoneSiteConfigPromise.then(applySiteContent);
 }
 
 renderMarquee();
@@ -3654,39 +3870,28 @@ document.querySelectorAll(".btn-gold, .btn-wa, .btn-outline").forEach(el=>{
 });
 
 /* =========================================================
-   TESTIMONI
+   TESTIMONI — SEKARANG SEPENUHNYA VIA SUPABASE (Google Spreadsheet
+   sudah tidak dipakai sama sekali, baik untuk mengirim maupun
+   menampilkan).
 
-   MENGIRIM testimoni baru (tidak berubah, tetap seperti semula):
-   - Form di halaman ini mengirim (POST) ke TESTIMONI_WEBAPP_URL,
-     lalu otomatis masuk sebagai baris baru di Google Spreadsheet
-     (kolom "Tampilkan" dikosongkan dulu, ditinjau admin dulu).
+   MENGIRIM testimoni baru:
+   - Form di halaman ini langsung INSERT satu baris baru ke tabel
+     Supabase yang sama dengan halaman Isi Biodata (kaone_motret_ulasan).
+     Baris baru dikirim TANPA publish_targets (kosong) supaya testimoni
+     itu belum tampil di publik sebelum ditinjau admin lewat rekap job —
+     begitu admin publish dengan tujuan "Isi Biodata"/"biodata", baris
+     itu otomatis muncul di daftar testimoni beranda ini.
 
-   MENAMPILKAN testimoni (BARU, digabung dari DUA sumber sekaligus,
-   persis seperti pola yang dipakai di halaman Isi Biodata):
-
-   Sumber 1 — Supabase:
-     Mengambil semua baris dari tabel yang sama dengan halaman
-     Isi Biodata (kaone_motret_ulasan), lalu menyaring baris yang
-     kolom publish_targets-nya memuat 'biodata'. Jadi begitu sebuah
-     testimoni di rekap job dipublish dengan tujuan "Isi Biodata",
-     testimoni itu OTOMATIS ikut muncul juga di beranda ini — tanpa
-     perlu tindakan tambahan apa pun. Tidak perlu tujuan publish baru
-     khusus "Beranda"; cukup pakai tujuan "Isi Biodata" yang sudah ada.
-
-   Sumber 2 — Google Spreadsheet (cara lama, tidak diubah):
-     Mengambil (GET) daftar testimoni yang kolom "Tampilkan"-nya
-     "Ya" dari TESTIMONI_WEBAPP_URL, sama seperti sebelumnya.
-
-   Kedua daftar itu digabung jadi satu, diurutkan dari yang terbaru,
-   baru ditampilkan pakai kartu testimoni yang sama.
-
-   Kode Google Apps Script (Code.gs) yang perlu dipasang di balik
-   URL web app ini disediakan terpisah — lihat panduan setup.
+   MENAMPILKAN testimoni:
+   - Mengambil semua baris dari tabel Supabase yang sama, lalu
+     menyaring baris yang kolom publish_targets-nya memuat 'biodata'.
+     Jadi begitu sebuah testimoni di rekap job dipublish dengan tujuan
+     "Isi Biodata", testimoni itu otomatis ikut muncul juga di beranda
+     ini — tanpa perlu tindakan tambahan apa pun.
 ========================================================= */
-const TESTIMONI_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwFRNocte9ywkVMXe3V11M95zYa6VSltVJRm2HrRPrvllPLZooFP10SuRNFvTzwgkJIJA/exec";
 
-/* ---- Supabase (sumber ke-1), konfigurasinya SAMA PERSIS dengan
-   halaman Isi Biodata supaya membaca tabel ulasan yang sama ---- */
+/* ---- Supabase, konfigurasinya SAMA PERSIS dengan
+   halaman Isi Biodata supaya membaca & menulis tabel ulasan yang sama ---- */
 const TESTIMONI_SUPABASE_URL = 'https://gyleppavsgbtrlgbyztv.supabase.co';
 const TESTIMONI_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bGVwcGF2c2didHJsZ2J5enR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NjU0MDQsImV4cCI6MjEwMzM0MTQwNH0.0t7bMoTjgd-c48O37wo1QyGFsFnjrRiAkDzH8VMgw-Q';
 const TESTIMONI_SUPABASE_TABLE = 'kaone_motret_ulasan';
@@ -3736,9 +3941,8 @@ function testimoniGetPublishTargetsSafe(u){
   return u.dipublikasikan ? ['wedding'] : [];
 }
 
-/* Ubah satu baris ulasan Supabase jadi bentuk yang sama dengan satu
-   baris testimoni dari Google Spreadsheet, supaya keduanya bisa
-   digabung dan dirender oleh renderTestimoniList() yang sama. */
+/* Ubah satu baris ulasan Supabase jadi bentuk yang dipakai
+   renderTestimoniList() untuk menampilkan kartu testimoni. */
 function testimoniNormalizeSupabaseRow(u){
   return {
     nama: u.nama_klien || 'Klien',
@@ -3747,20 +3951,6 @@ function testimoniNormalizeSupabaseRow(u){
     tanggal: u.created_at,
     pesan: u.komentar,
     _sortTime: u.created_at ? new Date(u.created_at).getTime() : 0
-  };
-}
-
-/* Ubah satu baris testimoni dari Google Spreadsheet jadi bentuk yang
-   sudah dipakai selama ini, ditambah _sortTime supaya bisa diurutkan
-   bersama data dari Supabase. */
-function testimoniNormalizeSheetRow(u){
-  return {
-    nama: u.nama,
-    jenis: u.jenis,
-    rating: u.rating,
-    tanggal: u.tanggal,
-    pesan: u.pesan,
-    _sortTime: u.tanggal ? new Date(u.tanggal).getTime() : 0
   };
 }
 
@@ -3807,11 +3997,10 @@ function renderTestimoniList(list){
   }).join("");
 }
 
-/* Sumber 1: ambil testimoni dari Supabase (tabel yang sama dengan
-   Isi Biodata), saring yang publish_targets-nya memuat 'biodata' —
-   jadi testimoni yang dipublish ke "Isi Biodata" di rekap job
-   otomatis ikut tampil di beranda juga. Selalu resolve ke array
-   (kosong kalau gagal) supaya tidak menggagalkan Promise.all di bawah. */
+/* Ambil testimoni dari Supabase (tabel yang sama dengan Isi Biodata),
+   saring yang publish_targets-nya memuat 'biodata' — jadi testimoni
+   yang dipublish ke "Isi Biodata" di rekap job otomatis ikut tampil
+   di beranda juga. Selalu resolve ke array (kosong kalau gagal). */
 function testimoniFetchFromSupabase(){
   if(!testimoniSupabaseClient) return Promise.resolve([]);
   return testimoniSupabaseClient
@@ -3834,28 +4023,12 @@ function testimoniFetchFromSupabase(){
     });
 }
 
-/* Sumber 2: ambil testimoni dari Google Spreadsheet (cara lama,
-   tidak diubah). Juga selalu resolve ke array. */
-function testimoniFetchFromSheet(){
-  if(!TESTIMONI_WEBAPP_URL) return Promise.resolve([]);
-  return fetch(TESTIMONI_WEBAPP_URL + "?action=list")
-    .then(function(res){ return res.json(); })
-    .then(function(data){
-      return (Array.isArray(data) ? data : []).map(testimoniNormalizeSheetRow);
-    })
-    .catch(function(err){
-      console.error("Gagal memuat testimoni dari Spreadsheet", err);
-      return [];
-    });
-}
-
 function loadTestimoniList(){
   const wrap = document.getElementById("testimoniListWrap");
-  Promise.all([ testimoniFetchFromSupabase(), testimoniFetchFromSheet() ])
-    .then(function(results){
-      var gabungan = results[0].concat(results[1]);
-      gabungan.sort(function(a, b){ return (b._sortTime || 0) - (a._sortTime || 0); });
-      renderTestimoniList(gabungan);
+  testimoniFetchFromSupabase()
+    .then(function(list){
+      list.sort(function(a, b){ return (b._sortTime || 0) - (a._sortTime || 0); });
+      renderTestimoniList(list);
     })
     .catch(function(err){
       console.error("Gagal memuat testimoni", err);
@@ -3864,7 +4037,21 @@ function loadTestimoniList(){
 }
 loadTestimoniList();
 
-/* ---- Form testimoni -> kirim ke Google Spreadsheet ---- */
+/* ---- Kolom "Lainnya" pada Jenis Boking: buka kolom isian manual ---- */
+const testimoniJenisSelect = document.getElementById("t-jenis");
+const testimoniJenisLainnyaWrap = document.getElementById("t-jenis-lainnya-wrap");
+const testimoniJenisLainnyaInput = document.getElementById("t-jenis-lainnya");
+function testimoniSyncJenisLainnya(){
+  const isLainnya = testimoniJenisSelect && testimoniJenisSelect.value === "Lainnya";
+  if(testimoniJenisLainnyaWrap) testimoniJenisLainnyaWrap.style.display = isLainnya ? "flex" : "none";
+  if(testimoniJenisLainnyaInput) testimoniJenisLainnyaInput.required = !!isLainnya;
+  if(!isLainnya && testimoniJenisLainnyaInput) testimoniJenisLainnyaInput.value = "";
+}
+if(testimoniJenisSelect){
+  testimoniJenisSelect.addEventListener("change", testimoniSyncJenisLainnya);
+}
+
+/* ---- Form testimoni -> INSERT langsung ke Supabase ---- */
 const testimoniForm = document.getElementById("testimoniForm");
 if(testimoniForm){
   testimoniForm.addEventListener("submit", function(e){
@@ -3873,16 +4060,31 @@ if(testimoniForm){
     const btn = document.getElementById("testimoniSubmitBtn");
 
     const nama = document.getElementById("t-nama").value.trim();
-    const jenis = document.getElementById("t-jenis").value;
+    const jenisPilihan = document.getElementById("t-jenis").value;
+    const jenisLainnya = testimoniJenisLainnyaInput ? testimoniJenisLainnyaInput.value.trim() : "";
+    const jenis = jenisPilihan === "Lainnya" ? jenisLainnya : jenisPilihan;
     const bintangEl = testimoniForm.querySelector('input[name="bintang"]:checked');
     const bintang = bintangEl ? bintangEl.value : "";
     const pesan = document.getElementById("t-pesan").value.trim();
 
-    if(!nama || !jenis || !bintang || !pesan){
-      testimoniForm.reportValidity();
+    if(!nama || !jenisPilihan || (jenisPilihan === "Lainnya" && !jenisLainnya) || !bintang || !pesan){
+      let pesanError = "Mohon lengkapi semua kolom yang wajib diisi.";
+      if(!bintang){
+        pesanError = "Mohon pilih jumlah bintang terlebih dahulu.";
+      } else if(!nama){
+        testimoniForm.reportValidity();
+      } else if(!jenisPilihan || (jenisPilihan === "Lainnya" && !jenisLainnya)){
+        testimoniForm.reportValidity();
+      } else if(!pesan){
+        testimoniForm.reportValidity();
+      }
+      if(statusEl){
+        statusEl.textContent = pesanError;
+        statusEl.className = "testimoni-status is-error";
+      }
       return;
     }
-    if(!TESTIMONI_WEBAPP_URL){
+    if(!testimoniSupabaseClient){
       if(statusEl){
         statusEl.textContent = "Gagal mengirim testimoni. Silakan coba lagi nanti.";
         statusEl.className = "testimoni-status is-error";
@@ -3895,15 +4097,20 @@ if(testimoniForm){
     btn.innerHTML = "<span>Mengirim…</span>";
     if(statusEl){ statusEl.textContent = ""; statusEl.className = "testimoni-status"; }
 
-    const payload = { nama: nama, jenis: jenis, rating: bintang, pesan: pesan };
+    const payload = {
+      nama_klien: nama,
+      jenis_acara: jenis,
+      rating: Number(bintang),
+      komentar: pesan,
+      asal_form: "beranda_testimoni",
+      publish_targets: []
+    };
 
-    fetch(TESTIMONI_WEBAPP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    })
-      .then(function(){
+    testimoniSupabaseClient
+      .from(TESTIMONI_SUPABASE_TABLE)
+      .insert([payload])
+      .then(function(res){
+        if(res && res.error) throw res.error;
         testimoniForm.style.display = "none";
         document.getElementById("testimoniSuccess").style.display = "block";
       })
@@ -3925,6 +4132,7 @@ const testimoniResetBtn = document.getElementById("testimoniResetBtn");
 if(testimoniResetBtn){
   testimoniResetBtn.addEventListener("click", function(){
     testimoniForm.reset();
+    testimoniSyncJenisLainnya();
     document.getElementById("testimoniStatus").textContent = "";
     document.getElementById("testimoniSuccess").style.display = "none";
     testimoniForm.style.display = "flex";
