@@ -3996,9 +3996,34 @@ const TESTIMONI_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3
 const TESTIMONI_SUPABASE_TABLE = 'kaone_motret_ulasan';
 
 let testimoniSupabaseClient = null;
-if(window.supabase && typeof window.supabase.createClient === "function"){
-  try{ testimoniSupabaseClient = window.supabase.createClient(TESTIMONI_SUPABASE_URL, TESTIMONI_SUPABASE_ANON_KEY); }
-  catch(e){ console.error("Gagal membuat koneksi Supabase testimoni", e); }
+/* Library supabase-js dimuat dengan atribut "async" (lihat <script id="supabaseCdnScript">
+   di <head>) supaya tidak menahan render pertama halaman. Konsekuensinya: pada saat
+   blok <script> ini dieksekusi, window.supabase BISA SAJA belum selesai diunduh —
+   kalau kita cuma cek window.supabase sekali di sini, testimoniSupabaseClient akan
+   tetap null selamanya dan daftar testimoni jadi terlihat kosong padahal datanya ada
+   (race condition, munculnya tidak konsisten tergantung kecepatan koneksi).
+   testimoniEnsureClient() di bawah menangani ini dengan menunggu event "load" dari
+   script tsb kalau window.supabase belum siap — pola yang sama seperti yang dipakai
+   untuk konten admin (window.__kaoneSiteConfigPromise) di atas. */
+function testimoniInitClient(){
+  if(testimoniSupabaseClient) return testimoniSupabaseClient;
+  if(window.supabase && typeof window.supabase.createClient === "function"){
+    try{ testimoniSupabaseClient = window.supabase.createClient(TESTIMONI_SUPABASE_URL, TESTIMONI_SUPABASE_ANON_KEY); }
+    catch(e){ console.error("Gagal membuat koneksi Supabase testimoni", e); }
+  }
+  return testimoniSupabaseClient;
+}
+let testimoniClientReadyPromise = null;
+function testimoniEnsureClient(){
+  if(testimoniClientReadyPromise) return testimoniClientReadyPromise;
+  testimoniClientReadyPromise = new Promise(function(resolve){
+    if(testimoniInitClient()){ resolve(testimoniSupabaseClient); return; }
+    var cdn = document.getElementById("supabaseCdnScript");
+    if(!cdn){ resolve(null); return; }
+    cdn.addEventListener("load", function(){ resolve(testimoniInitClient()); });
+    cdn.addEventListener("error", function(){ resolve(null); });
+  });
+  return testimoniClientReadyPromise;
 }
 
 /* Label jenis acara pada kartu testimoni yang berasal dari Supabase.
@@ -4101,25 +4126,26 @@ function renderTestimoniList(list){
    yang dipublish ke "Isi Biodata" di rekap job otomatis ikut tampil
    di beranda juga. Selalu resolve ke array (kosong kalau gagal). */
 function testimoniFetchFromSupabase(){
-  if(!testimoniSupabaseClient) return Promise.resolve([]);
-  return testimoniSupabaseClient
-    .from(TESTIMONI_SUPABASE_TABLE)
-    .select('*')
-    .order('created_at', { ascending:false })
-    .then(function(res){
-      if(res && res.error){
-        console.error('Gagal memuat testimoni dari Supabase', res.error);
-        return [];
-      }
-      var semua = res.data || [];
-      return semua
-        .filter(function(u){ return testimoniGetPublishTargetsSafe(u).indexOf('biodata') !== -1; })
-        .map(testimoniNormalizeSupabaseRow);
-    })
-    .catch(function(err){
-      console.error('Gagal memuat testimoni dari Supabase', err);
-      return [];
-    });
+  return testimoniEnsureClient().then(function(client){
+    if(!client) return [];
+    return client
+      .from(TESTIMONI_SUPABASE_TABLE)
+      .select('*')
+      .order('created_at', { ascending:false })
+      .then(function(res){
+        if(res && res.error){
+          console.error('Gagal memuat testimoni dari Supabase', res.error);
+          return [];
+        }
+        var semua = res.data || [];
+        return semua
+          .filter(function(u){ return testimoniGetPublishTargetsSafe(u).indexOf('biodata') !== -1; })
+          .map(testimoniNormalizeSupabaseRow);
+      });
+  }).catch(function(err){
+    console.error('Gagal memuat testimoni dari Supabase', err);
+    return [];
+  });
 }
 
 function loadTestimoniList(){
@@ -4220,14 +4246,6 @@ if(testimoniForm){
       }
       return;
     }
-    if(!testimoniSupabaseClient){
-      if(statusEl){
-        statusEl.textContent = "Gagal mengirim testimoni. Silakan coba lagi nanti.";
-        statusEl.className = "testimoni-status is-error";
-      }
-      return;
-    }
-
     btn.disabled = true;
     const originalHtml = btn.innerHTML;
     btn.innerHTML = "<span>Mengirim…</span>";
@@ -4242,9 +4260,13 @@ if(testimoniForm){
       publish_targets: []
     };
 
-    testimoniSupabaseClient
-      .from(TESTIMONI_SUPABASE_TABLE)
-      .insert([payload])
+    testimoniEnsureClient()
+      .then(function(client){
+        if(!client){
+          throw new Error("Supabase belum siap");
+        }
+        return client.from(TESTIMONI_SUPABASE_TABLE).insert([payload]);
+      })
       .then(function(res){
         if(res && res.error) throw res.error;
         testimoniForm.style.display = "none";
