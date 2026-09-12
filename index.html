@@ -3,6 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Resource hints: buka koneksi ke domain pihak ketiga LEBIH AWAL (DNS +
+     TLS handshake) supaya saat script/gambar dari domain ini benar-benar
+     dibutuhkan, tidak perlu menunggu proses koneksi dari nol. Tidak
+     mengunduh apa pun, jadi aman dan tidak menambah beban halaman. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://ptaewptlwzdxcghdjdra.supabase.co" crossorigin>
+<link rel="preconnect" href="https://gyleppavsgbtrlgbyztv.supabase.co" crossorigin>
+<link rel="preconnect" href="https://drive.google.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+<!-- Google Analytics 4 (GA4) — mencatat jumlah pengunjung, halaman yang
+     dilihat, dan sumber trafik. Data bisa dilihat di analytics.google.com. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7ZM5MVZD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-VE7ZM5MVZD');
+</script>
+
 <title>Kaone Studio — Fotografer Wedding &amp; Adat Batak di Padang Lawas Utara</title>
 
 <!-- Favicon -->
@@ -37,18 +59,24 @@
 <meta property="og:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
 <meta property="og:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta property="og:url" content="https://kaone.web.id/">
-<meta property="og:image" content="">
+<meta property="og:image" content="https://kaone.web.id/og-image.jpg">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:height" content="1500">
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
 <meta name="twitter:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
-<meta name="twitter:image" content="">
+<meta name="twitter:image" content="https://kaone.web.id/og-image.jpg">
 
 <!-- Structured Data (schema.org) untuk Google -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- PENTING soal kecepatan halaman: script ini dimuat "async" (bukan tanpa
+     atribut) supaya BUKAN render-blocking — browser tetap lanjut mem-parse
+     sisa <head> dan <body> sambil file ini diunduh di belakang layar.
+     Fetch konten admin tetap dimulai sedini mungkin lewat event "load" di
+     bawah, jadi perilakunya sama seperti sebelumnya, hanya saja tidak lagi
+     menahan tampilan pertama halaman. -->
+<script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" id="supabaseCdnScript"></script>
 <script>
   /* =========================================================================
      KONTEN DINAMIS DARI PANEL ADMIN (lihat admin.html)
@@ -64,26 +92,34 @@
   window.KAONE_ADMIN_SUPABASE_URL = "https://ptaewptlwzdxcghdjdra.supabase.co";
   window.KAONE_ADMIN_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0YWV3cHRsd3pkeGNnaGRqZHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzU5MzUsImV4cCI6MjEwNDY1MTkzNX0.tESXguqZ2J-4iLZ4LdbK4xSgjE6gBkKf_L8IUOYDDYY";
   window.KAONE_CONTENT_TABLE = "kaone_site_content";
-  window.__kaoneSiteConfigPromise = (async function(){
-    try{
-      if(!window.supabase || typeof window.supabase.createClient !== "function") return null;
-      var client = window.supabase.createClient(window.KAONE_ADMIN_SUPABASE_URL, window.KAONE_ADMIN_SUPABASE_ANON_KEY);
-      window.kaoneAdminClient = client;
-      var res = await client.from(window.KAONE_CONTENT_TABLE).select("content").eq("id", 1).maybeSingle();
-      if(res.error){ console.warn("Konten admin belum bisa dimuat:", res.error.message || res.error); return null; }
-      return (res.data && res.data.content) ? res.data.content : null;
-    }catch(err){
-      console.warn("Konten admin belum bisa dimuat:", err);
-      return null;
+  window.__kaoneSiteConfigPromise = new Promise(function(resolve){
+    async function fetchConfig(){
+      try{
+        if(!window.supabase || typeof window.supabase.createClient !== "function"){ resolve(null); return; }
+        var client = window.supabase.createClient(window.KAONE_ADMIN_SUPABASE_URL, window.KAONE_ADMIN_SUPABASE_ANON_KEY);
+        window.kaoneAdminClient = client;
+        var res = await client.from(window.KAONE_CONTENT_TABLE).select("content").eq("id", 1).maybeSingle();
+        if(res.error){ console.warn("Konten admin belum bisa dimuat:", res.error.message || res.error); resolve(null); return; }
+        resolve((res.data && res.data.content) ? res.data.content : null);
+      }catch(err){
+        console.warn("Konten admin belum bisa dimuat:", err);
+        resolve(null);
+      }
     }
-  })();
+    var cdn = document.getElementById("supabaseCdnScript");
+    if(window.supabase){ fetchConfig(); }
+    else{
+      cdn.addEventListener("load", fetchConfig);
+      cdn.addEventListener("error", function(){ resolve(null); });
+    }
+  });
 </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Kaone Studio",
-  "image": "",
+  "image": "https://kaone.web.id/og-image.jpg",
   "description": "Jasa fotografi Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak (Patuaekkon, Margondang, Mangayun/Aqiqah) di Padang Lawas Utara.",
   "telephone": "+6285117071704",
   "address": {
@@ -100,6 +136,12 @@
   },
   "url": "https://kaone.web.id/",
   "priceRange": "$$",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
   "sameAs": [
     "https://instagram.com/kaonestudio",
     "https://instagram.com/kaonemotret",
@@ -2648,6 +2690,11 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
           <span data-ck="kontak.nomor">+62 851-1707-1704</span>
         </button>
+        <a class="btn-outline" target="_blank" rel="noopener" data-testid="contact-google-review-button"
+           href="https://g.page/r/CUQGmXMowOm5EBI/review">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.16 3.24 1.18-6.88L2 9.24l6.92-1 3.08-6.26 3.08 6.26 6.92 1-5.02 4.87 1.18 6.88z"/></svg>
+          <span>Beri Ulasan di Google</span>
+        </a>
       </div>
 
       <div class="kontak-info-grid reveal-up" style="--i:3">
@@ -2753,24 +2800,32 @@
   </div>
 </div>
 
-<!-- Lenis: scroll global dengan inersia berat ala layar sinema, durasi 1.25s -->
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.16/dist/lenis.min.js"></script>
+<!-- Lenis: scroll global dengan inersia berat ala layar sinema, durasi 1.25s.
+     Dimuat "async" (bukan render-blocking) dan diinisialisasi lewat event
+     "load" supaya tidak menahan eksekusi script-script lain di bawahnya
+     (misalnya yang merender galeri) sambil file Lenis diunduh. -->
+<script async src="https://cdn.jsdelivr.net/npm/lenis@1.1.16/dist/lenis.min.js" id="lenisCdnScript"></script>
 <script>
 (function(){
-  if(typeof Lenis === "undefined") return;
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var lenis = new Lenis({
-    duration: 1.25,
-    /* setara cubic-bezier(.22,1,.36,1) / easeOutExpo, sama seperti var(--ease) di CSS */
-    easing: function(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
-    smoothWheel: true
-  });
-  function raf(time){
-    lenis.raf(time);
+  function initLenis(){
+    if(typeof Lenis === "undefined") return;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var lenis = new Lenis({
+      duration: 1.25,
+      /* setara cubic-bezier(.22,1,.36,1) / easeOutExpo, sama seperti var(--ease) di CSS */
+      easing: function(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+      smoothWheel: true
+    });
+    function raf(time){
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
+    window.__lenis = lenis;
   }
-  requestAnimationFrame(raf);
-  window.__lenis = lenis;
+  var cdn = document.getElementById("lenisCdnScript");
+  if(typeof Lenis !== "undefined"){ initLenis(); }
+  else{ cdn.addEventListener("load", initLenis); }
 })();
 </script>
 
@@ -3328,30 +3383,34 @@ function renderGallery(){
   renderGalleryCategories();
 }
 
-/* ---- 6) Service cards: dua layanan pendamping (Rental Gaun & Undangan Digital) ---- */
+/* ---- 6) Service cards: dua layanan pendamping (Rental Gaun & Undangan Digital) ----
+   Disimpan sebagai variabel level-atas (bukan konstanta lokal) supaya bisa
+   ditimpa oleh teks dari panel admin lewat applySiteSvcCards(), sama seperti
+   pola yang dipakai pada array "services" di atas. */
+let svcCards = [
+  {
+    key: "rental-gaun",
+    title: "Rental Gaun Eksklusif",
+    badge: "Koleksi Premium",
+    desc: "Puluhan gaun pengantin dan kebaya adat pilihan — dirawat, difoto detail, dan siap dikenakan di hari istimewa Anda. Termasuk fitting dan penyesuaian ukuran.",
+    img: "",
+    waText: "Halo Kaone Studio, saya ingin tanya ketersediaan Rental Gaun Eksklusif.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 1 1 2 2"/><path d="M12 5v3"/><path d="M12 8l9 6a2 2 0 0 1-1 3.7H4A2 2 0 0 1 3 13.9z"/></svg>`
+  },
+  {
+    key: "undangan-digital",
+    title: "Undangan Digital Interaktif",
+    badge: "Desain & Motion",
+    desc: "Undangan web yang hidup: galeri foto, hitung mundur, musik, peta lokasi, dan RSVP tamu — semua dalam satu tautan yang mudah dibagikan ke seluruh undangan.",
+    img: "",
+    waText: "Halo Kaone Studio, saya ingin tanya ketersediaan Undangan Digital Interaktif.",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10.5 17h3"/><path d="M10 8.5 14 11l-4 2.5z"/></svg>`
+  }
+];
+
 function renderServiceCards(){
-  const cards = [
-    {
-      key: "rental-gaun",
-      title: "Rental Gaun Eksklusif",
-      badge: "Koleksi Premium",
-      desc: "Puluhan gaun pengantin dan kebaya adat pilihan — dirawat, difoto detail, dan siap dikenakan di hari istimewa Anda. Termasuk fitting dan penyesuaian ukuran.",
-      img: "",
-      wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Rental Gaun Eksklusif.",
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 1 1 2 2"/><path d="M12 5v3"/><path d="M12 8l9 6a2 2 0 0 1-1 3.7H4A2 2 0 0 1 3 13.9z"/></svg>`
-    },
-    {
-      key: "undangan-digital",
-      title: "Undangan Digital Interaktif",
-      badge: "Desain & Motion",
-      desc: "Undangan web yang hidup: galeri foto, hitung mundur, musik, peta lokasi, dan RSVP tamu — semua dalam satu tautan yang mudah dibagikan ke seluruh undangan.",
-      img: "",
-      wa: "Halo Kaone Studio, saya ingin tanya ketersediaan Undangan Digital Interaktif.",
-      icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M10.5 17h3"/><path d="M10 8.5 14 11l-4 2.5z"/></svg>`
-    }
-  ];
-  document.getElementById("svcCardsGrid").innerHTML = cards.map(c => `
-    <a class="svc-card" target="_blank" rel="noopener" href="${waBase}${encodeURIComponent(c.wa)}" data-testid="service-card-${c.key}">
+  document.getElementById("svcCardsGrid").innerHTML = svcCards.map(c => `
+    <a class="svc-card" target="_blank" rel="noopener" href="${waBase}${encodeURIComponent(c.waText)}" data-testid="service-card-${c.key}">
       <div class="svc-card-media">
         ${buildImgHtml(c.img, c.title)}
         <span class="svc-card-badge">${c.badge}</span>
@@ -3471,12 +3530,30 @@ function applySiteServices(list){
   });
 }
 
+/* Sama seperti applySiteServices(), tapi untuk dua "kartu layanan pendamping"
+   (Rental Gaun Eksklusif & Undangan Digital Interaktif) yang tampil di
+   bawah galeri utama. Dicocokkan lewat "key" supaya field yang tidak
+   diisi admin tetap memakai teks bawaan di atas. */
+function applySiteSvcCards(list){
+  if(!Array.isArray(list)) return;
+  list.forEach(function(entry){
+    if(!entry || !entry.key) return;
+    var card = svcCards.find(function(c){ return c.key === entry.key; });
+    if(!card) return;
+    if(entry.title !== undefined) card.title = entry.title;
+    if(entry.badge !== undefined) card.badge = entry.badge;
+    if(entry.desc !== undefined) card.desc = entry.desc;
+    if(entry.waText !== undefined) card.waText = entry.waText;
+  });
+}
+
 function applySiteContent(cfg){
   if(!cfg) return;
   try{
     applySiteTexts(cfg.texts);
     applySiteMedia(cfg.media);
     applySiteServices(cfg.services);
+    applySiteSvcCards(cfg.svcCards);
     /* Render ulang bagian yang datanya bisa berubah lewat admin */
     renderServiceCards();
     initHeroMedia();
@@ -4165,6 +4242,28 @@ if(testimoniResetBtn){
     testimoniForm.style.display = "flex";
   });
 }
+
+/* ---- Lacak klik tombol WhatsApp sebagai event GA4 "contact_whatsapp" ----
+   Dipasang lewat event delegation di document supaya tetap kena walau
+   tombol/link WA dibuat belakangan (misalnya kartu layanan yang dirender
+   dari data admin). Tidak menghalangi link tetap terbuka seperti biasa. */
+document.addEventListener("click", function(e){
+  if(typeof gtag !== "function") return;
+  const link = e.target.closest('a[href*="wa.me"]');
+  if(!link) return;
+  gtag('event', 'contact_whatsapp', {
+    link_url: link.href,
+    link_location: link.dataset.testid || link.id || link.closest('section')?.id || "unknown"
+  });
+});
+
+/* ---- Lacak klik tombol "Beri Ulasan di Google" sebagai event GA4 "click_google_review" ---- */
+document.addEventListener("click", function(e){
+  if(typeof gtag !== "function") return;
+  const link = e.target.closest('a[href*="g.page"]');
+  if(!link) return;
+  gtag('event', 'click_google_review', { link_url: link.href });
+});
 </script>
 </body>
 </html>
