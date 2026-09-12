@@ -2191,43 +2191,105 @@
   .kontak-map-caption a{ font-size:.85rem; color:var(--accent); white-space:nowrap; transition:color .3s var(--ease); }
   .kontak-map-caption a:hover{ color:var(--primary); }
 
+  /* ---------- Tim Kami (jajaran Instagram tim & rekan) ---------- */
+  #tim{
+    padding:clamp(60px,9vw,100px) 0;
+    border-top:1px solid var(--border);
+  }
+  .tim-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:clamp(14px,2vw,20px);
+  }
+  .tim-card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:12px;
+    padding:32px 16px 26px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    background:var(--card-alt);
+    overflow:hidden;
+    transition:border-color .4s var(--ease), transform .4s var(--ease), background .4s var(--ease);
+  }
+  /* Bola cahaya emas samar yang muncul saat kartu disentuh/hover */
+  .tim-card::before{
+    content:"";
+    position:absolute;
+    top:-70%; left:50%;
+    width:220px; height:220px;
+    transform:translateX(-50%);
+    background:radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
+    opacity:0;
+    transition:opacity .45s var(--ease);
+    pointer-events:none;
+  }
+  .tim-card:hover, .tim-card:focus-visible{
+    border-color:var(--primary);
+    transform:translateY(-5px);
+    background:rgba(212,175,55,0.045);
+  }
+  .tim-card:hover::before, .tim-card:focus-visible::before{ opacity:1; }
+  .tim-icon{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:50px; height:50px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:rgba(212,175,55,0.06);
+    color:var(--accent);
+    transition:border-color .4s var(--ease), color .4s var(--ease), background .4s var(--ease);
+  }
+  .tim-icon svg{ width:21px; height:21px; }
+  .tim-card:hover .tim-icon, .tim-card:focus-visible .tim-icon{
+    border-color:var(--primary);
+    background:var(--primary);
+    color:var(--primary-foreground);
+  }
+  .tim-handle{
+    position:relative;
+    z-index:1;
+    font-family:'Lora', serif;
+    font-size:1.02rem;
+    color:var(--foreground);
+    word-break:break-word;
+  }
+  .tim-cta{
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.66rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted-foreground);
+    transition:color .4s var(--ease), gap .4s var(--ease);
+  }
+  .tim-card:hover .tim-cta, .tim-card:focus-visible .tim-cta{ color:var(--accent); gap:9px; }
+
+  @media (max-width:900px){
+    .tim-grid{ grid-template-columns:repeat(3,1fr); }
+  }
+  @media (max-width:760px){
+    .tim-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:460px){
+    .tim-grid{ grid-template-columns:1fr; }
+  }
+
   /* ---------- Footer (sederhana, rata tengah) ---------- */
   footer{
     border-top:1px solid var(--border);
     padding:clamp(30px,5vw,40px) 0 26px;
   }
-  .footer-social-row{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:10px 12px;
-    padding-bottom:24px;
-    margin-bottom:24px;
-    border-bottom:1px solid var(--border);
-  }
-  .footer-social-row a{
-    display:flex; align-items:center; gap:9px;
-    padding:6px 14px 6px 6px;
-    border:1px solid var(--border);
-    border-radius:var(--radius-full);
-    color:var(--muted-foreground);
-    font-size:.82rem;
-    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
-  }
-  .footer-social-row a:hover, .footer-social-row a:focus-visible{
-    border-color:var(--primary);
-    color:var(--accent);
-    transform:translateY(-3px);
-  }
-  .footer-social-icon{
-    width:26px;height:26px;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    border:1px solid var(--border);
-    border-radius:50%;
-    transition:border-color .3s var(--ease);
-  }
-  .footer-social-row a:hover .footer-social-icon{ border-color:var(--primary); }
-  .footer-social-icon svg{ width:14px;height:14px; }
   .footer-simple{
     display:flex;
     align-items:center;
@@ -2747,27 +2809,60 @@
 
   <div class="copy-toast" id="copyToast" role="status" aria-live="polite">Nomor WhatsApp tersalin</div>
 
+  <!-- TIM KAMI -->
+  <section id="tim" class="spotlight">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="section-eyebrow-num reveal-up">05 — TIM</span>
+          <h2 class="reveal-up" style="--i:1">Tim yang <em>Kami Percaya</em></h2>
+        </div>
+        <p class="reveal-up" style="--i:2">Setiap karya lahir dari kolaborasi. Kenali tim dan rekan yang turut mewujudkan setiap momen di balik lensa Kaone Studio.</p>
+      </div>
+
+      <div class="tim-grid">
+        <a class="tim-card reveal-up" style="--i:1" href="https://instagram.com/kaonestudio" target="_blank" rel="noopener" aria-label="Instagram @kaonestudio" data-testid="social-instagram-kaonestudio-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@kaonestudio</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:2" href="https://instagram.com/kaonemotret" target="_blank" rel="noopener" aria-label="Instagram @kaonemotret" data-testid="social-instagram-kaonemotret-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@kaonemotret</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:3" href="https://instagram.com/bertaut.ids" target="_blank" rel="noopener" aria-label="Instagram @bertaut.ids" data-testid="social-instagram-bertaut-ids-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@bertaut.ids</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:4" href="https://instagram.com/buktisarjana" target="_blank" rel="noopener" aria-label="Instagram @buktisarjana" data-testid="social-instagram-buktisarjana-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@buktisarjana</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:5" href="https://instagram.com/alunara.wcc" target="_blank" rel="noopener" aria-label="Instagram @alunara.wcc" data-testid="social-instagram-alunara-wcc-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@alunara.wcc</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:6" href="https://instagram.com/shia_makeup23" target="_blank" rel="noopener" aria-label="Instagram @shia_makeup23" data-testid="social-instagram-shia-makeup23-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@shia_makeup23</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tim-card reveal-up" style="--i:7" href="https://instagram.com/bii_galery" target="_blank" rel="noopener" aria-label="Instagram @bii_galery" data-testid="social-instagram-bii-galery-tim">
+          <span class="tim-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span class="tim-handle">@bii_galery</span>
+          <span class="tim-cta">Kunjungi <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      <div class="footer-social-row">
-        <a href="https://instagram.com/kaonestudio" aria-label="Instagram @kaonestudio" title="@kaonestudio" target="_blank" rel="noopener" data-testid="social-instagram-kaonestudio">
-          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-          <span>@kaonestudio</span>
-        </a>
-        <a href="https://instagram.com/kaonemotret" aria-label="Instagram @kaonemotret" title="@kaonemotret" target="_blank" rel="noopener" data-testid="social-instagram-kaonemotret">
-          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-          <span>@kaonemotret</span>
-        </a>
-        <a href="https://instagram.com/bertaut.ids" aria-label="Instagram @bertaut.ids" title="@bertaut.ids" target="_blank" rel="noopener" data-testid="social-instagram-bertaut-ids">
-          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-          <span>@bertaut.ids</span>
-        </a>
-        <a href="https://instagram.com/buktisarjana" aria-label="Instagram @buktisarjana" title="@buktisarjana" target="_blank" rel="noopener" data-testid="social-instagram-buktisarjana">
-          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
-          <span>@buktisarjana</span>
-        </a>
-      </div>
       <div class="footer-simple">
         <a href="#beranda" class="logo" data-testid="footer-logo-link">
           <span class="logo-badge">K</span>
