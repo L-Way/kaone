@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Resource hints: buka koneksi ke domain pihak ketiga LEBIH AWAL (DNS +
+     TLS handshake) supaya saat script/gambar dari domain ini benar-benar
+     dibutuhkan, tidak perlu menunggu proses koneksi dari nol. Tidak
+     mengunduh apa pun, jadi aman dan tidak menambah beban halaman. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://ptaewptlwzdxcghdjdra.supabase.co" crossorigin>
+<link rel="preconnect" href="https://gyleppavsgbtrlgbyztv.supabase.co" crossorigin>
+<link rel="preconnect" href="https://www.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://drive.google.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+<!-- Google Analytics 4 (GA4) — mencatat jumlah pengunjung, halaman yang
+     dilihat, dan sumber trafik. Data bisa dilihat di analytics.google.com. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VE7ZM5MVZD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-VE7ZM5MVZD');
+</script>
+
+<title>Testimoni Klien — Kaone Studio</title>
+
+<!-- Favicon -->
+<!-- Baris rel="icon" file (favicon.svg, favicon-32.png, dst) di bawah ini
+     mengasumsikan Anda sudah/akan mengekspor file favicon sendiri ke server.
+     Selama file-file itu belum ada, browser akan memakai favicon SVG inline
+     bertema kamera + atap adat Batak di bawah (dekat penutup </head>), jadi
+     tampilannya tetap sudah berganti. Kalau nanti mau file fisik yang sama
+     persis, ekspor ulang SVG inline itu (cari komentar "Favicon baru") ke
+     favicon.ico / favicon-32.png / favicon-16.png / apple-touch-icon.png /
+     icon-192.png lalu timpa file lama dengan nama yang sama. -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+<!-- ===== META SEO DASAR =====
+     Ganti "https://kaone.web.id/" di bawah dengan domain asli
+     begitu situs ini sudah online. -->
+<meta name="description" content="Baca testimoni klien Kaone Studio dan bagikan pengalaman Anda menggunakan jasa fotografi, videografi, make-up, rental gaun, dan undangan digital di Padang Lawas Utara.">
+<meta name="keywords" content="fotografer Padang Lawas Utara, foto wedding Portibi, foto adat Batak, foto prewedding Padang Lawas Utara, foto graduation wisuda, rental gaun Padang Lawas Utara, jasa foto pernikahan adat Batak, fotografer paluta, prewedding paluta, videografer paluta, Kaone Studio">
+<meta name="author" content="Kaone Studio">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kaone.web.id/testimoni">
+
+<!-- Open Graph (Facebook, WhatsApp, dll) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaone Studio">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Testimoni Klien — Kaone Studio">
+<meta property="og:description" content="Sudah pernah menggunakan jasa Kaone Studio? Baca testimoni klien lain atau bagikan pengalaman Anda sendiri.">
+<meta property="og:url" content="https://kaone.web.id/testimoni">
+<meta property="og:image" content="https://kaone.web.id/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1500">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Testimoni Klien — Kaone Studio">
+<meta name="twitter:description" content="Sudah pernah menggunakan jasa Kaone Studio? Baca testimoni klien lain atau bagikan pengalaman Anda sendiri.">
+<meta name="twitter:image" content="https://kaone.web.id/og-image.jpg">
+
+<!-- Structured Data (schema.org) untuk Google -->
+<!-- PENTING soal kecepatan halaman: script ini dimuat "async" (bukan tanpa
+     atribut) supaya BUKAN render-blocking — browser tetap lanjut mem-parse
+     sisa <head> dan <body> sambil file ini diunduh di belakang layar.
+     Fetch konten admin tetap dimulai sedini mungkin lewat event "load" di
+     bawah, jadi perilakunya sama seperti sebelumnya, hanya saja tidak lagi
+     menahan tampilan pertama halaman. -->
+<script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" id="supabaseCdnScript"></script>
+<script>
+  /* =========================================================================
+     KONTEN DINAMIS DARI PANEL ADMIN (lihat admin.html)
+     -------------------------------------------------------------------------
+     Kredensial di bawah ini adalah project Supabase khusus untuk KONTEN
+     WEBSITE (teks, link folder Google Drive, posisi foto) — beda dari
+     project Supabase testimoni yang sudah ada sebelumnya. Aman dipakai di
+     sisi client karena hanya "anon key" (bukan service role), dan akses
+     tulis/baca diatur lewat Row Level Security di Supabase.
+     Mulai fetch konten SEDINI MUNGKIN (paralel dengan parsing halaman)
+     supaya begitu skrip utama di bawah siap merender, konten dari admin
+     (kalau ada) sudah datang atau segera menyusul. */
+  window.KAONE_ADMIN_SUPABASE_URL = "https://ptaewptlwzdxcghdjdra.supabase.co";
+  window.KAONE_ADMIN_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0YWV3cHRsd3pkeGNnaGRqZHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzU5MzUsImV4cCI6MjEwNDY1MTkzNX0.tESXguqZ2J-4iLZ4LdbK4xSgjE6gBkKf_L8IUOYDDYY";
+  window.KAONE_CONTENT_TABLE = "kaone_site_content";
+  window.__kaoneSiteConfigPromise = new Promise(function(resolve){
+    async function fetchConfig(){
+      try{
+        if(!window.supabase || typeof window.supabase.createClient !== "function"){ resolve(null); return; }
+        var client = window.supabase.createClient(window.KAONE_ADMIN_SUPABASE_URL, window.KAONE_ADMIN_SUPABASE_ANON_KEY);
+        window.kaoneAdminClient = client;
+        var res = await client.from(window.KAONE_CONTENT_TABLE).select("content").eq("id", 1).maybeSingle();
+        if(res.error){ console.warn("Konten admin belum bisa dimuat:", res.error.message || res.error); resolve(null); return; }
+        resolve((res.data && res.data.content) ? res.data.content : null);
+      }catch(err){
+        console.warn("Konten admin belum bisa dimuat:", err);
+        resolve(null);
+      }
+    }
+    var cdn = document.getElementById("supabaseCdnScript");
+    if(window.supabase){ fetchConfig(); }
+    else{
+      cdn.addEventListener("load", fetchConfig);
+      cdn.addEventListener("error", function(){ resolve(null); });
+    }
+  });
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Kaone Studio",
+  "image": "https://kaone.web.id/og-image.jpg",
+  "description": "Jasa fotografi Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak (Patuaekkon, Margondang, Mangayun/Aqiqah) di Padang Lawas Utara.",
+  "telephone": "+6285117071704",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Aek Haruaya",
+    "addressLocality": "Portibi",
+    "addressRegion": "Sumatera Utara",
+    "addressCountry": "ID"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 1.4586592746408342,
+    "longitude": 99.644089
+  },
+  "url": "https://kaone.web.id/",
+  "priceRange": "$$",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "sameAs": [
+    "https://instagram.com/kaonestudio",
+    "https://instagram.com/kaonemotret",
+    "https://instagram.com/bertaut.ids",
+    "https://instagram.com/buktisarjana"
+  ]
+}
+</script>
+
+<!-- Favicon baru: kamera dengan aksen atap runcing ala rumah adat Batak (gonjong),
+     lebih mencerminkan identitas "fotografer wedding & adat Batak" dibanding
+     motif kompas polos sebelumnya. -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='6' fill='%23c6a15b'/%3E%3Ccircle cx='71' cy='42' r='3' fill='%23c6a15b'/%3E%3C/svg%3E">
+<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='6' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='6'/%3E%3Ccircle cx='50' cy='57' r='7' fill='%23c6a15b'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2315110d'/%3E%3Cpath d='M40 34 L40 22 L50 12 L60 22 L60 34 Z' fill='none' stroke='%23c6a15b' stroke-width='5' stroke-linejoin='round'/%3E%3Crect x='16' y='34' width='68' height='44' rx='9' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='15' fill='none' stroke='%23c6a15b' stroke-width='5'/%3E%3Ccircle cx='50' cy='57' r='6' fill='%23c6a15b'/%3E%3Ccircle cx='71' cy='42' r='3' fill='%23c6a15b'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B0C0E">
+<style>
+  /* ===== Posisi foto: desktop vs HP =====
+     Diisi lewat panel admin (media.hero.pos.desktop / .mobile, begitu juga
+     manifesto). Mobile-first: secara default halaman memakai posisi "mobile",
+     lalu begitu lebar layar melewati breakpoint yang sama dengan breakpoint
+     tampilan desktop situs ini (760px), otomatis beralih ke posisi
+     "desktop" — murni lewat cascade CSS, tanpa listener resize di JS. */
+  :root{
+    --hero-pos-x:var(--hero-pos-x-mobile, center);
+    --hero-pos-y:var(--hero-pos-y-mobile, 22%);
+    --manifesto-pos-x:var(--manifesto-pos-x-mobile, center);
+    --manifesto-pos-y:var(--manifesto-pos-y-mobile, center);
+  }
+  @media (min-width:761px){
+    :root{
+      --hero-pos-x:var(--hero-pos-x-desktop, center);
+      --hero-pos-y:var(--hero-pos-y-desktop, 22%);
+      --manifesto-pos-x:var(--manifesto-pos-x-desktop, center);
+      --manifesto-pos-y:var(--manifesto-pos-y-desktop, center);
+    }
+  }
+</style>
+<style>
+  /* ===== Font lokal (Fontsource, self-hosted) — tanpa CDN, tanpa gangguan muat ===== */
+  /* Lora — suara editorial/emosional: judul besar, nama brand, nomor bab, marquee */
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/lora-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/lora-latin-500-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:normal; font-weight:600; font-display:swap; src:url('fonts/lora-latin-600-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:400; font-display:swap; src:url('fonts/lora-latin-400-italic.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:500; font-display:swap; src:url('fonts/lora-latin-500-italic.woff2') format('woff2'); }
+  @font-face{ font-family:'Lora'; font-style:italic; font-weight:600; font-display:swap; src:url('fonts/lora-latin-600-italic.woff2') format('woff2'); }
+  /* DM Sans — suara naratif: paragraf & deskripsi, ringan dan lapang */
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:300; font-display:swap; src:url('fonts/dm-sans-latin-300-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/dm-sans-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'DM Sans'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/dm-sans-latin-500-normal.woff2') format('woff2'); }
+  /* JetBrains Mono — suara teknis/arsip: label kapital, metadata, nomor telepon */
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:300; font-display:swap; src:url('fonts/jetbrains-mono-latin-300-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:400; font-display:swap; src:url('fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
+  @font-face{ font-family:'JetBrains Mono'; font-style:normal; font-weight:500; font-display:swap; src:url('fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2'); }
+</style>
+<style>
+  :root{
+    /* ===== Tier 1 — raw palette (deliberately narrow) ===== */
+    --c-obsidian:#0B0C0E;      /* latar utama halaman */
+    --c-panel:#141518;         /* latar kartu & lightbox */
+    --c-card-dark:#101114;     /* kartu info kontak */
+    --c-section-alt:#0D0E11;   /* manifesto & kontak (pemisah irama) */
+    --c-gold:#D4AF37;          /* emas champagne — aksen utama, tombol, label */
+    --c-gold-light:#E6C65C;    /* emas terang — kata miring di judul, hover */
+    --c-gold-pale:#F3D368;     /* emas pudar — teks lencana kecil */
+    --c-gold-muted:#8a7143;    /* emas redup — highlight seleksi teks */
+    --c-bone:#F5F5F7;          /* putih tulang — teks utama */
+    --c-gray-1:#A1A1AA;        /* teks sekunder — tingkat 1 (paling terang) */
+    --c-gray-2:#9CA3AF;        /* teks sekunder — tingkat 2 (default) */
+    --c-gray-3:#82828A;        /* teks sekunder — tingkat 3 (paling redup), dinaikkan agar tetap ≥4.5:1 di atas latar obsidian */
+    --c-border:rgba(255,255,255,0.1); /* garis batas tipis antar elemen */
+    --c-wa-green:#25D366;      /* khusus tombol WhatsApp — satu-satunya hijau di halaman */
+    --c-wa-ink:#0b1f14;        /* teks di atas tombol WhatsApp */
+    --c-destructive:#e08a7d;   /* status error, di luar sistem emas/obsidian */
+
+    /* ===== Tier 2 — token semantik (memetakan palet mentah ke peran) ===== */
+    --background:var(--c-obsidian);
+    --foreground:var(--c-bone);
+    --card:var(--c-panel);
+    --card-alt:var(--c-card-dark);
+    --section-alt:var(--c-section-alt);
+    --primary:var(--c-gold);
+    --primary-foreground:var(--c-obsidian);
+    --accent:var(--c-gold-light);
+    --badge:var(--c-gold-pale);
+    --selection:var(--c-gold-muted);
+    --muted-foreground:var(--c-gray-2);
+    --border:var(--c-border);
+    --ring:var(--c-gold);
+    --success:var(--c-wa-green);
+    --success-foreground:var(--c-wa-ink);
+    --destructive:var(--c-destructive);
+    --shadow:0 20px 50px rgba(0,0,0,0.45);
+
+    /* ===== Sistem radius — satu variabel dasar, diskalakan untuk keluarga "wadah konten" ===== */
+    --radius:10px;
+    --radius-sm:calc(var(--radius) * 0.6);   /* 6px  — elemen kecil (outline fokus, dsb) */
+    --radius-md:calc(var(--radius) * 0.8);   /* 8px  — wadah kecil */
+    --radius-xl:calc(var(--radius) * 1.2);   /* 12px — kartu standar */
+    --radius-2xl:calc(var(--radius) * 1.6);  /* 16px — kartu besar/menonjol */
+    --radius-full:999px;                     /* pil sempurna — elemen aksi */
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  /* scroll-behavior native dimatikan: inersia scroll kini dikendalikan
+     Lenis (lihat script sebelum penutup </body>) agar durasi 1.25 detik
+     yang khas tidak tabrakan dengan smooth-scroll bawaan browser. */
+  html{scroll-behavior:auto;}
+  body{
+    margin:0;
+    background:var(--background);
+    color:var(--foreground);
+    font-family:'DM Sans', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Lora', serif;
+    font-weight:500;
+    color:var(--foreground);
+    margin:0;
+    letter-spacing:-.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  picture{display:block; width:100%; height:100%;}
+  ::selection{background:var(--selection);color:var(--background);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  .container{
+    width:100%;
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 clamp(20px,5vw,32px);
+  }
+
+  /* ---------- Ornamental motif (reused deliberately, not scattered) ---------- */
+  .lattice{
+    display:block;
+    width:100%;
+    height:auto;
+    overflow:visible;
+  }
+  .lattice path, .lattice line{
+    stroke:var(--primary);
+    stroke-width:1;
+    fill:none;
+  }
+  .lattice-draw path, .lattice-draw line{
+    stroke-dasharray:400;
+    stroke-dashoffset:400;
+    animation:draw 2.2s var(--ease) forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+
+  /* ================= SPLASH ================= */
+  #splash{
+    position:fixed;
+    inset:0;
+    z-index:110;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 80% 85%, rgba(212,175,55,0.10), transparent 45%),
+      var(--background);
+    transition:opacity 1s var(--ease), visibility 1s var(--ease);
+  }
+  #splash.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+  .splash-particles{position:absolute; inset:0; overflow:hidden; pointer-events:none;}
+  .mote{
+    position:absolute;
+    width:3px;height:3px;
+    border-radius:50%;
+    background:var(--primary);
+    opacity:0;
+    animation:float-up linear infinite;
+  }
+  @keyframes float-up{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:.55; }
+    90%{ opacity:.25; }
+    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
+  }
+
+  .splash-inner{
+    position:relative;
+    text-align:center;
+    padding:20px;
+    max-width:560px;
+  }
+  .splash-mark{
+    width:76px;
+    margin:0 auto 22px;
+    opacity:0;
+    animation:mark-in 1.1s var(--ease) .2s forwards;
+  }
+  @keyframes mark-in{
+    from{ opacity:0; transform:scale(.7) rotate(-8deg);}
+    to{ opacity:1; transform:scale(1) rotate(0deg);}
+  }
+  .splash-mark circle, .splash-mark path{
+    stroke:var(--accent);
+    stroke-width:1.1;
+    fill:none;
+  }
+  .splash-brand{
+    font-size:clamp(2rem, 6vw, 3rem);
+    letter-spacing:.14em;
+    color:var(--foreground);
+    opacity:0;
+    filter:blur(6px);
+    animation:reveal-up 1s var(--ease) .55s forwards;
+  }
+  .splash-brand em{
+    font-style:italic;
+    color:var(--accent);
+  }
+  @keyframes reveal-up{
+    from{ opacity:0; transform:translateY(14px); filter:blur(6px);}
+    to{ opacity:1; transform:translateY(0); filter:blur(0);}
+  }
+  .splash-lattice{
+    width:180px;
+    margin:18px auto;
+    opacity:0;
+    animation:fade-in .8s var(--ease) 1.1s forwards;
+  }
+  @keyframes fade-in{ to{ opacity:1; } }
+  .splash-tagline{
+    font-size:clamp(0.6rem, 2.1vw, 0.82rem);
+    letter-spacing:.05em;
+    color:var(--muted-foreground);
+    white-space:nowrap;
+    margin:0 auto;
+    line-height:1.55;
+    opacity:0;
+    animation:reveal-up 1s var(--ease) 1.25s forwards;
+  }
+  .splash-location{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:14px;
+    font-size:.76rem;
+    letter-spacing:.04em;
+    color:var(--accent);
+    opacity:0;
+    animation:reveal-up 1s var(--ease) 1.4s forwards;
+  }
+  .splash-welcome{
+    margin-top:34px;
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    max-width:48ch;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.5;
+    color:var(--accent);
+    opacity:0;
+    animation:reveal-up 1s var(--ease) 1.55s forwards;
+  }
+  .btn-enter{
+    margin-top:26px;
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 26px;
+    border:1px solid var(--primary);
+    border-radius:var(--radius-full);
+    color:var(--foreground);
+    font-size:.78rem;
+    letter-spacing:.08em;
+    overflow:hidden;
+    opacity:0;
+    animation:reveal-up 1s var(--ease) 1.85s forwards;
+    transition:color .5s var(--ease), border-color .5s var(--ease), letter-spacing .5s var(--ease);
+  }
+  .btn-enter::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:var(--primary);
+    transform:translateX(-101%);
+    transition:transform .55s var(--ease);
+    z-index:-1;
+  }
+  .btn-enter:hover{ color:var(--background); letter-spacing:.12em; }
+  .btn-enter:hover::before{ transform:translateX(0); }
+  .btn-enter svg{width:14px;height:14px;transition:transform .5s var(--ease);}
+  .btn-enter:hover svg{ transform:translateX(4px); }
+
+  /* ripple */
+  .ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    transform:scale(0);
+    animation:ripple-anim .6s var(--ease);
+    pointer-events:none;
+  }
+  @keyframes ripple-anim{ to{ transform:scale(3); opacity:0; } }
+
+  /* ================= MAIN SITE ================= */
+  #site{
+    opacity:0;
+    transition:opacity .9s var(--ease);
+    /* CATATAN PENTING: sengaja TIDAK memakai "transform" di sini (dan di
+       #site.show). Elemen dengan "transform" apa pun (termasuk translateY(0))
+       otomatis menjadi containing block baru bagi semua keturunannya yang
+       "position:fixed" (menu mobile, scrim, lightbox foto, dsb — yang semuanya
+       berada di dalam #site). Akibatnya elemen fixed itu tidak lagi menempel ke
+       layar/viewport, tapi malah "terkunci" ke posisi #site di halaman —
+       persis bug yang membuat menu hamburger muncul terpotong/salah posisi
+       saat halaman sudah discroll ke bawah. Jangan tambahkan transform ke
+       #site lagi kecuali elemen fixed di dalamnya dipindah keluar dari #site. */
+  }
+  #site.show{ opacity:1; }
+  body.locked{ overflow:hidden; height:100vh; }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 clamp(20px,5vw,48px);
+    background:transparent;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    border-bottom:1px solid transparent;
+    transition:background .4s var(--ease), backdrop-filter .4s var(--ease), border-color .4s var(--ease);
+  }
+  header.scrolled{
+    background:rgba(11,12,14,0.8);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-family:'Lora',serif;
+    font-size:1.3rem;
+    letter-spacing:.02em;
+  }
+  .logo svg{width:26px;height:26px;stroke:var(--accent);}
+  .logo-badge{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1px solid var(--primary);
+    font-family:'Lora',serif;
+    font-size:1.02rem;
+    color:var(--accent);
+    flex-shrink:0;
+  }
+  .logo em, .brand-mark em{ font-style:italic; color:var(--accent); }
+  nav.main-nav{
+    display:flex;
+    gap:clamp(18px,3vw,38px);
+  }
+  nav.main-nav a{
+    position:relative;
+    font-family:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:.72rem;
+    font-weight:400;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--muted-foreground);
+    padding:4px 0;
+    transition:color .35s var(--ease);
+  }
+  nav.main-nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0; height:1px;
+    background:var(--accent);
+    transition:width .35s var(--ease);
+  }
+  nav.main-nav a:hover{ color:var(--foreground); }
+  nav.main-nav a:hover::after{ width:100%; }
+
+  .header-cta{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .header-admin-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    color:var(--c-gray-3);
+    opacity:.65;
+    flex-shrink:0;
+    transition:opacity .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .header-admin-link svg{ width:15px; height:15px; }
+  .header-admin-link:hover, .header-admin-link:focus-visible{
+    opacity:1; color:var(--accent); border-color:var(--accent);
+  }
+  @media(max-width:640px){ .header-admin-link{ width:30px; height:30px; } .header-admin-link svg{ width:13px; height:13px; } }
+  .btn-gold{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    background:var(--primary);
+    color:var(--background);
+    font-size:.82rem;
+    letter-spacing:.05em;
+    overflow:hidden;
+    isolation:isolate;
+    border-radius:var(--radius-full);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .btn-gold:hover{
+    transform:scale(1.05);
+    box-shadow:0 10px 26px rgba(212,175,55,0.35);
+  }
+  .btn-gold:active{ transform:scale(.98); }
+  .btn-gold svg{width:15px;height:15px;}
+
+  .hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    width:26px;
+    padding:6px 0;
+  }
+  .hamburger span{
+    height:1px;
+    background:var(--accent);
+    transition:transform .35s var(--ease), opacity .35s var(--ease);
+  }
+  .hamburger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2){ opacity:0; }
+  .hamburger.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+  .mobile-nav{
+    position:fixed;
+    inset:0 0 0 auto;
+    width:min(78vw,320px);
+    height:100vh;
+    background:var(--card);
+    border-left:1px solid var(--border);
+    z-index:60;
+    transform:translateX(100%);
+    transition:transform .5s var(--ease);
+    padding:90px 32px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+  .mobile-nav.open{ transform:translateX(0); }
+  .mobile-nav a{ font-size:1.1rem; font-family:'Lora',serif; color:var(--foreground); }
+  .scrim{
+    position:fixed; inset:0; background:rgba(0,0,0,0.55);
+    z-index:55; opacity:0; visibility:hidden;
+    transition:opacity .5s var(--ease), visibility .5s var(--ease);
+  }
+  .scrim.open{ opacity:1; visibility:visible; }
+
+  /* ---------- Hero (full-bleed photo) ---------- */
+  .hero{
+    position:relative;
+    isolation:isolate;
+    min-height:92vh;
+    display:flex;
+    align-items:flex-end;
+    padding:clamp(90px,14vw,140px) 0 clamp(140px,16vw,180px);
+    overflow:hidden;
+    perspective:1400px;
+  }
+  .hero-media{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .hero-media img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:var(--hero-pos-x, center) var(--hero-pos-y, 22%);
+    transform-origin:center 30%;
+    opacity:0;
+    transition:opacity 1.8s var(--ease);
+    will-change:opacity;
+  }
+  .hero-media img.is-active{ opacity:1; }
+  /* Scrim 2 lapis: (1) radial gelap yang menciptakan efek sorotan/spotlight
+     dramatis di sekitar pusat foto, (2) gradien dari bawah agar teks di
+     atasnya selalu terbaca. Lapisan linear tambahan di sisi kiri menjaga
+     kontras untuk konten yang rata kiri. */
+  .hero-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 58% 38%, rgba(11,12,14,0.28) 0%, rgba(11,12,14,0.08) 34%, rgba(11,12,14,0.72) 100%),
+      linear-gradient(100deg, rgba(11,12,14,0.94) 4%, rgba(11,12,14,0.6) 34%, rgba(11,12,14,0.16) 58%, rgba(11,12,14,0.52) 100%),
+      linear-gradient(0deg, rgba(11,12,14,0.9) 0%, rgba(11,12,14,0) 36%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:1;
+    max-width:640px;
+  }
+  .hero-eyebrow-line{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .hero-eyebrow-line span{
+    font-size:.82rem;
+    letter-spacing:.06em;
+    color:var(--accent);
+  }
+  .hero-eyebrow-line i{
+    display:block;
+    width:44px;height:1px;
+    background:var(--primary);
+  }
+  .hero-tagline{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:22px;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero-tagline{ animation:heroFadeUp .8s var(--ease) .15s forwards; }
+  /* Stagger baris judul (nth-child 1–3): berjeda persis 0.16 detik antar baris */
+
+  .hero h1{
+    font-size:clamp(3rem, 6vw, 72px);
+    line-height:1.06;
+    max-width:14ch;
+  }
+  .hero h1 .accent{ font-style:italic; color:var(--accent); }
+  .hero h1 .line-mask{
+    display:block;
+    overflow:hidden;
+  }
+  .hero h1 .line-inner{
+    display:block;
+    transform:translateY(112%);
+    will-change:transform;
+  }
+  #site.show .hero h1 .line-mask:nth-child(1) .line-inner{ animation:heroLineUp .9s var(--ease) .16s forwards; }
+  #site.show .hero h1 .line-mask:nth-child(2) .line-inner{ animation:heroLineUp .9s var(--ease) .32s forwards; }
+  #site.show .hero h1 .line-mask:nth-child(3) .line-inner{ animation:heroLineUp .9s var(--ease) .48s forwards; }
+
+  @keyframes heroFadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes heroLineUp{
+    from{ transform:translateY(112%); }
+    to{ transform:translateY(0); }
+  }
+
+  .hero p{
+    margin-top:22px;
+    max-width:44ch;
+    color:var(--muted-foreground);
+    line-height:1.75;
+    font-size:1.02rem;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero p{ animation:heroFadeUp .8s var(--ease) .7s forwards; }
+
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero-actions{ animation:heroFadeUp .8s var(--ease) 1.2s forwards; }
+
+  .hero-actions .btn-gold svg{ transition:transform .3s var(--ease); }
+  .hero-actions .btn-gold:hover svg{ transform:translateY(2px); }
+
+  .btn-outline{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 26px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-size:.85rem;
+    letter-spacing:.04em;
+    color:var(--foreground);
+    transition:border-color .3s var(--ease), background .3s var(--ease);
+  }
+  .btn-outline svg{ width:15px; height:15px; flex-shrink:0; }
+  .btn-outline:hover{ border-color:var(--primary); background:rgba(212,175,55,0.08); }
+
+  .hero-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:38px;
+    opacity:0;
+    transform:translateY(16px);
+  }
+  #site.show .hero-badges{ animation:heroFadeUp .8s var(--ease) 1.7s forwards; }
+  .hero-badge{
+    display:inline-flex;
+    align-items:baseline;
+    gap:7px;
+    padding:11px 22px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-size:.68rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--muted-foreground);
+    background:rgba(11,12,14,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  .hero-badge strong{
+    font-family:'Lora',serif;
+    font-size:1.15rem;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--badge);
+    font-weight:500;
+  }
+
+  .hero-float-card{
+    position:absolute;
+    z-index:1;
+    right:clamp(20px,5vw,48px);
+    bottom:clamp(28px,5vw,54px);
+    width:210px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    background:rgba(20,21,24,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transform-style:preserve-3d;
+    /* Tidak pakai CSS transition di sini: tilt kini dihaluskan lewat
+       simulasi pegas per-frame di JS (stiffness 120, damping 18),
+       supaya tidak ada dua sistem easing yang saling tabrakan. */
+    will-change:transform;
+  }
+  .hero-float-card img{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    filter:saturate(1.05) brightness(1.02);
+  }
+  .hero-float-card-body{
+    padding:12px 14px 16px;
+  }
+  .hero-float-card-tag{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:5px;
+  }
+  .hero-float-card-tag svg{ width:12px;height:12px; flex-shrink:0; }
+  .hero-float-card-title{
+    font-size:.95rem;
+    color:var(--foreground);
+    line-height:1.3;
+  }
+
+  /* ---------- Indikator scroll (kapsul + titik memantul) ---------- */
+  .scroll-indicator{
+    position:absolute;
+    left:50%;
+    bottom:clamp(20px,3.5vw,32px);
+    transform:translateX(-50%);
+    z-index:1;
+    width:26px;
+    height:42px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    display:flex;
+    justify-content:center;
+    padding-top:8px;
+    opacity:0;
+  }
+  /* Elemen terakhir dalam koreografi bertahap: mencapai 2.3 detik */
+  #site.show .scroll-indicator{ animation:heroFadeUp .8s var(--ease) 2.3s forwards; }
+  .scroll-dot{
+    width:4px;height:4px;
+    border-radius:50%;
+    background:var(--primary);
+    animation:scrollDotBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDotBounce{
+    0%,100%{ transform:translateY(0); opacity:1; }
+    50%{ transform:translateY(14px); opacity:.35; }
+  }
+
+  /* ---------- Section shell ---------- */
+  section{ position:relative; }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-bottom:clamp(30px,5vw,52px);
+  }
+  .section-head h2{
+    font-size:clamp(2.25rem, 3.6vw, 3rem);
+    max-width:16ch;
+  }
+  .section-head p{
+    max-width:38ch;
+    color:var(--muted-foreground);
+    line-height:1.75;
+    font-size:.95rem;
+  }
+  .divider-lattice{
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    opacity:.7;
+  }
+
+  /* ---------- Services / Galleries ---------- */
+  #layanan{ padding:clamp(70px,10vw,120px) 0; }
+
+  .service{
+    border-top:1px solid var(--border);
+  }
+  .service:last-child{ border-bottom:1px solid var(--border); }
+
+  .service-media{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .service-media img{
+    width:100%;height:100%;object-fit:cover;
+    transform:scale(1.02);
+    filter:saturate(.9) brightness(.82);
+    transition:transform .9s var(--ease), filter .6s var(--ease);
+  }
+  .service:hover .service-media img{ transform:scale(1.06); filter:saturate(1) brightness(.92); }
+  .service-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 50%, rgba(11,12,14,0.82) 100%);
+  }
+  .service-caption{
+    position:absolute;
+    left:clamp(18px,3vw,28px);
+    right:clamp(18px,3vw,28px);
+    bottom:clamp(14px,2.5vw,22px);
+    z-index:2;
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+  }
+  .service-index{
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--accent);
+    flex-shrink:0;
+  }
+  .service-title{
+    font-size:clamp(1.7rem,3.6vw,2.5rem);
+  }
+
+  .service-body{
+    padding:clamp(20px,3.5vw,30px) 0 4px;
+  }
+  .service-desc{
+    color:var(--muted-foreground);
+    font-size:.92rem;
+    max-width:58ch;
+    line-height:1.72;
+  }
+  .service-toggle{
+    margin-top:18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 22px;
+    border:1px solid var(--border);
+    font-size:.8rem;
+    letter-spacing:.03em;
+    color:var(--accent);
+    white-space:nowrap;
+    min-height:44px;
+    transition:border-color .35s var(--ease), background .35s var(--ease);
+  }
+  .service-toggle:hover, .service-toggle:active{
+    border-color:var(--primary);
+    background:rgba(212,175,55,0.08);
+  }
+  .service-toggle svg{
+    width:12px;height:12px;
+    flex-shrink:0;
+    transition:transform .45s var(--ease);
+  }
+  .service[data-open="true"] .service-toggle svg{ transform:rotate(180deg); }
+
+  .service-panel{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .6s var(--ease);
+  }
+  .service[data-open="true"] .service-panel{ grid-template-rows:1fr; }
+  .service-panel-inner{ overflow:hidden; }
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:8px;
+    padding-bottom:clamp(24px,4vw,44px);
+  }
+  .gallery-item{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--card);
+    cursor:zoom-in;
+  }
+  .gallery-item img{
+    width:100%;height:100%;object-fit:cover;
+    transform:scale(1.02);
+    transition:transform .7s var(--ease), filter .5s var(--ease);
+    filter:saturate(.92) brightness(.92);
+  }
+  .gallery-item:hover img{
+    transform:scale(1.1);
+    filter:saturate(1) brightness(1);
+  }
+  .gallery-item::after{
+    content:"";
+    position:absolute; inset:0;
+    border:1px solid transparent;
+    transition:border-color .4s var(--ease);
+  }
+  .gallery-item:hover::after{ border-color:var(--primary); }
+
+  .service-media.service-media--plain{
+    aspect-ratio:auto;
+    min-height:auto;
+    display:flex;
+    align-items:flex-end;
+    padding:clamp(28px,4.5vw,40px) 0 clamp(18px,3vw,26px);
+    background:none;
+  }
+  .service-media.service-media--plain::after{ content:none; }
+  .service-media--plain .service-caption{
+    position:static;
+    left:auto;right:auto;bottom:auto;
+  }
+
+  .service-footer{
+    padding:4px 0 clamp(30px,4.5vw,44px);
+  }
+  .service-footer .btn-wa{
+    width:100%;
+    max-width:340px;
+  }
+
+  /* ---------- Marquee strip (Pita Marquee Editorial) ----------
+     Strip tipis, garis pembatas putih samar, teks serif miring besar
+     yang nyaris tenggelam di latar gelap — menyala emas saat disentuh.
+     48 detik per putaran penuh, translateX(-50%) atas track yang isinya
+     digandakan 2x (lihat renderMarquee) supaya loop terlihat mulus tanpa
+     patahan/jeda saat kembali ke awal. */
+  .marquee-strip{
+    position:relative;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--card);
+    overflow:hidden;
+    padding:clamp(5px,.8vw,10px) 0;
+  }
+  .marquee-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    animation:marquee-scroll 48s linear infinite;
+    will-change:transform;
+  }
+  .marquee-track:hover{ animation-play-state:paused; }
+  .marquee-item{
+    display:inline-block;
+    font-family:'Lora', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(.62rem,1.3vw,.9rem);
+    letter-spacing:.01em;
+    color:rgba(156,163,175,0.22);
+    white-space:nowrap;
+    transition:color .5s var(--ease), text-shadow .5s var(--ease);
+    cursor:default;
+  }
+  .marquee-item:hover{
+    color:var(--accent);
+    text-shadow:0 0 18px rgba(212,175,55,0.4), 0 0 46px rgba(212,175,55,0.16);
+  }
+  .marquee-sep{
+    display:inline-block;
+    margin:0 clamp(7px,1vw,16px);
+    font-size:.5em;
+    color:var(--primary);
+    opacity:.7;
+    vertical-align:middle;
+  }
+  @keyframes marquee-scroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+
+  /* ---------- Reveal-on-scroll (memudar naik saat masuk viewport) ---------- */
+  .reveal-up{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+    transition-delay:calc(var(--i,0) * 70ms);
+  }
+  .reveal-up.is-visible{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Galeri Karya (editorial) ---------- */
+  #galeri{
+    padding:clamp(70px,10vw,120px) 0;
+  }
+  /* Cahaya spotlight emas samar jatuh dari atas seksi — dipakai ulang di Galeri & Layanan */
+  .spotlight{
+    position:relative;
+    overflow:hidden;
+  }
+  .spotlight::before{
+    content:"";
+    position:absolute;
+    top:-160px; left:50%;
+    width:min(980px,140%);
+    height:460px;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 42%, transparent 72%);
+    filter:blur(6px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .spotlight .container{ position:relative; z-index:1; }
+  .section-eyebrow-num{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  .section-head h2 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--accent);
+  }
+
+  /* Kartu kategori — grid dua kolom, tiap kartu mewakili satu kategori
+     acara (Wedding, Patuaekkon, dst). Lencana jumlah foto di kiri-atas,
+     judul + tombol "Lihat Galeri" menyatu di bawah lewat gradasi gelap
+     di atas foto, selalu terlihat (tidak menunggu hover). */
+  .gallery-cat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:clamp(18px,3vw,28px);
+  }
+  .cat-card{
+    position:relative;
+    display:block;
+    width:100%;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    aspect-ratio:4/3;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--border);
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .cat-card:hover, .cat-card:focus-visible{
+    border-color:var(--primary);
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px rgba(212,175,55,0.14);
+  }
+  .cat-card-media{ position:absolute; inset:0; overflow:hidden; }
+  .cat-card-media img{
+    position:absolute;
+    inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(.9) brightness(.72);
+    opacity:0;
+    transform:scale(1);
+    transition:opacity 2.8s cubic-bezier(.45,0,.2,1), filter .6s var(--ease);
+    /* Efek Ken Burns (zoom in - zoom out pelan). Animasinya SELALU
+       ter-attach ke tiap foto (tidak pernah dilepas), tapi cuma DIJALANKAN
+       (animation-play-state:running) pada foto yang sedang aktif — foto
+       lain di-"pause" (bukan dihentikan/reset) supaya saat memudar KELUAR
+       tidak ada skala yang loncat balik ke ukuran normal.
+       Untuk foto yang baru MUNCUL, animasinya sengaja di-restart paksa
+       dari awal lewat JS (lihat startCatCardSlideshows) tiap kali dia
+       jadi aktif, supaya selalu tumbuh pelan dari ukuran normal — bukan
+       muncul dalam kondisi sudah separuh ter-zoom dari giliran
+       sebelumnya, yang sebelumnya bikin transisi terasa mendadak/tersentak.
+       Durasi tiap foto diberi variasi acak lewat inline style (lihat
+       renderGalleryCategories), supaya tiap foto "bernapas" dengan
+       ritme sendiri-sendiri, tidak seragam. */
+    animation-name:catCoverKenBurns;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count:infinite;
+    animation-direction:alternate;
+    animation-play-state:paused;
+  }
+  @keyframes catCoverKenBurns{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.1); }
+  }
+  .cat-card-media img.is-active{
+    opacity:1;
+    animation-play-state:running;
+    will-change:transform, opacity;
+  }
+  .cat-card:hover .cat-card-media img,
+  .cat-card:focus-visible .cat-card-media img{
+    filter:saturate(1) brightness(.8);
+  }
+  .cat-card-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 28%, rgba(11,12,14,0.92) 100%);
+    pointer-events:none;
+  }
+  .cat-card-badge{
+    position:absolute;
+    top:18px; left:18px;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--badge);
+    background:rgba(11,12,14,0.6);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  .cat-card-badge svg{ width:14px; height:14px; stroke:currentColor; flex-shrink:0; }
+  .cat-card-info{
+    position:absolute; left:0; right:0; bottom:0;
+    z-index:1;
+    padding:clamp(18px,3vw,28px);
+  }
+  .cat-card-info h3{
+    font-size:clamp(1.4rem,2.8vw,1.9rem);
+    color:var(--foreground);
+    margin:0 0 14px;
+    line-height:1.2;
+  }
+  .cat-card-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border:1px solid var(--primary);
+    border-radius:var(--radius-full);
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:var(--accent);
+    background:rgba(11,12,14,0.35);
+    transition:gap .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+  }
+  .cat-card-cta svg{ width:14px; height:14px; stroke:currentColor; transition:transform .3s var(--ease); }
+  .cat-card:hover .cat-card-cta,
+  .cat-card:focus-visible .cat-card-cta{
+    gap:12px;
+    background:var(--primary);
+    color:var(--background);
+  }
+  @media (max-width:760px){
+    .gallery-cat-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- Lightbox 2 (galeri editorial: foto + panel cerita) ---------- */
+  .lightbox2{
+    position:fixed; inset:0; z-index:120;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(11,12,14,0.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    opacity:0; visibility:hidden;
+    transition:opacity .45s var(--ease), visibility .45s var(--ease);
+  }
+  .lightbox2.open{ opacity:1; visibility:visible; }
+  .lightbox2-panel{
+    position:relative;
+    max-width:92vw;
+    max-height:88vh;
+    transform:scale(.94);
+    opacity:0;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+  }
+  .lightbox2.open .lightbox2-panel{ transform:scale(1); opacity:1; }
+  .lightbox2-media{
+    display:block;
+    line-height:0;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--background);
+    box-shadow:var(--shadow);
+  }
+  .lightbox2-media img{
+    display:block;
+    max-width:92vw;
+    max-height:88vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+  }
+  .lightbox2-close{
+    position:absolute; top:20px; right:20px; z-index:3;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border);
+    background:rgba(11,12,14,0.55);
+    border-radius:50%;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .lightbox2-close:hover{ border-color:var(--primary); transform:rotate(90deg); }
+  .lightbox2-close svg{ width:16px; height:16px; }
+
+  @media (max-width:760px){
+    .lightbox2{ padding:14px; }
+    .lightbox2-close{ top:14px; right:14px; width:38px; height:38px; }
+  }
+
+  /* ---------- Modal Galeri Kategori (grid foto per kategori) ---------- */
+  .cat-modal{
+    position:fixed; inset:0; z-index:110;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(11,12,14,0.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    opacity:0; visibility:hidden;
+    transition:opacity .45s var(--ease), visibility .45s var(--ease);
+  }
+  .cat-modal.open{ opacity:1; visibility:visible; }
+  .cat-modal-panel{
+    position:relative;
+    width:min(1100px,94vw);
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    transform:scale(.94);
+    opacity:0;
+    transition:transform .45s var(--ease), opacity .45s var(--ease);
+  }
+  .cat-modal.open .cat-modal-panel{ transform:scale(1); opacity:1; }
+  .cat-modal-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    padding:clamp(22px,3.4vw,34px) clamp(22px,3.4vw,34px) clamp(18px,2.6vw,26px);
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+  }
+  .cat-modal-eyebrow{
+    display:block;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.7rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+  .cat-modal-head h3{ font-size:clamp(1.6rem,3vw,2.1rem); margin:0; line-height:1.2; }
+  .cat-modal-close{
+    flex-shrink:0;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border);
+    background:transparent;
+    border-radius:50%;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .cat-modal-close:hover{ border-color:var(--primary); transform:rotate(90deg); }
+  .cat-modal-close svg{ width:16px; height:16px; }
+  .cat-modal-grid{
+    padding:clamp(20px,3.4vw,34px);
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:clamp(18px,2.6vw,26px);
+  }
+  .cat-photo-card{
+    display:block;
+    width:100%;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    text-align:left;
+    background:none;
+    cursor:pointer;
+  }
+  .cat-photo-media{
+    display:block;
+    position:relative;
+    aspect-ratio:4/3;
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--background);
+  }
+  .cat-photo-media img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(.92) brightness(.82);
+    transition:transform .6s var(--ease), filter .5s var(--ease);
+  }
+  .cat-photo-card:hover .cat-photo-media img,
+  .cat-photo-card:focus-visible .cat-photo-media img{
+    transform:scale(1.06);
+    filter:saturate(1) brightness(.9);
+  }
+  .cat-photo-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 45%, rgba(11,12,14,0.92) 100%);
+    pointer-events:none;
+  }
+  .cat-photo-cap{
+    position:absolute; left:0; right:0; bottom:0;
+    z-index:1;
+    padding:16px 18px;
+  }
+  .cat-photo-cap h4{ font-size:1.05rem; color:var(--foreground); margin:0 0 4px; line-height:1.25; }
+  .cat-photo-cap span{ font-size:.74rem; color:var(--muted-foreground); }
+
+  @media (max-width:760px){
+    .cat-modal{ padding:14px; }
+    .cat-modal-panel{ max-height:92vh; }
+    .cat-modal-grid{ grid-template-columns:1fr; }
+    .cat-modal-close{ width:38px; height:38px; }
+  }
+
+  /* ---------- Manifesto block ---------- */
+  #manifesto{
+    padding:clamp(70px,10vw,120px) 0;
+    background:var(--section-alt);
+    border-top:1px solid var(--border);
+  }
+  .manifesto-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:clamp(40px,7vw,90px);
+    align-items:start;
+  }
+  /* Kolom kiri: judul + potret tetap diam (sticky) selagi bab di kanan discroll */
+  .manifesto-sticky-col{ position:relative; }
+  .manifesto-sticky-inner{
+    position:sticky;
+    top:112px;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+  }
+  .manifesto-title{
+    font-size:clamp(1.8rem,3.6vw,2.5rem);
+    max-width:15ch;
+    line-height:1.18;
+  }
+  .manifesto-title em{ font-style:italic; color:var(--accent); }
+  /* Bingkai terpotong berisi potret studio yang bergerak parallax di dalam klipnya sendiri */
+  .manifesto-portrait{
+    position:relative;
+    aspect-ratio:3/4;
+    overflow:hidden;
+    clip-path:polygon(0 0, 100% 0, 100% 84%, 84% 100%, 0 100%);
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .manifesto-portrait::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(13,14,17,0) 45%, rgba(13,14,17,0.6) 100%);
+    pointer-events:none;
+  }
+  .manifesto-portrait img{
+    position:absolute;
+    top:50%; left:0;
+    width:100%;
+    height:132%;
+    object-fit:cover;
+    object-position:var(--manifesto-pos-x, center) var(--manifesto-pos-y, center);
+    transform:translateY(-50%);
+    will-change:transform;
+  }
+  /* Kolom kanan: tiga bab bernomor dipisah garis tipis */
+  .manifesto-chapters{ display:flex; flex-direction:column; }
+  .manifesto-chapter{ padding:clamp(30px,4.5vw,48px) 0; }
+  .manifesto-chapter + .manifesto-chapter{ border-top:1px solid var(--border); }
+  .manifesto-chapter-num{
+    display:block;
+    font-family:'Lora',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(2.8rem,7vw,4.5rem);
+    line-height:1;
+    color:rgba(245,245,247,0.08);
+    margin-bottom:14px;
+    transition:color .5s var(--ease), text-shadow .5s var(--ease);
+  }
+  .manifesto-chapter:hover .manifesto-chapter-num,
+  .manifesto-chapter:focus-within .manifesto-chapter-num{
+    color:var(--accent);
+    text-shadow:0 0 30px rgba(212,175,55,0.45);
+  }
+  .manifesto-chapter h3{
+    font-size:clamp(1.15rem,2.2vw,1.5rem);
+    margin-bottom:12px;
+    max-width:28ch;
+  }
+  .manifesto-chapter p{
+    color:var(--muted-foreground);
+    font-size:.98rem;
+    line-height:1.85;
+    max-width:54ch;
+    margin:0;
+  }
+
+  /* ---------- Service cards ("Lebih dari Sekadar Lensa") ---------- */
+  #layanan{ padding:clamp(70px,10vw,120px) 0; }
+  .svc-cards-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(18px,3vw,28px);
+  }
+  .svc-card{
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    overflow:hidden;
+    background:var(--card);
+    transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .svc-card:focus-visible{
+    border-color:var(--primary);
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px rgba(212,175,55,0.14);
+  }
+  .svc-card-media{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .svc-card-media img{
+    width:100%;height:100%;object-fit:cover;
+    filter:saturate(.92) brightness(.82);
+    transition:transform .8s var(--ease), filter .6s var(--ease);
+  }
+  .svc-card-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,12,14,0) 45%, rgba(11,12,14,0.85) 100%);
+    pointer-events:none;
+  }
+  /* Lencana emas kaca buram di atas foto */
+  .svc-card-badge{
+    position:absolute;
+    top:18px; left:18px;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--badge);
+    background:rgba(11,12,14,0.75);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+  }
+  /* Tombol panah bulat emas: tersembunyi lalu muncul & berputar 45° saat kartu disentuh */
+  .svc-card-arrow{
+    position:absolute;
+    top:18px; right:18px;
+    z-index:1;
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid var(--primary);
+    background:rgba(11,12,14,0.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transform:scale(.7) rotate(0deg);
+    transition:opacity .4s var(--ease), transform .45s var(--ease), background .4s var(--ease);
+  }
+  .svc-card-arrow svg{ width:18px; height:18px; stroke:var(--accent); transition:transform .45s var(--ease); }
+  .svc-card:focus-visible .svc-card-arrow{
+    opacity:1;
+    transform:scale(1) rotate(45deg);
+    background:var(--primary);
+  }
+  .svc-card:focus-visible .svc-card-arrow svg{ stroke:var(--background); }
+  .svc-card-body{
+    padding:clamp(22px,3.5vw,32px);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+  }
+  .svc-card-body svg{ width:26px; height:26px; stroke:var(--accent); margin-bottom:4px; }
+  .svc-card-body h3{ font-size:clamp(1.4rem,2.6vw,1.8rem); }
+  .svc-card-body p{ color:var(--muted-foreground); font-size:.9rem; line-height:1.7; flex:1; margin:0; }
+  .svc-card-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:6px;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.76rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    transition:gap .3s var(--ease), color .3s var(--ease);
+  }
+  .svc-card-cta svg{ width:14px; height:14px; stroke:currentColor; transition:transform .3s var(--ease); }
+
+  /* Animasi hover (kartu terangkat, foto zoom, panah muncul, jarak CTA
+     melebar) SENGAJA cuma dinyalakan lewat "@media (hover:hover)" —
+     yaitu khusus perangkat yang benar-benar punya kursor mouse (laptop/
+     PC/trackpad). Di HP/tablet, kalau dipakai ":hover" biasa, begitu
+     tombol disentuh efeknya suka "nyangkut" tetap aktif karena di layar
+     sentuh tidak ada gerakan kursor yang bisa "menjauh" dari tombol
+     untuk mematikannya lagi. Dengan pembatasan ini, animasinya betul-
+     betul hanya menyala SELAMA kursor ada di atas tombol, dan langsung
+     mati saat kursor menjauh — sesuai perilaku hover yang seharusnya. */
+  @media (hover:hover) and (pointer:fine){
+    .svc-card:hover{
+      border-color:var(--primary);
+      transform:translateY(-4px);
+      box-shadow:0 24px 48px rgba(212,175,55,0.14);
+    }
+    .svc-card:hover .svc-card-media img{ transform:scale(1.08); filter:saturate(1) brightness(.9); }
+    .svc-card:hover .svc-card-arrow{
+      opacity:1;
+      transform:scale(1) rotate(45deg);
+      background:var(--primary);
+    }
+    .svc-card:hover .svc-card-arrow svg{ stroke:var(--background); }
+    .svc-card:hover .svc-card-cta{ gap:13px; color:var(--primary); }
+    /* Efek TAMBAHAN, khusus saat kursor pas persis di atas lingkaran
+       panahnya (bukan cuma di area kartu secara umum): panahnya membesar
+       sedikit lagi + muncul cincin cahaya di sekelilingnya, sebagai umpan
+       balik "ini yang bakal kamu klik". Tetap jalan bareng animasi kartu
+       di atas (yang sudah bikin panahnya kelihatan & berputar), ini cuma
+       penekanan ekstra pas kursor benar-benar di atasnya. */
+    .svc-card-arrow:hover,
+    .svc-card:hover .svc-card-arrow:hover{
+      transform:scale(1.16) rotate(45deg);
+      box-shadow:0 0 0 8px rgba(212,175,55,0.18);
+    }
+  }
+  /* Di HP/tablet (tanpa hover mouse), tetap beri umpan balik singkat
+     selagi tombol DITEKAN (bukan setelah dilepas) supaya tetap terasa
+     interaktif tanpa risiko "nyangkut". */
+  @media (hover:none){
+    .svc-card:active{
+      border-color:var(--primary);
+      transform:translateY(-2px);
+      box-shadow:0 24px 48px rgba(212,175,55,0.14);
+    }
+    .svc-card:active .svc-card-media img{ transform:scale(1.04); filter:saturate(1) brightness(.9); }
+    .svc-card:active .svc-card-arrow{
+      opacity:1;
+      transform:scale(1) rotate(45deg);
+      background:var(--primary);
+    }
+    .svc-card:active .svc-card-arrow svg{ stroke:var(--background); }
+    .svc-card:active .svc-card-cta{ gap:13px; color:var(--primary); }
+  }
+
+  /* ---------- Contact info cards ---------- */
+  .kontak-info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    width:100%;
+    max-width:700px;
+    margin:0 auto;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    overflow:hidden;
+  }
+  .kontak-info-item{
+    padding:26px 18px 4px;
+    text-align:center;
+    background:var(--card-alt);
+  }
+  .kontak-info-item h4{
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.68rem;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+    font-weight:400;
+  }
+  .kontak-info-item p{
+    font-size:.9rem;
+    color:var(--muted-foreground);
+    line-height:1.6;
+    margin:0;
+  }
+
+  /* Book Now button */
+  .btn-wa{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    gap:10px;
+    padding:12px 24px;
+    border:1px solid var(--primary);
+    color:var(--foreground);
+    font-size:.82rem;
+    letter-spacing:.05em;
+    overflow:hidden;
+    isolation:isolate;
+    transition:color .45s var(--ease), border-color .45s var(--ease);
+  }
+  .btn-wa::before{
+    content:"";
+    position:absolute; inset:0;
+    background:var(--primary);
+    transform:translateX(-101%);
+    transition:transform .5s var(--ease);
+    z-index:-1;
+  }
+  .btn-wa:hover{ color:var(--background); }
+  .btn-wa:hover::before{ transform:translateX(0); }
+  .btn-wa svg{ width:15px;height:15px; }
+
+  /* ---------- About / values ---------- */
+  #tentang{
+    padding:clamp(60px,10vw,110px) 0;
+    background:linear-gradient(180deg, var(--card), var(--background));
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(30px,6vw,70px);
+    align-items:center;
+  }
+  .about-copy p{
+    color:var(--muted-foreground);
+    line-height:1.85;
+    font-size:1rem;
+    margin-top:16px;
+  }
+  .values{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .value-row{
+    display:flex;
+    gap:16px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--border);
+  }
+  .value-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .value-row svg{ width:26px;height:26px; flex-shrink:0; stroke:var(--accent); margin-top:2px; }
+  .value-row h3{ font-size:1.2rem; }
+  .value-row p{ color:var(--muted-foreground); font-size:.88rem; margin-top:4px; line-height:1.6; }
+
+  /* ---------- Testimoni ---------- */
+  #testimoni{
+    padding:clamp(60px,10vw,110px) 0;
+    text-align:center;
+    border-top:1px solid var(--border);
+  }
+  #testimoni .section-head{
+    max-width:46ch;
+    margin:0 auto;
+  }
+  .testimoni-form{
+    margin:36px auto 0;
+    max-width:560px;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .form-row{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .form-row label{
+    font-size:.85rem;
+    letter-spacing:.03em;
+    color:var(--accent);
+  }
+  .form-row label .req{ color:var(--primary); margin-left:2px; }
+  .form-row input[type="text"],
+  .form-row select,
+  .form-row textarea{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    color:var(--foreground);
+    font-family:inherit;
+    font-size:.92rem;
+    transition:border-color .3s var(--ease);
+  }
+  .form-row input[type="text"]::placeholder,
+  .form-row textarea::placeholder{ color:var(--muted-foreground); opacity:.8; }
+  .form-row input[type="text"]:focus,
+  .form-row select:focus,
+  .form-row textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+  }
+  .form-row textarea{ resize:vertical; min-height:110px; }
+  .form-row select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c6a15b' stroke-width='1.6'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    background-size:16px;
+  }
+  .form-row select option{ background:var(--card); color:var(--foreground); }
+  .star-rating-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .star-rating{
+    display:flex;
+    flex-direction:row-reverse;
+    justify-content:flex-end;
+    gap:2px;
+  }
+  .star-rating input{
+    position:absolute;
+    opacity:0;
+    width:0;
+    height:0;
+  }
+  .star-rating label{
+    position:relative;
+    display:inline-block;
+    font-size:1.9rem;
+    line-height:1;
+    padding:4px;
+    color:var(--muted-foreground);
+    cursor:pointer;
+    transform:scale(1);
+    transition:color .22s var(--ease), transform .28s cubic-bezier(.34,1.56,.64,1), filter .22s var(--ease);
+  }
+  /* Efek "cascade" — makin jauh dari bintang yang di-hover, makin lambat & kecil responsnya */
+  .star-rating input:checked ~ label,
+  .star-rating:hover label:hover,
+  .star-rating:hover label:hover ~ label{
+    color:var(--primary);
+    filter:drop-shadow(0 0 6px rgba(198,161,91,.55));
+  }
+  .star-rating label:hover{
+    transform:scale(1.32) rotate(-6deg);
+    transition-delay:0s;
+  }
+  .star-rating:hover label:hover ~ label{
+    transform:scale(1.14);
+  }
+  .star-rating input:checked + label{
+    animation:starPop .42s cubic-bezier(.34,1.56,.64,1);
+  }
+  .star-rating input:checked ~ label{
+    animation:starPop .42s cubic-bezier(.34,1.56,.64,1) backwards;
+  }
+  @keyframes starPop{
+    0%{ transform:scale(1); }
+    45%{ transform:scale(1.4) rotate(-8deg); }
+    100%{ transform:scale(1); }
+  }
+  .star-rating input:focus-visible + label{
+    outline:2px solid var(--primary);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+  .star-rating-feedback{
+    min-height:1.2em;
+    font-family:'DM Sans', sans-serif;
+    font-size:.85rem;
+    font-weight:600;
+    letter-spacing:.02em;
+    color:var(--primary);
+    opacity:0;
+    transform:translateY(-4px);
+    transition:opacity .25s var(--ease), transform .25s var(--ease);
+  }
+  .star-rating-feedback.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .testimoni-form .btn-gold{
+    align-self:flex-start;
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .testimoni-form .btn-gold:disabled{
+    opacity:.6;
+    cursor:default;
+  }
+  .testimoni-note{
+    margin-top:6px;
+    font-size:.78rem;
+    color:var(--muted-foreground);
+  }
+  .testimoni-status{
+    margin-top:2px;
+    font-size:.82rem;
+    min-height:1.2em;
+  }
+  .testimoni-status.is-error{ color:var(--destructive); }
+  .testimoni-status.is-ok{ color:var(--accent); }
+
+  /* ---------- Daftar testimoni (tampil dari Supabase) ---------- */
+  .testimoni-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    max-width:720px;
+    margin:36px auto 0;
+    text-align:left;
+  }
+  .testimoni-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius-xl);
+    padding:20px 22px;
+    position:relative;
+  }
+  .testimoni-card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .testimoni-card-name{
+    font-family:'Lora', serif;
+    font-size:1.02rem;
+    color:var(--foreground);
+    font-weight:600;
+  }
+  .testimoni-card-sub{
+    font-size:.76rem;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--selection);
+    margin-top:3px;
+  }
+  .testimoni-card-stars{
+    margin-top:6px;
+    color:var(--muted-foreground);
+    letter-spacing:2px;
+    font-size:13px;
+  }
+  .testimoni-card-stars .on{ color:var(--primary); }
+  .testimoni-card-date{
+    font-size:.72rem;
+    color:var(--muted-foreground);
+    white-space:nowrap;
+    padding-top:2px;
+  }
+  .testimoni-card-comment{
+    font-style:italic;
+    font-size:.9rem;
+    line-height:1.65;
+    color:var(--muted-foreground);
+    margin-top:12px;
+    white-space:pre-wrap;
+  }
+  .testimoni-empty, .testimoni-loading{
+    text-align:center;
+    font-size:.86rem;
+    color:var(--muted-foreground);
+    padding:1.6rem .6rem;
+  }
+
+  /* ---------- Sukses kirim testimoni ---------- */
+  .testimoni-success{
+    margin:36px auto 0;
+    max-width:560px;
+    text-align:center;
+    padding:2.2rem 1.4rem;
+    border:1px solid var(--border);
+    border-radius:var(--radius-2xl);
+    background:var(--card);
+  }
+  .testimoni-success .ts-icon{
+    width:46px;
+    height:46px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(212,175,55,0.14);
+    color:var(--primary);
+  }
+  .testimoni-success h3{
+    font-size:1.3rem;
+    color:var(--foreground);
+    margin-bottom:8px;
+  }
+  .testimoni-success p{
+    color:var(--muted-foreground);
+    font-size:.9rem;
+    line-height:1.65;
+  }
+  .testimoni-success .btn-outline{
+    margin-top:18px;
+  }
+
+  /* ---------- Contact strip ---------- */
+  /* ---------- Kontak (bola cahaya emas ambient + tata letak rata tengah) ---------- */
+  #kontak{
+    position:relative;
+    overflow:hidden;
+    padding:clamp(90px,12vw,150px) 0;
+    text-align:center;
+    background:var(--section-alt);
+  }
+  .kontak-glow{
+    position:absolute;
+    top:50%; left:50%;
+    width:min(64vw,760px);
+    height:min(64vw,760px);
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(212,175,55,0.32) 0%, rgba(212,175,55,0.1) 45%, transparent 72%);
+    filter:blur(120px);
+    pointer-events:none;
+    z-index:0;
+  }
+  .kontak-inner{
+    position:relative;
+    z-index:1;
+    max-width:1024px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .kontak-title{
+    font-size:clamp(2rem,6vw,3.75rem);
+    max-width:16ch;
+    margin:18px 0 36px;
+    line-height:1.15;
+  }
+  .kontak-title em{ font-style:italic; color:var(--accent); }
+  .kontak-actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    margin-bottom:clamp(40px,6vw,60px);
+  }
+  /* Tombol hijau WhatsApp: membesar lembut saat disentuh, bayangan hijau */
+  .btn-wa-lg{
+    display:inline-flex;
+    align-items:center;
+    gap:11px;
+    padding:18px 32px;
+    background:var(--success);
+    color:var(--success-foreground);
+    font-size:.98rem;
+    font-weight:500;
+    border-radius:var(--radius-full);
+    box-shadow:0 14px 34px rgba(37,211,102,0.32);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .btn-wa-lg svg{ width:21px;height:21px; flex-shrink:0; }
+  .btn-wa-lg:hover, .btn-wa-lg:focus-visible{
+    transform:scale(1.06);
+    box-shadow:0 18px 44px rgba(37,211,102,0.48);
+  }
+  /* Tombol salin nomor */
+  .btn-copy-number{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:17px 26px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    background:rgba(245,245,247,0.03);
+    color:var(--foreground);
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.9rem;
+    transition:border-color .35s var(--ease), color .35s var(--ease), background .35s var(--ease);
+  }
+  .btn-copy-number svg{ width:16px;height:16px; stroke:var(--accent); flex-shrink:0; transition:transform .35s var(--ease); }
+  .btn-copy-number:hover, .btn-copy-number:focus-visible{
+    border-color:var(--primary);
+    color:var(--accent);
+    background:rgba(212,175,55,0.06);
+  }
+  .btn-copy-number.copied svg{ transform:scale(1.2); }
+
+  /* Toast notifikasi salin nomor */
+  .copy-toast{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    z-index:200;
+    transform:translate(-50%,14px);
+    padding:13px 24px;
+    border:1px solid var(--primary);
+    border-radius:var(--radius-full);
+    background:rgba(11,12,14,0.94);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    color:var(--foreground);
+    font-size:.85rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s var(--ease), transform .4s var(--ease);
+  }
+  .copy-toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  /* Peta lokasi, ditempatkan di bawah kartu info, tetap rata tengah */
+  .kontak-map{
+    width:100%;
+    max-width:760px;
+    margin:clamp(40px,6vw,60px) auto 0;
+    border:1px solid var(--border);
+    overflow:hidden;
+    background:var(--card);
+    text-align:left;
+  }
+  .kontak-map iframe{
+    display:block;
+    width:100%;
+    height:300px;
+    border:0;
+    filter:grayscale(.25) contrast(1.05);
+  }
+  .kontak-map-caption{
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    border-top:1px solid var(--border);
+  }
+  .kontak-map-caption p{ margin:0; color:var(--muted-foreground); font-size:.85rem; }
+  .kontak-map-caption a{ font-size:.85rem; color:var(--accent); white-space:nowrap; transition:color .3s var(--ease); }
+  .kontak-map-caption a:hover{ color:var(--primary); }
+
+  /* ---------- Footer (sederhana, rata tengah) ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:clamp(30px,5vw,40px) 0 26px;
+  }
+  .footer-social-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px 12px;
+    padding-bottom:24px;
+    margin-bottom:24px;
+    border-bottom:1px solid var(--border);
+  }
+  .footer-social-row a{
+    display:flex; align-items:center; gap:9px;
+    padding:6px 14px 6px 6px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-full);
+    color:var(--muted-foreground);
+    font-size:.82rem;
+    transition:border-color .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+  }
+  .footer-social-row a:hover, .footer-social-row a:focus-visible{
+    border-color:var(--primary);
+    color:var(--accent);
+    transform:translateY(-3px);
+  }
+  .footer-social-icon{
+    width:26px;height:26px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--border);
+    border-radius:50%;
+    transition:border-color .3s var(--ease);
+  }
+  .footer-social-row a:hover .footer-social-icon{ border-color:var(--primary); }
+  .footer-social-icon svg{ width:14px;height:14px; }
+  .footer-simple{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .footer-simple .logo{ flex-shrink:0; }
+  .footer-copyright{
+    flex:1;
+    text-align:center;
+    color:var(--muted-foreground);
+    font-size:.8rem;
+    letter-spacing:.02em;
+  }
+  .footer-wa-number{
+    flex-shrink:0;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.85rem;
+    color:var(--muted-foreground);
+    transition:color .35s var(--ease);
+  }
+  .footer-wa-number:hover, .footer-wa-number:focus-visible{ color:var(--accent); }
+  .footer-admin-link{
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'JetBrains Mono', ui-monospace, monospace;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    color:var(--c-gray-3);
+    opacity:.6;
+    transition:opacity .35s var(--ease), color .35s var(--ease);
+  }
+  .footer-admin-link:hover, .footer-admin-link:focus-visible{ opacity:1; color:var(--accent); }
+
+  /* ---------- Floating WA ---------- */
+  .float-wa{
+    position:fixed;
+    right:22px; bottom:22px;
+    z-index:45;
+    width:56px;height:56px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--primary);
+    color:var(--background);
+    border:1px solid var(--accent);
+    box-shadow:0 12px 30px rgba(212,175,55,0.22);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .float-wa:hover{ transform:translateY(-4px) scale(1.05); box-shadow:0 16px 36px rgba(212,175,55,0.35); }
+  .float-wa svg{ width:24px;height:24px; }
+
+  /* ---------- Grain overlay: tekstur film tipis tembus pandang di atas seluruh halaman ---------- */
+  .grain-overlay{
+    position:fixed;
+    inset:0;
+    z-index:90;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:960px){
+    .about-grid{ grid-template-columns:1fr; }
+    .svc-cards-grid{ grid-template-columns:1fr; }
+  }
+
+  /* lg: 1024px — di bawah ini layout sticky manifesto & badge hero belum aktif */
+  @media (max-width:1023px){
+    .hero-float-card{ display:none; }
+    .manifesto-grid{ grid-template-columns:1fr; gap:36px; }
+    .manifesto-sticky-inner{ position:static; top:auto; }
+    .manifesto-portrait{ aspect-ratio:16/9; }
+  }
+
+  /* ===== Fokus utama: kenyamanan di layar HP (≤760px) ===== */
+  @media (max-width:760px){
+    nav.main-nav{ display:none; }
+    .hamburger{ display:flex; }
+
+    header{ padding:0 18px; }
+    .logo{ font-size:1.15rem; }
+    .logo svg{ width:22px;height:22px; }
+    .header-cta{ gap:12px; }
+    .header-cta .btn-gold{
+      padding:0;
+      width:42px; height:42px;
+      justify-content:center;
+    }
+    .header-cta .btn-gold-label{ display:none; }
+
+    .container{ padding:0 18px; }
+
+    .hero{ min-height:auto; padding:120px 0 44px; align-items:flex-start; }
+    .hero-tagline{ margin-bottom:14px; }
+    .hero h1{ font-size:2.1rem; max-width:none; }
+    .hero p{ font-size:.94rem; margin-top:16px; }
+    .hero-actions{ margin-top:26px; flex-direction:column; align-items:flex-start; }
+    .hero-actions a{ justify-content:center; min-height:46px; width:auto; max-width:100%; }
+    .hero-badges{ margin-top:26px; gap:8px; }
+    .hero-badge{ padding:9px 16px; font-size:.72rem; }
+
+    .section-head{ margin-bottom:26px; }
+    .section-head h2{ font-size:1.7rem; max-width:none; }
+    .section-head p{ max-width:none; }
+
+    #layanan{ padding:48px 0; }
+    .service-media{ aspect-ratio:4/3; }
+    .service-caption{ flex-direction:column; gap:4px; }
+    .service-title{ font-size:1.5rem; }
+    .service-body{ padding:18px 0 4px; }
+    .service-desc{ max-width:none; font-size:.87rem; }
+    .service-toggle{ width:100%; }
+    .service-footer{ padding-bottom:30px; }
+    .service-footer .btn-wa{ max-width:none; }
+
+    .gallery-filters{ flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch; }
+    .gallery-filters::-webkit-scrollbar{ display:none; }
+
+    #manifesto{ padding:48px 0; }
+    .manifesto-grid{ grid-template-columns:1fr; gap:30px; }
+    .manifesto-chapter{ padding:24px 0; }
+    .manifesto-chapter-num{ font-size:2.6rem; margin-bottom:8px; }
+
+    .svc-cards-grid{ grid-template-columns:1fr; }
+
+    #tentang{ padding:48px 0; }
+    .value-row{ gap:14px; padding-bottom:18px; }
+    .value-row svg{ width:22px;height:22px; }
+
+    #kontak{ padding:64px 0; }
+    .kontak-actions{ flex-direction:column; align-items:stretch; }
+    .kontak-actions a, .kontak-actions button{ justify-content:center; }
+    .kontak-info-grid{ grid-template-columns:1fr; }
+    .kontak-map iframe{ height:220px; }
+
+    .footer-simple{ flex-direction:column; text-align:center; }
+    .footer-copyright{ order:2; }
+
+    .float-wa{ right:16px; bottom:16px; width:52px; height:52px; }
+  }
+
+  @media (max-width:480px){
+    .splash-brand{ font-size:1.8rem; letter-spacing:.1em; }
+    .splash-tagline{ white-space:normal; font-size:.72rem; max-width:34ch; margin:0 auto; }
+  }
+
+  @media (max-width:400px){
+    .splash-brand{ font-size:1.6rem; letter-spacing:.08em; }
+    .splash-tagline{ font-size:.7rem; }
+    .splash-location{ font-size:.7rem; }
+    .splash-welcome{ font-size:.98rem; }
+    .btn-enter{ padding:9px 22px; font-size:.72rem; }
+    .hero h1{ font-size:1.85rem; }
+    .gallery-grid{ grid-template-columns:repeat(2,1fr); gap:5px; }
+  }
+</style>
+</head>
+<body>
+<div id="site" class="show">
+
+  <!-- HEADER (sama persis dengan Kaone Beranda; tautan menu yang menuju
+       bagian di halaman utama diarahkan kembali ke "/#..." karena bagian
+       tsb tidak ada di halaman testimoni ini) -->
+  <header id="siteHeader">
+    <a href="/" class="logo" data-testid="header-logo-link">
+      <span class="logo-badge">K</span>
+      <span data-ck="nav.brand">Kaone <em>Studio</em></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="/#galeri" data-testid="nav-link-karya">Karya</a>
+      <a href="/#manifesto" data-testid="nav-link-manifesto">Manifesto</a>
+      <a href="/#layanan" data-testid="nav-link-layanan">Layanan</a>
+      <a href="#testimoni" data-testid="nav-link-testimoni">Testimoni</a>
+      <a href="/#kontak" data-testid="nav-link-kontak">Kontak</a>
+    </nav>
+
+    <div class="header-cta">
+      <a href="admin.html" class="header-admin-link" title="Login Admin" aria-label="Login Admin" data-testid="header-admin-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </a>
+      <a class="btn-gold" target="_blank" rel="noopener" data-testid="nav-whatsapp-button"
+         href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20bertanya%20tentang%20jasa%20foto.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span class="btn-gold-label" data-ck="nav.cta">Hubungi Kami</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Buka menu" data-testid="nav-menu-toggle">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="scrim" id="scrim"></div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="/#galeri" data-testid="mobile-nav-link-karya">Karya</a>
+    <a href="/#manifesto" data-testid="mobile-nav-link-manifesto">Manifesto</a>
+    <a href="/#layanan" data-testid="mobile-nav-link-layanan">Layanan</a>
+    <a href="/#tentang" data-testid="mobile-nav-link-tentang">Tentang</a>
+    <a href="#testimoni" data-testid="mobile-nav-link-testimoni">Testimoni</a>
+    <a href="/#kontak" data-testid="mobile-nav-link-kontak">Kontak</a>
+  </nav>
+
+  <!-- Jarak lapang di atas supaya konten tidak terlalu mepet header sticky,
+       karena di beranda bagian ini biasanya didahului section lain. -->
+  <div style="height:clamp(24px,5vw,56px)"></div>
+
+  <!-- TESTIMONI (markup & style identik dengan section #testimoni di Kaone Beranda) -->
+  <section id="testimoni">
+    <div class="container">
+      <div class="section-head">
+        <h2 data-ck="testimoni.heading">Apa kata mereka?</h2>
+        <p data-ck="testimoni.sub">Sudah pernah menggunakan jasa Kaone Studio? Bagikan pengalaman Anda untuk membantu calon klien lain.</p>
+      </div>
+
+      <!-- Daftar testimoni yang sudah disetujui tampil diambil dari Supabase
+           (tabel kaone_motret_ulasan) — sama seperti testimoni yang di rekap
+           job dipublish dengan tujuan "Isi Biodata". Mengirim testimoni baru
+           dari form di bawah ini juga langsung INSERT ke tabel Supabase yang
+           sama. Tidak ada lagi ketergantungan pada Google Spreadsheet. -->
+      <div id="testimoniListWrap" class="testimoni-list">
+        <div class="testimoni-loading">Memuat testimoni…</div>
+      </div>
+
+      <form class="testimoni-form" id="testimoniForm" data-testid="testimoni-form">
+        <div class="form-row">
+          <label for="t-nama">Nama<span class="req">*</span></label>
+          <input type="text" id="t-nama" name="nama" placeholder="Nama Anda" required data-testid="testimoni-input-nama">
+        </div>
+
+        <div class="form-row">
+          <label for="t-jenis">Jenis Boking<span class="req">*</span></label>
+          <select id="t-jenis" name="jenis" required data-testid="testimoni-select-jenis">
+            <option value="" disabled selected>Pilih jenis booking</option>
+            <option>Wedding</option>
+            <option>Prewedding</option>
+            <option>Graduation</option>
+            <option>Selfphoto</option>
+            <option>Rental Gaun</option>
+            <option>Undangan Digital</option>
+            <option>Patuaekkon</option>
+            <option>Margondang</option>
+            <option>Mangayun/Aqiqah</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+
+        <div class="form-row" id="t-jenis-lainnya-wrap" style="display:none;">
+          <label for="t-jenis-lainnya">Sebutkan Jenis Booking<span class="req">*</span></label>
+          <input type="text" id="t-jenis-lainnya" name="jenis_lainnya" placeholder="Tulis jenis booking Anda..." data-testid="testimoni-input-jenis-lainnya">
+        </div>
+
+        <div class="form-row">
+          <label id="t-bintang-label">Pilih Bintang<span class="req">*</span></label>
+          <div class="star-rating-wrap">
+            <div class="star-rating" role="radiogroup" aria-labelledby="t-bintang-label" data-testid="testimoni-star-rating">
+              <input type="radio" id="star5" name="bintang" value="5" data-testid="testimoni-star-5">
+              <label for="star5" aria-label="5 bintang">★</label>
+              <input type="radio" id="star4" name="bintang" value="4" data-testid="testimoni-star-4">
+              <label for="star4" aria-label="4 bintang">★</label>
+              <input type="radio" id="star3" name="bintang" value="3" data-testid="testimoni-star-3">
+              <label for="star3" aria-label="3 bintang">★</label>
+              <input type="radio" id="star2" name="bintang" value="2" data-testid="testimoni-star-2">
+              <label for="star2" aria-label="2 bintang">★</label>
+              <input type="radio" id="star1" name="bintang" value="1" data-testid="testimoni-star-1">
+              <label for="star1" aria-label="1 bintang">★</label>
+            </div>
+            <div class="star-rating-feedback" id="t-bintang-feedback" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="t-pesan">Isi Pesan<span class="req">*</span></label>
+          <textarea id="t-pesan" name="pesan" rows="4" placeholder="Ceritakan pengalaman Anda bersama Kaone Studio..." required data-testid="testimoni-textarea-pesan"></textarea>
+        </div>
+
+        <button type="submit" class="btn-gold" id="testimoniSubmitBtn" data-testid="testimoni-submit-button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+          <span>Kirim Testimoni</span>
+        </button>
+        <p class="testimoni-status" id="testimoniStatus"></p>
+        <p class="testimoni-note">Testimoni Anda akan ditinjau dahulu sebelum ditampilkan di halaman ini.</p>
+      </form>
+
+      <div class="testimoni-success" id="testimoniSuccess" style="display:none;">
+        <div class="ts-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="22" height="22"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3>Terima Kasih!</h3>
+        <p>Testimoni Anda sudah kami terima. Setelah ditinjau, testimoni ini bisa ditampilkan di halaman ini.</p>
+        <button type="button" class="btn-outline" id="testimoniResetBtn" data-testid="testimoni-reset-button">Kirim Testimoni Lain</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-social-row">
+        <a href="https://instagram.com/kaonestudio" aria-label="Instagram @kaonestudio" title="@kaonestudio" target="_blank" rel="noopener" data-testid="social-instagram-kaonestudio">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@kaonestudio</span>
+        </a>
+        <a href="https://instagram.com/kaonemotret" aria-label="Instagram @kaonemotret" title="@kaonemotret" target="_blank" rel="noopener" data-testid="social-instagram-kaonemotret">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@kaonemotret</span>
+        </a>
+        <a href="https://instagram.com/bertaut.ids" aria-label="Instagram @bertaut.ids" title="@bertaut.ids" target="_blank" rel="noopener" data-testid="social-instagram-bertaut-ids">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@bertaut.ids</span>
+        </a>
+        <a href="https://instagram.com/buktisarjana" aria-label="Instagram @buktisarjana" title="@buktisarjana" target="_blank" rel="noopener" data-testid="social-instagram-buktisarjana">
+          <span class="footer-social-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></span>
+          <span>@buktisarjana</span>
+        </a>
+      </div>
+      <div class="footer-simple">
+        <a href="/" class="logo" data-testid="footer-logo-link">
+          <span class="logo-badge">K</span>
+          <span data-ck="nav.brand">Kaone <em>Studio</em></span>
+        </a>
+        <span class="footer-copyright" data-ck="footer.copyright">© <span id="year"></span> Kaone Studio. Seluruh hak cipta dilindungi.</span>
+        <a class="footer-wa-number" href="https://wa.me/6285117071704" target="_blank" rel="noopener" data-testid="footer-whatsapp-number">+62 851-1707-1704</a>
+        <a href="admin.html" class="footer-admin-link" title="Panel Admin" data-testid="footer-admin-link" aria-label="Panel Admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Admin</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- Floating WhatsApp -->
+<a class="float-wa" target="_blank" rel="noopener" aria-label="Chat WhatsApp" data-testid="floating-whatsapp-button"
+   href="https://wa.me/6285117071704?text=Halo%20Kaone%20Studio%2C%20saya%20ingin%20bertanya.">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.7 14.2c-.2.6-1.4 1.2-2 1.3-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.1-5-4.3-.1-.2-1.2-1.6-1.2-3s.8-2.1 1-2.4c.2-.2.5-.3.8-.3h.6c.2 0 .5-.1.7.5.3.7.9 2.2 1 2.4.1.2.1.4 0 .6-.4.7-.8.9-.4 1.6.9 1.5 1.8 2 3.2 2.7.2.1.4.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.7-.1.3.1 1.8.9 2.1 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6z"/></svg>
+</a>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function rippleEffect(e, el){
+  const rect = el.getBoundingClientRect();
+  const ripple = document.createElement("span");
+  const size = Math.max(rect.width, rect.height) * 1.4;
+  ripple.className = "ripple";
+  ripple.style.width = ripple.style.height = size+"px";
+  ripple.style.left = (e.clientX - rect.left - size/2)+"px";
+  ripple.style.top = (e.clientY - rect.top - size/2)+"px";
+  el.appendChild(ripple);
+  setTimeout(()=>ripple.remove(), 650);
+}
+
+/* ---- Header scroll state ---- */
+const header = document.getElementById("siteHeader");
+window.addEventListener("scroll", ()=>{
+  header.classList.toggle("scrolled", window.scrollY > 40);
+});
+
+/* ---- Mobile nav ---- */
+const hamburger = document.getElementById("hamburger");
+const mobileNav = document.getElementById("mobileNav");
+const scrim = document.getElementById("scrim");
+function toggleMobileNav(){
+  hamburger.classList.toggle("open");
+  mobileNav.classList.toggle("open");
+  scrim.classList.toggle("open");
+}
+hamburger.addEventListener("click", toggleMobileNav);
+scrim.addEventListener("click", toggleMobileNav);
+mobileNav.querySelectorAll("a").forEach(a=>a.addEventListener("click", toggleMobileNav));
+
+/* ---- Generic button click ripple for gold/outline buttons ---- */
+document.querySelectorAll(".btn-gold, .btn-wa, .btn-outline").forEach(el=>{
+  el.style.position = el.style.position || "relative";
+  el.style.overflow = "hidden";
+  el.addEventListener("click", (e)=> rippleEffect(e, el));
+});
+
+/* ---- Supabase, konfigurasinya SAMA PERSIS dengan
+   halaman Isi Biodata supaya membaca & menulis tabel ulasan yang sama ---- */
+const TESTIMONI_SUPABASE_URL = 'https://gyleppavsgbtrlgbyztv.supabase.co';
+const TESTIMONI_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bGVwcGF2c2didHJsZ2J5enR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NjU0MDQsImV4cCI6MjEwMzM0MTQwNH0.0t7bMoTjgd-c48O37wo1QyGFsFnjrRiAkDzH8VMgw-Q';
+const TESTIMONI_SUPABASE_TABLE = 'kaone_motret_ulasan';
+
+let testimoniSupabaseClient = null;
+/* Library supabase-js dimuat dengan atribut "async" (lihat <script id="supabaseCdnScript">
+   di <head>) supaya tidak menahan render pertama halaman. Konsekuensinya: pada saat
+   blok <script> ini dieksekusi, window.supabase BISA SAJA belum selesai diunduh —
+   kalau kita cuma cek window.supabase sekali di sini, testimoniSupabaseClient akan
+   tetap null selamanya dan daftar testimoni jadi terlihat kosong padahal datanya ada
+   (race condition, munculnya tidak konsisten tergantung kecepatan koneksi).
+   testimoniEnsureClient() di bawah menangani ini dengan menunggu event "load" dari
+   script tsb kalau window.supabase belum siap — pola yang sama seperti yang dipakai
+   untuk konten admin (window.__kaoneSiteConfigPromise) di atas. */
+function testimoniInitClient(){
+  if(testimoniSupabaseClient) return testimoniSupabaseClient;
+  if(window.supabase && typeof window.supabase.createClient === "function"){
+    try{ testimoniSupabaseClient = window.supabase.createClient(TESTIMONI_SUPABASE_URL, TESTIMONI_SUPABASE_ANON_KEY); }
+    catch(e){ console.error("Gagal membuat koneksi Supabase testimoni", e); }
+  }
+  return testimoniSupabaseClient;
+}
+let testimoniClientReadyPromise = null;
+function testimoniEnsureClient(){
+  if(testimoniClientReadyPromise) return testimoniClientReadyPromise;
+  testimoniClientReadyPromise = new Promise(function(resolve){
+    if(testimoniInitClient()){ resolve(testimoniSupabaseClient); return; }
+    var cdn = document.getElementById("supabaseCdnScript");
+    if(!cdn){ resolve(null); return; }
+    cdn.addEventListener("load", function(){ resolve(testimoniInitClient()); });
+    cdn.addEventListener("error", function(){ resolve(null); });
+  });
+  return testimoniClientReadyPromise;
+}
+
+/* Label jenis acara pada kartu testimoni yang berasal dari Supabase.
+   Disesuaikan dengan halaman Isi Biodata: kalau ulasan itu memang
+   berasal dari form/jenis acara tertentu, tampilkan nama aslinya;
+   kalau tidak ada info asalnya sama sekali, jatuh ke "Isi Biodata"
+   (karena semua baris yang muncul di sini memang disaring lewat
+   tujuan publish "biodata"). */
+const TESTIMONI_ASAL_FORM_LABELS = {
+  wedding:          'Wedding',
+  prewedding:       'Prewedding',
+  margondang:       'Margondang',
+  mangayun:         'Mangayun',
+  wisuda:           'Wisuda',
+  undangan_digital: 'Undangan Digital',
+  biodata:          'Isi Biodata',
+};
+function testimoniSupabaseSourceLabel(u){
+  var asal = u.asal_form;
+  if(asal && TESTIMONI_ASAL_FORM_LABELS[asal]){
+    return u.jenis_acara || TESTIMONI_ASAL_FORM_LABELS[asal];
+  }
+  return u.jenis_acara || 'Isi Biodata';
+}
+
+/* Ambil daftar publish_targets satu baris ulasan dengan aman, apapun
+   bentuk datanya dari Supabase (array asli, string JSON hasil
+   serialisasi, atau baris lama yang cuma punya kolom
+   "dipublikasikan") — logika ini sama dengan di halaman Isi Biodata. */
+function testimoniGetPublishTargetsSafe(u){
+  var t = u.publish_targets;
+  if(Array.isArray(t)) return t;
+  if(typeof t === 'string'){
+    try{
+      var parsed = JSON.parse(t);
+      if(Array.isArray(parsed)) return parsed;
+    }catch(e){ /* bukan JSON valid, abaikan */ }
+  }
+  return u.dipublikasikan ? ['wedding'] : [];
+}
+
+/* Ubah satu baris ulasan Supabase jadi bentuk yang dipakai
+   renderTestimoniList() untuk menampilkan kartu testimoni. */
+function testimoniNormalizeSupabaseRow(u){
+  return {
+    nama: u.nama_klien || 'Klien',
+    jenis: testimoniSupabaseSourceLabel(u),
+    rating: u.rating,
+    tanggal: u.created_at,
+    pesan: u.komentar,
+    _sortTime: u.created_at ? new Date(u.created_at).getTime() : 0
+  };
+}
+
+function testimoniEscapeHtml(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+    return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c];
+  });
+}
+
+function testimoniStarsHtml(rating){
+  const r = Math.max(0, Math.min(5, Number(rating) || 0));
+  let out = "";
+  for(let i = 1; i <= 5; i++){ out += '<span class="' + (i <= r ? "on" : "") + '">★</span>'; }
+  return out;
+}
+
+function testimoniFmtDate(v){
+  if(!v) return "";
+  const d = new Date(v);
+  if(isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("id-ID", { day:"numeric", month:"long", year:"numeric" });
+}
+
+function renderTestimoniList(list){
+  const wrap = document.getElementById("testimoniListWrap");
+  if(!wrap) return;
+  if(!list || list.length === 0){
+    wrap.innerHTML = '<div class="testimoni-empty">Belum ada testimoni yang ditampilkan. Jadilah yang pertama memberi penilaian!</div>';
+    return;
+  }
+  wrap.innerHTML = list.map(function(u, idx){
+    return "" +
+      '<div class="testimoni-card" data-testid="testimoni-card-' + (idx + 1) + '">' +
+        '<div class="testimoni-card-top">' +
+          "<div>" +
+            '<div class="testimoni-card-name">' + testimoniEscapeHtml(u.nama || "Klien") + "</div>" +
+            '<div class="testimoni-card-sub">' + testimoniEscapeHtml(u.jenis || "") + "</div>" +
+            '<div class="testimoni-card-stars">' + testimoniStarsHtml(u.rating) + "</div>" +
+          "</div>" +
+          '<div class="testimoni-card-date">' + testimoniFmtDate(u.tanggal) + "</div>" +
+        "</div>" +
+        (u.pesan ? '<div class="testimoni-card-comment">&ldquo;' + testimoniEscapeHtml(u.pesan) + '&rdquo;</div>' : "") +
+      "</div>";
+  }).join("");
+}
+
+/* Ambil testimoni dari Supabase (tabel yang sama dengan Isi Biodata),
+   saring yang publish_targets-nya memuat 'biodata' — jadi testimoni
+   yang dipublish ke "Isi Biodata" di rekap job otomatis ikut tampil
+   di beranda juga. Selalu resolve ke array (kosong kalau gagal). */
+function testimoniFetchFromSupabase(){
+  return testimoniEnsureClient().then(function(client){
+    if(!client) return [];
+    return client
+      .from(TESTIMONI_SUPABASE_TABLE)
+      .select('*')
+      .order('created_at', { ascending:false })
+      .then(function(res){
+        if(res && res.error){
+          console.error('Gagal memuat testimoni dari Supabase', res.error);
+          return [];
+        }
+        var semua = res.data || [];
+        return semua
+          .filter(function(u){ return testimoniGetPublishTargetsSafe(u).indexOf('biodata') !== -1; })
+          .map(testimoniNormalizeSupabaseRow);
+      });
+  }).catch(function(err){
+    console.error('Gagal memuat testimoni dari Supabase', err);
+    return [];
+  });
+}
+
+function loadTestimoniList(){
+  const wrap = document.getElementById("testimoniListWrap");
+  testimoniFetchFromSupabase()
+    .then(function(list){
+      list.sort(function(a, b){ return (b._sortTime || 0) - (a._sortTime || 0); });
+      renderTestimoniList(list);
+    })
+    .catch(function(err){
+      console.error("Gagal memuat testimoni", err);
+      if(wrap) wrap.innerHTML = '<div class="testimoni-empty">Testimoni belum bisa dimuat saat ini.</div>';
+    });
+}
+loadTestimoniList();
+
+/* ---- Bintang testimoni: teks feedback dinamis saat hover / pilih ---- */
+const testimoniStarWrap = document.querySelector('[data-testid="testimoni-star-rating"]');
+const testimoniStarFeedback = document.getElementById("t-bintang-feedback");
+const TESTIMONI_STAR_TEKS = {
+  1: "Kurang puas",
+  2: "Cukup",
+  3: "Bagus",
+  4: "Sangat bagus",
+  5: "Luar biasa! ✨"
+};
+function testimoniShowStarFeedback(val){
+  if(!testimoniStarFeedback) return;
+  if(!val){
+    testimoniStarFeedback.textContent = "";
+    testimoniStarFeedback.classList.remove("is-visible");
+    return;
+  }
+  testimoniStarFeedback.textContent = TESTIMONI_STAR_TEKS[val] || "";
+  testimoniStarFeedback.classList.add("is-visible");
+}
+function testimoniCheckedStarValue(){
+  const checked = testimoniForm ? testimoniForm.querySelector('input[name="bintang"]:checked') : null;
+  return checked ? checked.value : "";
+}
+if(testimoniStarWrap){
+  testimoniStarWrap.querySelectorAll("label").forEach(function(lbl){
+    const input = document.getElementById(lbl.getAttribute("for"));
+    if(!input) return;
+    lbl.addEventListener("mouseenter", function(){ testimoniShowStarFeedback(input.value); });
+    lbl.addEventListener("focus", function(){ testimoniShowStarFeedback(input.value); }, true);
+    input.addEventListener("change", function(){ testimoniShowStarFeedback(input.value); });
+  });
+  testimoniStarWrap.addEventListener("mouseleave", function(){
+    testimoniShowStarFeedback(testimoniCheckedStarValue());
+  });
+}
+
+/* ---- Kolom "Lainnya" pada Jenis Boking: buka kolom isian manual ---- */
+const testimoniJenisSelect = document.getElementById("t-jenis");
+const testimoniJenisLainnyaWrap = document.getElementById("t-jenis-lainnya-wrap");
+const testimoniJenisLainnyaInput = document.getElementById("t-jenis-lainnya");
+function testimoniSyncJenisLainnya(){
+  const isLainnya = testimoniJenisSelect && testimoniJenisSelect.value === "Lainnya";
+  if(testimoniJenisLainnyaWrap) testimoniJenisLainnyaWrap.style.display = isLainnya ? "flex" : "none";
+  if(testimoniJenisLainnyaInput) testimoniJenisLainnyaInput.required = !!isLainnya;
+  if(!isLainnya && testimoniJenisLainnyaInput) testimoniJenisLainnyaInput.value = "";
+}
+if(testimoniJenisSelect){
+  testimoniJenisSelect.addEventListener("change", testimoniSyncJenisLainnya);
+}
+
+/* ---- Form testimoni -> INSERT langsung ke Supabase ---- */
+const testimoniForm = document.getElementById("testimoniForm");
+if(testimoniForm){
+  testimoniForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const statusEl = document.getElementById("testimoniStatus");
+    const btn = document.getElementById("testimoniSubmitBtn");
+
+    const nama = document.getElementById("t-nama").value.trim();
+    const jenisPilihan = document.getElementById("t-jenis").value;
+    const jenisLainnya = testimoniJenisLainnyaInput ? testimoniJenisLainnyaInput.value.trim() : "";
+    const jenis = jenisPilihan === "Lainnya" ? jenisLainnya : jenisPilihan;
+    const bintangEl = testimoniForm.querySelector('input[name="bintang"]:checked');
+    const bintang = bintangEl ? bintangEl.value : "";
+    const pesan = document.getElementById("t-pesan").value.trim();
+
+    if(!nama || !jenisPilihan || (jenisPilihan === "Lainnya" && !jenisLainnya) || !bintang || !pesan){
+      let pesanError = "Mohon lengkapi semua kolom yang wajib diisi.";
+      if(!bintang){
+        pesanError = "Mohon pilih jumlah bintang terlebih dahulu.";
+      } else if(!nama){
+        testimoniForm.reportValidity();
+      } else if(!jenisPilihan || (jenisPilihan === "Lainnya" && !jenisLainnya)){
+        testimoniForm.reportValidity();
+      } else if(!pesan){
+        testimoniForm.reportValidity();
+      }
+      if(statusEl){
+        statusEl.textContent = pesanError;
+        statusEl.className = "testimoni-status is-error";
+      }
+      return;
+    }
+    btn.disabled = true;
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = "<span>Mengirim…</span>";
+    if(statusEl){ statusEl.textContent = ""; statusEl.className = "testimoni-status"; }
+
+    const payload = {
+      nama_klien: nama,
+      jenis_acara: jenis,
+      rating: Number(bintang),
+      komentar: pesan,
+      asal_form: "beranda_testimoni",
+      publish_targets: []
+    };
+
+    testimoniEnsureClient()
+      .then(function(client){
+        if(!client){
+          throw new Error("Supabase belum siap");
+        }
+        return client.from(TESTIMONI_SUPABASE_TABLE).insert([payload]);
+      })
+      .then(function(res){
+        if(res && res.error) throw res.error;
+        testimoniForm.style.display = "none";
+        document.getElementById("testimoniSuccess").style.display = "block";
+      })
+      .catch(function(err){
+        console.error("Gagal mengirim testimoni", err);
+        if(statusEl){
+          statusEl.textContent = "Gagal mengirim testimoni. Periksa koneksi internet Anda lalu coba lagi.";
+          statusEl.className = "testimoni-status is-error";
+        }
+      })
+      .finally(function(){
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      });
+  });
+}
+
+const testimoniResetBtn = document.getElementById("testimoniResetBtn");
+if(testimoniResetBtn){
+  testimoniResetBtn.addEventListener("click", function(){
+    testimoniForm.reset();
+    testimoniSyncJenisLainnya();
+    testimoniShowStarFeedback("");
+    document.getElementById("testimoniStatus").textContent = "";
+    document.getElementById("testimoniSuccess").style.display = "none";
+    testimoniForm.style.display = "flex";
+  });
+}
+
+/* ---- Lacak klik tombol WhatsApp sebagai event GA4 "contact_whatsapp" ----
+   Dipasang lewat event delegation di document supaya tetap kena walau
+   tombol/link WA dibuat belakangan (misalnya kartu layanan yang dirender
+   dari data admin). Tidak menghalangi link tetap terbuka seperti biasa. */
+document.addEventListener("click", function(e){
+  if(typeof gtag !== "function") return;
+  const link = e.target.closest('a[href*="wa.me"]');
+  if(!link) return;
+  gtag('event', 'contact_whatsapp', {
+    link_url: link.href,
+    link_location: link.dataset.testid || link.id || link.closest('section')?.id || "unknown"
+  });
+});
+
+/* ---- Lacak klik tombol "Beri Ulasan di Google" sebagai event GA4 "click_google_review" ---- */
+document.addEventListener("click", function(e){
+  if(typeof gtag !== "function") return;
+  const link = e.target.closest('a[href*="g.page"]');
+  if(!link) return;
+  gtag('event', 'click_google_review', { link_url: link.href });
+});
+
+/* ---- Terapkan teks kustom dari panel admin (kalau ada) ke elemen
+     data-ck yang ada di halaman ini: nav.brand, nav.cta, footer.copyright,
+     testimoni.heading, testimoni.sub. Sama seperti mekanisme di Kaone
+     Beranda, tapi dibatasi hanya ke teks (tidak memanggil render galeri/
+     layanan yang elemennya tidak ada di halaman ini). ---- */
+function applySiteTexts(texts){
+  if(!texts) return;
+  Object.keys(texts).forEach(function(key){
+    var val = texts[key];
+    if(val === undefined || val === null) return;
+    document.querySelectorAll('[data-ck="' + key + '"]').forEach(function(el){
+      el.innerHTML = val;
+    });
+  });
+}
+
+if(window.__kaoneSiteConfigPromise){
+  window.__kaoneSiteConfigPromise.then(function(cfg){
+    if(cfg && cfg.texts) applySiteTexts(cfg.texts);
+  });
+}
+</script>
+</body>
+</html>
