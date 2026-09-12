@@ -360,7 +360,7 @@
     fill:none;
   }
   .splash-brand{
-    font-size:clamp(2.4rem, 7vw, 3.6rem);
+    font-size:clamp(2rem, 6vw, 3rem);
     letter-spacing:.14em;
     color:var(--foreground);
     opacity:0;
@@ -383,17 +383,35 @@
   }
   @keyframes fade-in{ to{ opacity:1; } }
   .splash-tagline{
-    font-size:.98rem;
-    letter-spacing:.06em;
+    font-size:clamp(0.6rem, 2.1vw, 0.82rem);
+    letter-spacing:.05em;
     color:var(--muted-foreground);
+    white-space:nowrap;
+    margin:0 auto;
+    line-height:1.55;
     opacity:0;
     animation:reveal-up 1s var(--ease) 1.25s forwards;
+  }
+  .splash-location{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:14px;
+    font-size:.76rem;
+    letter-spacing:.04em;
+    color:var(--accent);
+    opacity:0;
+    animation:reveal-up 1s var(--ease) 1.4s forwards;
   }
   .splash-welcome{
     margin-top:34px;
     font-family:'Lora',serif;
     font-style:italic;
-    font-size:1.35rem;
+    font-size:1.1rem;
+    max-width:48ch;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.5;
     color:var(--accent);
     opacity:0;
     animation:reveal-up 1s var(--ease) 1.55s forwards;
@@ -403,11 +421,12 @@
     position:relative;
     display:inline-flex;
     align-items:center;
-    gap:10px;
-    padding:15px 40px;
+    gap:8px;
+    padding:10px 26px;
     border:1px solid var(--primary);
+    border-radius:var(--radius-full);
     color:var(--foreground);
-    font-size:.92rem;
+    font-size:.78rem;
     letter-spacing:.08em;
     overflow:hidden;
     opacity:0;
@@ -425,7 +444,7 @@
   }
   .btn-enter:hover{ color:var(--background); letter-spacing:.12em; }
   .btn-enter:hover::before{ transform:translateX(0); }
-  .btn-enter svg{width:16px;height:16px;transition:transform .5s var(--ease);}
+  .btn-enter svg{width:14px;height:14px;transition:transform .5s var(--ease);}
   .btn-enter:hover svg{ transform:translateX(4px); }
 
   /* ripple */
@@ -2357,14 +2376,16 @@
   }
 
   @media (max-width:480px){
-    .splash-brand{ font-size:2.1rem; letter-spacing:.1em; }
+    .splash-brand{ font-size:1.8rem; letter-spacing:.1em; }
+    .splash-tagline{ white-space:normal; font-size:.72rem; max-width:34ch; margin:0 auto; }
   }
 
   @media (max-width:400px){
-    .splash-brand{ font-size:1.9rem; letter-spacing:.08em; }
-    .splash-tagline{ font-size:.85rem; }
-    .splash-welcome{ font-size:1.15rem; }
-    .btn-enter{ padding:14px 32px; }
+    .splash-brand{ font-size:1.6rem; letter-spacing:.08em; }
+    .splash-tagline{ font-size:.7rem; }
+    .splash-location{ font-size:.7rem; }
+    .splash-welcome{ font-size:.98rem; }
+    .btn-enter{ padding:9px 22px; font-size:.72rem; }
     .hero h1{ font-size:1.85rem; }
     .gallery-grid{ grid-template-columns:repeat(2,1fr); gap:5px; }
   }
@@ -2393,11 +2414,12 @@
       <line x1="106" y1="12" x2="200" y2="12"/>
     </svg>
 
-    <p class="splash-tagline">Fotografi Adat &amp; Momen Keluarga — Padang Lawas Utara</p>
-    <p class="splash-welcome">Selamat datang di rumah cerita kami</p>
+    <p class="splash-tagline">Fotografi &amp; Videografi • Makeup • Rental Gaun • Undangan Digital</p>
+    <p class="splash-location">Padang Lawas Utara</p>
+    <p class="splash-welcome">&ldquo;Dari persiapan hingga hari bahagia, kami hadir untuk menjadikan setiap momen lebih berarti.&rdquo;</p>
 
     <button class="btn-enter" id="enterBtn" data-testid="splash-enter-button">
-      <span>Masuk</span>
+      <span>Jelajahi Layanan</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
         <path d="M5 12h14M13 6l6 6-6 6"/>
       </svg>
@@ -2475,7 +2497,6 @@
           </a>
         </div>
         <div class="hero-badges">
-          <span class="hero-badge" data-testid="hero-stat-momen-sakral"><strong data-ck="hero.badge1.num">500+</strong> <span data-ck="hero.badge1.label">Momen Sakral</span></span>
           <span class="hero-badge" data-testid="hero-stat-kategori-karya"><strong data-ck="hero.badge2.num">8</strong> <span data-ck="hero.badge2.label">Kategori Karya</span></span>
           <span class="hero-badge" data-testid="hero-stat-tahun-berkarya"><strong data-ck="hero.badge3.num">6 Th</strong> <span data-ck="hero.badge3.label">Berkarya</span></span>
         </div>
