@@ -3820,6 +3820,51 @@ enterBtn.addEventListener("click",(e)=>{
   }, 200);
 });
 
+/* ---- Deep link langsung ke bagian tertentu (mis. https://kaone.web.id/#manifesto)
+   Kalau URL saat dibuka sudah punya hash yang cocok dengan id sebuah section,
+   lewati splash sepenuhnya (tanpa animasi fade 1 detik yang biasa terjadi saat
+   menekan tombol "Jelajahi Layanan") dan langsung lompat ke bagian tsb — supaya
+   pengunjung yang mengklik link dari luar (WhatsApp, Instagram bio, dst) langsung
+   sampai di tujuan tanpa harus menekan tombol masuk dulu. Kalau tidak ada hash
+   (atau hash-nya tidak cocok dengan id apa pun di halaman), splash tetap tampil
+   seperti biasa. */
+(function(){
+  var hash = window.location.hash;
+  if(!hash || hash.length < 2) return;
+  var target = document.getElementById(hash.slice(1));
+  if(!target) return;
+
+  var HEADER_OFFSET = 64; // sama dengan tinggi header sticky (lihat CSS "header{height:64px}")
+
+  if(splash) splash.style.display = "none";
+  document.body.classList.remove("locked");
+  if(site){
+    site.style.transition = "none";
+    site.classList.add("show");
+  }
+
+  function jumpToTarget(){
+    if(window.__lenis && typeof window.__lenis.scrollTo === "function"){
+      window.__lenis.scrollTo(target, { offset: -HEADER_OFFSET, immediate: true });
+    }else{
+      var top = target.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+      window.scrollTo({ top: top, behavior: "auto" });
+    }
+  }
+
+  requestAnimationFrame(function(){
+    var lenisCdn = document.getElementById("lenisCdnScript");
+    if(window.__lenis || typeof Lenis === "undefined"){
+      jumpToTarget();
+    }else if(lenisCdn){
+      lenisCdn.addEventListener("load", function(){ setTimeout(jumpToTarget, 50); });
+      setTimeout(jumpToTarget, 800); // jaga-jaga kalau event "load" tidak terpicu
+    }else{
+      jumpToTarget();
+    }
+  });
+})();
+
 /* ---- Header scroll state ---- */
 const header = document.getElementById("siteHeader");
 window.addEventListener("scroll", ()=>{
