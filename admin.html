@@ -225,6 +225,9 @@
       <button class="nav-btn" data-tab="teks">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:6px;"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Teks Website
       </button>
+      <button class="nav-btn" data-tab="kartu">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-3px;margin-right:6px;"><rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>Kartu Layanan
+      </button>
     </nav>
     <div class="topbar-actions">
       <span class="user-pill" id="userPill"></span>
@@ -369,6 +372,15 @@
         <div id="textSections"></div>
       </div>
 
+      <!-- TAB: KARTU LAYANAN PENDAMPING -->
+      <div class="tab-panel" id="tab-kartu">
+        <div class="page-head">
+          <h1>Kartu Layanan Pendamping</h1>
+          <p>Ubah judul, badge, deskripsi, dan teks WhatsApp dua kartu di bawah galeri utama (Rental Gaun Eksklusif &amp; Undangan Digital Interaktif).</p>
+        </div>
+        <div id="svcCardsList"></div>
+      </div>
+
     </div>
   </main>
 
@@ -420,6 +432,13 @@ const DEFAULTS = {
     { key:"selfphoto", title:"Selfphoto", desc:"", waText:"", driveFolder:"https://drive.google.com/drive/folders/1qO4dFKwydJ9clrvbRrcGJJdR2Yx0Sl7s?usp=sharing" },
     { key:"rental-gaun", title:"Rental Gaun", desc:"Penyewaan gaun untuk berbagai acara — prewedding, graduation, hingga sesi foto keluarga, dengan pilihan koleksi terkini.", waText:"Halo Kaone Studio, saya ingin sewa Rental Gaun.", driveFolder:"https://drive.google.com/drive/folders/1mXWvrjUdBRl8G8cF-K28zQrQlgEeXoDl?usp=sharing" },
     { key:"undangan-digital", title:"Undangan Digital", desc:"Undangan pernikahan digital yang elegan dan mudah dibagikan — lengkap dengan info acara, lokasi, RSVP, dan ucapan, tanpa perlu cetak.", waText:"Halo Kaone Studio, saya ingin booking jasa Undangan Digital.", driveFolder:"" }
+  ],
+  /* Dua "kartu layanan pendamping" yang tampil di bawah galeri utama
+     (bukan kategori galeri seperti "services" di atas — ini kartu
+     terpisah dengan judul, badge, dan teks WA sendiri). */
+  svcCards: [
+    { key:"rental-gaun", title:"Rental Gaun Eksklusif", badge:"Koleksi Premium", desc:"Puluhan gaun pengantin dan kebaya adat pilihan — dirawat, difoto detail, dan siap dikenakan di hari istimewa Anda. Termasuk fitting dan penyesuaian ukuran.", waText:"Halo Kaone Studio, saya ingin tanya ketersediaan Rental Gaun Eksklusif." },
+    { key:"undangan-digital", title:"Undangan Digital Interaktif", badge:"Desain & Motion", desc:"Undangan web yang hidup: galeri foto, hitung mundur, musik, peta lokasi, dan RSVP tamu — semua dalam satu tautan yang mudah dibagikan ke seluruh undangan.", waText:"Halo Kaone Studio, saya ingin tanya ketersediaan Undangan Digital Interaktif." }
   ],
   texts: {
     "nav.brand": "Kaone <em>Studio</em>",
@@ -475,6 +494,11 @@ const SERVICE_LABELS = {
   "wedding":"Wedding", "prewedding":"Prewedding", "patuaekkon":"Patuaekkon",
   "margondang":"Margondang", "mangayun":"Mangayun / Aqiqah", "graduation":"Graduation",
   "selfphoto":"Selfphoto", "rental-gaun":"Rental Gaun", "undangan-digital":"Undangan Digital (tanpa foto Drive)"
+};
+
+const SVC_CARD_LABELS = {
+  "rental-gaun": "Kartu \"Rental Gaun Eksklusif\"",
+  "undangan-digital": "Kartu \"Undangan Digital Interaktif\""
 };
 
 /* Field kecil (input) vs paragraf panjang (textarea), dikelompokkan per section
@@ -574,6 +598,10 @@ function mergeContent(saved){
     services: DEFAULTS.services.map(function(def){
       const savedSvc = (saved && Array.isArray(saved.services)) ? saved.services.find(function(s){ return s.key === def.key; }) : null;
       return Object.assign({}, def, savedSvc || {});
+    }),
+    svcCards: DEFAULTS.svcCards.map(function(def){
+      const savedCard = (saved && Array.isArray(saved.svcCards)) ? saved.svcCards.find(function(c){ return c.key === def.key; }) : null;
+      return Object.assign({}, def, savedCard || {});
     })
   };
   return merged;
@@ -643,9 +671,45 @@ async function loadContent(){
   currentContent = mergeContent(saved);
   buildServiceDriveFields();
   buildTextFields();
+  buildSvcCardsFields();
   fillMediaFields();
   isDirty = false;
   setSaveStatus("");
+}
+
+function buildSvcCardsFields(){
+  const wrap = document.getElementById("svcCardsList");
+  wrap.innerHTML = "";
+  currentContent.svcCards.forEach(function(card){
+    const label = SVC_CARD_LABELS[card.key] || card.key;
+    const titleId = "svccard-title-" + card.key;
+    const badgeId = "svccard-badge-" + card.key;
+    const descId = "svccard-desc-" + card.key;
+    const waId = "svccard-wa-" + card.key;
+    const section = document.createElement("div");
+    section.className = "section-card";
+    section.innerHTML =
+      "<h2>" + label + "</h2>" +
+      '<div class="field"><label for="' + titleId + '">Judul kartu</label>' +
+      '<input type="text" id="' + titleId + '" data-svccard-title="' + card.key + '"></div>' +
+      '<div class="field"><label for="' + badgeId + '">Badge kecil di pojok foto</label>' +
+      '<input type="text" id="' + badgeId + '" data-svccard-badge="' + card.key + '"></div>' +
+      '<div class="field"><label for="' + descId + '">Deskripsi</label>' +
+      '<textarea id="' + descId + '" data-svccard-desc="' + card.key + '"></textarea></div>' +
+      '<div class="field"><label for="' + waId + '">Teks pesan WhatsApp (saat tombol "Tanya Ketersediaan" diklik)</label>' +
+      '<textarea id="' + waId + '" data-svccard-wa="' + card.key + '"></textarea></div>';
+    wrap.appendChild(section);
+  });
+  currentContent.svcCards.forEach(function(card){
+    const t = wrap.querySelector('[data-svccard-title="' + card.key + '"]');
+    const b = wrap.querySelector('[data-svccard-badge="' + card.key + '"]');
+    const d = wrap.querySelector('[data-svccard-desc="' + card.key + '"]');
+    const w = wrap.querySelector('[data-svccard-wa="' + card.key + '"]');
+    if(t) t.value = card.title || "";
+    if(b) b.value = card.badge || "";
+    if(d) d.value = card.desc || "";
+    if(w) w.value = card.waText || "";
+  });
 }
 
 function buildServiceDriveFields(){
@@ -793,7 +857,8 @@ document.querySelectorAll(".device-btn").forEach(function(btn){
 const PAGE_INFO = {
   drive: { title: "Link Google Drive", desc: "Sumber foto yang tampil di website diambil dari folder Google Drive di bawah ini." },
   posisi: { title: "Posisi Foto", desc: "Atur bagian foto mana yang jadi fokus, terpisah untuk tampilan Desktop dan HP." },
-  teks: { title: "Teks Website", desc: "Ubah kalimat dan judul yang tampil di setiap section halaman utama." }
+  teks: { title: "Teks Website", desc: "Ubah kalimat dan judul yang tampil di setiap section halaman utama." },
+  kartu: { title: "Kartu Layanan", desc: "Ubah judul, badge, deskripsi, dan teks WhatsApp dua kartu layanan pendamping." }
 };
 document.querySelectorAll(".nav-btn").forEach(function(btn){
   btn.addEventListener("click", function(){
@@ -863,7 +928,19 @@ function collectFormIntoContent(){
       pos: collectPos("manifesto")
     }
   };
-  return { texts: texts, media: media, services: services };
+  const svcCards = currentContent.svcCards.map(function(card){
+    const t = document.querySelector('[data-svccard-title="' + card.key + '"]');
+    const b = document.querySelector('[data-svccard-badge="' + card.key + '"]');
+    const d = document.querySelector('[data-svccard-desc="' + card.key + '"]');
+    const w = document.querySelector('[data-svccard-wa="' + card.key + '"]');
+    return Object.assign({}, card, {
+      title: t ? t.value : card.title,
+      badge: b ? b.value : card.badge,
+      desc: d ? d.value : card.desc,
+      waText: w ? w.value : card.waText
+    });
+  });
+  return { texts: texts, media: media, services: services, svcCards: svcCards };
 }
 
 document.getElementById("saveBtn").addEventListener("click", async function(){
