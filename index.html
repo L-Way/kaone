@@ -80,7 +80,7 @@
 <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" id="supabaseCdnScript"></script>
 <script>
   /* =========================================================================
-     KONTEN DINAMIS DARI PANEL ADMIN (lihat admin)
+     KONTEN DINAMIS DARI PANEL ADMIN (lihat admin.html)
      -------------------------------------------------------------------------
      Kredensial di bawah ini adalah project Supabase khusus untuk KONTEN
      WEBSITE (teks, link folder Google Drive, posisi foto) — beda dari
@@ -653,7 +653,6 @@
     height:100%;
     object-fit:cover;
     object-position:var(--hero-pos-x, center) var(--hero-pos-y, 22%);
-    filter:grayscale(1) contrast(1.05) brightness(.9);
     transform-origin:center 30%;
     opacity:0;
     transition:opacity 1.8s var(--ease);
@@ -1507,7 +1506,6 @@
     object-fit:cover;
     object-position:var(--manifesto-pos-x, center) var(--manifesto-pos-y, center);
     transform:translateY(-50%);
-    filter:grayscale(1) contrast(1.05) brightness(.9);
     will-change:transform;
   }
   /* Kolom kanan: tiga bab bernomor dipisah garis tipis */
@@ -2330,8 +2328,8 @@
     .hero-tagline{ margin-bottom:14px; }
     .hero h1{ font-size:2.1rem; max-width:none; }
     .hero p{ font-size:.94rem; margin-top:16px; }
-    .hero-actions{ margin-top:26px; flex-direction:column; align-items:stretch; }
-    .hero-actions a{ justify-content:center; min-height:46px; }
+    .hero-actions{ margin-top:26px; flex-direction:column; align-items:flex-start; }
+    .hero-actions a{ justify-content:center; min-height:46px; width:auto; max-width:100%; }
     .hero-badges{ margin-top:26px; gap:8px; }
     .hero-badge{ padding:9px 16px; font-size:.72rem; }
 
@@ -2446,7 +2444,7 @@
     </nav>
 
     <div class="header-cta">
-      <a href="admin" class="header-admin-link" title="Login Admin" aria-label="Login Admin" data-testid="header-admin-link">
+      <a href="admin.html" class="header-admin-link" title="Login Admin" aria-label="Login Admin" data-testid="header-admin-link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </a>
       <a class="btn-gold" target="_blank" rel="noopener" data-testid="nav-whatsapp-button"
@@ -2777,7 +2775,7 @@
         </a>
         <span class="footer-copyright" data-ck="footer.copyright">© <span id="year"></span> Kaone Studio. Seluruh hak cipta dilindungi.</span>
         <a class="footer-wa-number" href="https://wa.me/6285117071704" target="_blank" rel="noopener" data-testid="footer-whatsapp-number">+62 851-1707-1704</a>
-        <a href="admin" class="footer-admin-link" title="Panel Admin" data-testid="footer-admin-link" aria-label="Panel Admin">
+        <a href="admin.html" class="footer-admin-link" title="Panel Admin" data-testid="footer-admin-link" aria-label="Panel Admin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Admin</span>
         </a>
