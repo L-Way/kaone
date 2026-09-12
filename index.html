@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://ptaewptlwzdxcghdjdra.supabase.co" crossorigin>
 <link rel="preconnect" href="https://gyleppavsgbtrlgbyztv.supabase.co" crossorigin>
+<link rel="preconnect" href="https://www.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://drive.google.com">
 <link rel="preconnect" href="https://www.googletagmanager.com">
 <link rel="dns-prefetch" href="https://www.google-analytics.com">
@@ -25,7 +26,7 @@
   gtag('config', 'G-VE7ZM5MVZD');
 </script>
 
-<title>Kaone Studio — Fotografer Wedding &amp; Adat Batak di Padang Lawas Utara</title>
+<title>Kaone Studio - Fotografer, Videografer, Make-Up, Rental Gaun, &amp; Studio di Padang Lawas Utara</title>
 
 <!-- Favicon -->
 <!-- Baris rel="icon" file (favicon.svg, favicon-32.png, dst) di bawah ini
@@ -46,8 +47,8 @@
 <!-- ===== META SEO DASAR =====
      Ganti "https://kaone.web.id/" di bawah dengan domain asli
      begitu situs ini sudah online. -->
-<meta name="description" content="Kaone Studio — jasa fotografi profesional di Padang Lawas Utara untuk Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, hingga upacara adat Batak (Patuaekkon, Margondang, Mangayun/Aqiqah). Dikerjakan dengan hati-hati, diabadikan seperti pusaka.">
-<meta name="keywords" content="fotografer Padang Lawas Utara, foto wedding Portibi, foto adat Batak, foto prewedding Padang Lawas Utara, foto graduation wisuda, rental gaun Padang Lawas Utara, jasa foto pernikahan adat Batak, Kaone Studio">
+<meta name="description" content="Kaone Studio — jasa fotografi profesional di Padang Lawas Utara untuk Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, Patuaekkon, Margondang, Mangayun/Aqiqah. Dikerjakan dengan hati-hati, diabadikan seperti pusaka.">
+<meta name="keywords" content="fotografer Padang Lawas Utara, foto wedding Portibi, foto adat Batak, foto prewedding Padang Lawas Utara, foto graduation wisuda, rental gaun Padang Lawas Utara, jasa foto pernikahan adat Batak, fotografer paluta, prewedding paluta, videografer paluta, Kaone Studio">
 <meta name="author" content="Kaone Studio">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://kaone.web.id/">
@@ -56,8 +57,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kaone Studio">
 <meta property="og:locale" content="id_ID">
-<meta property="og:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
-<meta property="og:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
+<meta property="og:title" content="Kaone Studio - Fotografer, Videografer, Make-Up, Rental Gaun, & Studio di Padang Lawas Utara">
+<meta property="og:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, Patuaekkon,dan Margondang dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta property="og:url" content="https://kaone.web.id/">
 <meta property="og:image" content="https://kaone.web.id/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -65,8 +66,8 @@
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kaone Studio — Fotografer Wedding & Adat Batak di Padang Lawas Utara">
-<meta name="twitter:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, dan upacara adat Batak dengan pendekatan yang tenang dan menghormati setiap prosesi.">
+<meta name="twitter:title" content="Kaone Studio - Fotografer, Videografer, Make-Up, Rental Gaun, & Studio di Padang Lawas Utara">
+<meta name="twitter:description" content="Mengabadikan Wedding, Prewedding, Graduation, Selfphoto, Rental Gaun, Patuaekkon,dan Margondang dengan pendekatan yang tenang dan menghormati setiap prosesi.">
 <meta name="twitter:image" content="https://kaone.web.id/og-image.jpg">
 
 <!-- Structured Data (schema.org) untuk Google -->
@@ -2977,17 +2978,29 @@ function driveThumbUrl(fileId, size){
   return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + (size || 1600);
 }
 
-async function fetchDriveFolderImages(folderId){
+/* "limit" opsional: kalau diisi (misalnya 1, untuk hero/badge/potret
+   manifesto yang cuma butuh SATU foto), permintaan ke Drive API dibuat
+   seringan mungkin — pageSize dikecilkan (tak perlu ambil semua file
+   dalam folder) dan thumbnail diminta di resolusi lebih kecil (960px,
+   cukup tajam untuk hero di HP tapi jauh lebih cepat diunduh & di-decode
+   dibanding 1600px). Ini penting untuk LCP (Largest Contentful Paint):
+   sebelumnya hero HARUS menunggu folder Drive di-list SELURUHNYA +
+   thumbnail 1600px, baru bisa tampil — jadi salah satu penyebab utama
+   skor Performance rendah di PageSpeed Insights.
+   Galeri penuh (dipanggil tanpa "limit") tetap memakai perilaku lama:
+   semua foto, thumbnail 1600px. */
+async function fetchDriveFolderImages(folderId, limit){
   if(!DRIVE_GALLERY_API_KEY || !folderId) return [];
   const found = [];
   let pageToken = "";
+  const pageSize = limit ? Math.min(limit, 200) : 200;
   try{
     do{
       const params = new URLSearchParams({
         q: "'" + folderId + "' in parents and mimeType contains 'image/' and trashed=false",
         fields: "nextPageToken, files(id,name)",
         orderBy: "name",
-        pageSize: "200",
+        pageSize: String(pageSize),
         key: DRIVE_GALLERY_API_KEY
       });
       if(pageToken) params.set("pageToken", pageToken);
@@ -2999,11 +3012,12 @@ async function fetchDriveFolderImages(folderId){
       }
       (data.files || []).forEach(f => found.push(f));
       pageToken = data.nextPageToken || "";
-    } while(pageToken);
+    } while(pageToken && (!limit || found.length < limit));
   }catch(err){
     console.error("Gagal memuat folder Drive:", err);
   }
-  return found.map(f => driveThumbUrl(f.id, 1600));
+  const thumbSize = limit ? 960 : 1600;
+  return found.slice(0, limit || found.length).map(f => driveThumbUrl(f.id, thumbSize));
 }
 
 /* applyDriveGalleries() didefinisikan ulang di bawah (setelah data
@@ -3047,7 +3061,7 @@ const manifestoMedia = {
 async function resolveMediaUrls(mediaCfg, count){
   const folderId = extractDriveFolderId(mediaCfg.driveFolder);
   if(folderId){
-    const found = await fetchDriveFolderImages(folderId);
+    const found = await fetchDriveFolderImages(folderId, count);
     if(found.length) return found.slice(0, count);
   }
   const fb = Array.isArray(mediaCfg.fallback) ? mediaCfg.fallback : [mediaCfg.fallback];
@@ -3063,7 +3077,7 @@ function renderHeroSlides(urls){
   const container = document.querySelector(".hero-media");
   if(!container || !urls.length) return;
   container.innerHTML = urls.map((u, i) =>
-    `<img src="${u}" alt="Pasangan pengantin Kaone Studio" loading="${i === 0 ? "eager" : "lazy"}" decoding="async" class="${i === 0 ? "is-active" : ""}">`
+    `<img src="${u}" alt="Pasangan pengantin Kaone Studio" loading="${i === 0 ? "eager" : "lazy"}" decoding="async"${i === 0 ? ' fetchpriority="high"' : ""} class="${i === 0 ? "is-active" : ""}">`
   ).join("");
   const slides = Array.from(container.querySelectorAll("img"));
   if(heroSlideTimer) clearInterval(heroSlideTimer);
