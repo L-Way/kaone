@@ -141,7 +141,13 @@
     position:relative; border-radius:10px; overflow:hidden; flex-shrink:0;
     border:1px solid var(--border); background:var(--surface-2);
   }
-  .pos-preview img{ width:100%; height:100%; display:block; object-fit:cover; filter:grayscale(1) contrast(1.05) brightness(.9); }
+  .pos-preview img{ width:100%; height:100%; display:block; object-fit:cover; transition:opacity .2s ease; }
+  .pos-preview.is-loading img{ opacity:.3; }
+  .pos-preview-spinner{
+    position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+    color:var(--text-dim); font-size:.7rem; letter-spacing:.03em; text-align:center; padding:8px;
+  }
+  .pos-preview.is-loading .pos-preview-spinner{ display:flex; }
   .pos-preview--desktop{ width:260px; height:146px; }
   .pos-preview--mobile{ width:118px; height:230px; }
   .pos-preview-label{
@@ -149,6 +155,12 @@
     color:var(--text); background:rgba(0,0,0,.55); padding:3px 8px; border-radius:999px;
   }
   .pos-controls{ flex:1; min-width:220px; }
+  .pos-status{ font-size:.78rem; margin:0 0 16px; line-height:1.5; }
+  .pos-status.loading{ color:var(--text-dim); }
+  .pos-status.ok{ color:var(--ok); }
+  .pos-status.error{ color:var(--danger); }
+  .pos-status.hint{ color:var(--text-faint); }
+  .pos-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
   .slider-row{ margin-bottom:16px; }
   .slider-row label{ display:flex; justify-content:space-between; margin-bottom:8px; color:var(--text); font-size:.82rem; }
   .slider-row label span{ color:var(--gold-light); font-variant-numeric:tabular-nums; }
@@ -278,18 +290,26 @@
 
         <div class="section-card">
           <h2>Posisi Foto Hero</h2>
-          <p class="desc">Geser untuk mengatur bagian foto mana yang jadi fokus (berguna kalau wajah/objek utama terpotong).</p>
+          <p class="desc">Geser untuk mengatur bagian foto mana yang jadi fokus (berguna kalau wajah/objek utama terpotong). Pratinjau di bawah mengambil langsung foto pertama (A-Z) dari folder Drive yang diisi di tab "Link Google Drive" — persis seperti yang akan tampil di website.</p>
 
-          <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto hero">
-            <button class="device-btn active" data-group="hero" data-device="desktop">Desktop</button>
-            <button class="device-btn" data-group="hero" data-device="mobile">HP</button>
+          <div class="pos-toolbar">
+            <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto hero">
+              <button class="device-btn active" data-group="hero" data-device="desktop">Desktop</button>
+              <button class="device-btn" data-group="hero" data-device="mobile">HP</button>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" id="heroReloadPreview">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              Muat ulang pratinjau
+            </button>
           </div>
+          <p class="pos-status" id="heroPosStatus"></p>
 
           <div class="pos-device-panel active" data-group-panel="hero" data-device-panel="desktop">
             <div class="pos-editor">
               <div class="pos-preview pos-preview--desktop">
                 <span class="pos-preview-label">Desktop</span>
                 <img id="heroPosPreviewDesktop" alt="Pratinjau posisi foto hero di tampilan desktop">
+                <span class="pos-preview-spinner">Memuat foto asli…</span>
               </div>
               <div class="pos-controls">
                 <div class="slider-row"><label>Horizontal <span id="heroPosXDesktopVal">50%</span></label>
@@ -306,6 +326,7 @@
               <div class="pos-preview pos-preview--mobile">
                 <span class="pos-preview-label">HP</span>
                 <img id="heroPosPreviewMobile" alt="Pratinjau posisi foto hero di tampilan HP">
+                <span class="pos-preview-spinner">Memuat foto asli…</span>
               </div>
               <div class="pos-controls">
                 <div class="slider-row"><label>Horizontal <span id="heroPosXMobileVal">50%</span></label>
@@ -321,18 +342,26 @@
 
         <div class="section-card">
           <h2>Posisi Foto Manifesto</h2>
-          <p class="desc">Mengatur fokus potret di section "Mengapa Kami Ada".</p>
+          <p class="desc">Mengatur fokus potret di section "Mengapa Kami Ada". Pratinjau memakai foto pertama (A-Z) dari folder Drive Manifesto yang sebenarnya.</p>
 
-          <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto manifesto">
-            <button class="device-btn active" data-group="manifesto" data-device="desktop">Desktop</button>
-            <button class="device-btn" data-group="manifesto" data-device="mobile">HP</button>
+          <div class="pos-toolbar">
+            <div class="device-switch" role="tablist" aria-label="Pilih tampilan untuk foto manifesto">
+              <button class="device-btn active" data-group="manifesto" data-device="desktop">Desktop</button>
+              <button class="device-btn" data-group="manifesto" data-device="mobile">HP</button>
+            </div>
+            <button type="button" class="btn btn-outline btn-sm" id="manifestoReloadPreview">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+              Muat ulang pratinjau
+            </button>
           </div>
+          <p class="pos-status" id="manifestoPosStatus"></p>
 
           <div class="pos-device-panel active" data-group-panel="manifesto" data-device-panel="desktop">
             <div class="pos-editor">
               <div class="pos-preview pos-preview--desktop">
                 <span class="pos-preview-label">Desktop</span>
                 <img id="manifestoPosPreviewDesktop" alt="Pratinjau posisi foto manifesto di tampilan desktop">
+                <span class="pos-preview-spinner">Memuat foto asli…</span>
               </div>
               <div class="pos-controls">
                 <div class="slider-row"><label>Horizontal <span id="manifestoPosXDesktopVal">50%</span></label>
@@ -349,6 +378,7 @@
               <div class="pos-preview pos-preview--mobile">
                 <span class="pos-preview-label">HP</span>
                 <img id="manifestoPosPreviewMobile" alt="Pratinjau posisi foto manifesto di tampilan HP">
+                <span class="pos-preview-spinner">Memuat foto asli…</span>
               </div>
               <div class="pos-controls">
                 <div class="slider-row"><label>Horizontal <span id="manifestoPosXMobileVal">50%</span></label>
@@ -780,24 +810,133 @@ function fillMediaFields(){
 
 function driveFolderIdFromUrl(url){
   if(!url) return null;
-  const m = url.match(/[-\w]{25,}/);
-  return m ? m[0] : null;
+  const s = String(url).trim();
+  const m = s.match(/folders\/([a-zA-Z0-9_-]+)/);
+  if(m) return m[1];
+  // Anggap seluruh input sudah berupa FOLDER_ID polos kalau tidak ada pola "folders/..."
+  const bare = s.match(/^[a-zA-Z0-9_-]{10,}$/);
+  return bare ? bare[0] : null;
 }
-function driveThumb(url){
-  const id = driveFolderIdFromUrl(url);
-  return id ? ("https://drive.google.com/thumbnail?id=" + id + "&sz=w800") : "";
+function driveThumb(fileId, size){
+  return fileId ? ("https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + (size || 800)) : "";
 }
 
-async function loadPreviewImages(){
-  // Pratinjau pakai foto contoh bawaan (fallback) supaya selalu tampil cepat,
-  // tanpa perlu memanggil Google Drive API dari panel admin.
-  const heroSrc = "https://drive.google.com/thumbnail?id=1mMB-XCS1u-nY11hdMwLLD1j982BEB-Tl&sz=w800";
-  const manifestoSrc = "https://drive.google.com/thumbnail?id=1zOoV3K2OswNt5KBLuR_oNM0Y11QheWZr&sz=w800";
-  document.getElementById("heroPosPreviewDesktop").src = heroSrc;
-  document.getElementById("heroPosPreviewMobile").src = heroSrc;
-  document.getElementById("manifestoPosPreviewDesktop").src = manifestoSrc;
-  document.getElementById("manifestoPosPreviewMobile").src = manifestoSrc;
+/* API key sama dengan yang dipakai di index.html untuk mengambil daftar foto
+   folder Drive (dibatasi lewat HTTP referrer ke domain situs, lihat komentar
+   di index.html dekat DRIVE_GALLERY_API_KEY). Dipakai di sini supaya
+   pratinjau posisi foto bisa menampilkan FOTO ASLI pertama (A-Z) dari
+   folder yang sebenarnya — bukan foto contoh statis. */
+const DRIVE_API_KEY = "AIzaSyDZ3Yq9SfhnaR_ue7MDra6iLHsvfa74L34";
+
+async function fetchDriveFirstImage(folderId){
+  if(!DRIVE_API_KEY || !folderId) return null;
+  const params = new URLSearchParams({
+    q: "'" + folderId + "' in parents and mimeType contains 'image/' and trashed=false",
+    fields: "files(id,name)",
+    orderBy: "name",
+    pageSize: "1",
+    key: DRIVE_API_KEY
+  });
+  const res = await fetch("https://www.googleapis.com/drive/v3/files?" + params.toString());
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message || "Drive API error");
+  return (data.files && data.files[0]) || null;
 }
+
+const POS_FALLBACK_IMG = {
+  hero: "https://drive.google.com/thumbnail?id=1mMB-XCS1u-nY11hdMwLLD1j982BEB-Tl&sz=w800",
+  manifesto: "https://drive.google.com/thumbnail?id=1zOoV3K2OswNt5KBLuR_oNM0Y11QheWZr&sz=w800"
+};
+const POS_DRIVE_FIELD = { hero: "mediaHeroDrive", manifesto: "mediaManifestoDrive" };
+
+function setPosStatus(which, msg, kind){
+  const el = document.getElementById(which + "PosStatus");
+  if(!el) return;
+  el.textContent = msg;
+  el.className = "pos-status" + (kind ? " " + kind : "");
+}
+
+function setPosPreviewSrc(which, src){
+  const d = document.getElementById(which + "PosPreviewDesktop");
+  const m = document.getElementById(which + "PosPreviewMobile");
+  [d, m].forEach(function(img){
+    if(!img) return;
+    img.onerror = function(){
+      if(img.src !== POS_FALLBACK_IMG[which]){
+        img.src = POS_FALLBACK_IMG[which];
+        setPosStatus(which, "Thumbnail dari Drive gagal dimuat (coba \"Muat ulang pratinjau\") — menampilkan foto contoh.", "error");
+      }
+    };
+    img.src = src;
+  });
+}
+
+/* Mengambil & menampilkan foto PERTAMA (A-Z) yang benar-benar ada di
+   folder Drive yang diisi admin — persis logika yang dipakai index.html
+   untuk memilih foto hero/manifesto asli. Kalau folder kosong, link belum
+   valid, folder belum dibagikan publik, atau Drive API gagal dipanggil,
+   otomatis kembali ke foto contoh bawaan supaya pratinjau tetap tampil. */
+async function refreshPosPreview(which){
+  const input = document.getElementById(POS_DRIVE_FIELD[which]);
+  const url = input ? input.value.trim() : "";
+  const boxes = document.querySelectorAll('.pos-device-panel[data-group-panel="' + which + '"] .pos-preview');
+
+  if(!url){
+    setPosPreviewSrc(which, POS_FALLBACK_IMG[which]);
+    setPosStatus(which, "Folder Drive belum diisi — menampilkan foto contoh bawaan.", "hint");
+    return;
+  }
+
+  const folderId = driveFolderIdFromUrl(url);
+  if(!folderId){
+    setPosPreviewSrc(which, POS_FALLBACK_IMG[which]);
+    setPosStatus(which, "Link folder belum dikenali — menampilkan foto contoh. Pastikan link berbentuk https://drive.google.com/drive/folders/...", "error");
+    return;
+  }
+
+  boxes.forEach(function(b){ b.classList.add("is-loading"); });
+  setPosStatus(which, "Memuat foto asli dari folder Drive…", "loading");
+
+  try{
+    const file = await fetchDriveFirstImage(folderId);
+    if(!file){
+      setPosPreviewSrc(which, POS_FALLBACK_IMG[which]);
+      setPosStatus(which, "Tidak ada foto ditemukan di folder ini (kosong / belum dibagikan \"Siapa saja yang memiliki link\") — menampilkan foto contoh.", "error");
+    }else{
+      setPosPreviewSrc(which, driveThumb(file.id, 800));
+      setPosStatus(which, "Menampilkan foto asli pertama (A-Z) dari folder ✔ — " + file.name, "ok");
+    }
+  }catch(err){
+    console.error("Gagal memuat pratinjau Drive:", err);
+    setPosPreviewSrc(which, POS_FALLBACK_IMG[which]);
+    setPosStatus(which, "Gagal memanggil Google Drive API — menampilkan foto contoh.", "error");
+  }finally{
+    boxes.forEach(function(b){ b.classList.remove("is-loading"); });
+  }
+}
+
+function loadPreviewImages(){
+  refreshPosPreview("hero");
+  refreshPosPreview("manifesto");
+}
+
+function debounce(fn, wait){
+  let t;
+  return function(){
+    const args = arguments, ctx = this;
+    clearTimeout(t);
+    t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+  };
+}
+
+/* Pratinjau otomatis dimuat ulang begitu admin mengetik/menempel link
+   folder baru (didebounce 700ms supaya tidak memanggil API tiap huruf),
+   dan bisa dipaksa muat ulang lewat tombol "Muat ulang pratinjau" —
+   berguna kalau admin baru saja menambah/mengganti foto di dalam folder. */
+document.getElementById("mediaHeroDrive").addEventListener("input", debounce(function(){ refreshPosPreview("hero"); }, 700));
+document.getElementById("mediaManifestoDrive").addEventListener("input", debounce(function(){ refreshPosPreview("manifesto"); }, 700));
+document.getElementById("heroReloadPreview").addEventListener("click", function(){ refreshPosPreview("hero"); });
+document.getElementById("manifestoReloadPreview").addEventListener("click", function(){ refreshPosPreview("manifesto"); });
 
 /* ===================== POSISI FOTO (DESKTOP / HP) ===================== */
 function posIds(which, device){
