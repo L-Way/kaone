@@ -101,7 +101,22 @@
         window.kaoneAdminClient = client;
         var res = await client.from(window.KAONE_CONTENT_TABLE).select("content").eq("id", 1).maybeSingle();
         if(res.error){ console.warn("Konten admin belum bisa dimuat:", res.error.message || res.error); resolve(null); return; }
-        resolve((res.data && res.data.content) ? res.data.content : null);
+        var loadedContent = (res.data && res.data.content) ? res.data.content : null;
+        /* Log diagnostik: buka Console (F12 di desktop, atau "Inspect" via
+           chrome://inspect dari HP yang disambung USB) untuk memastikan data
+           dari Supabase benar-benar sampai ke browser. Kalau baris ini
+           menunjukkan "null" atau media.hero.pos kosong, masalahnya ada di
+           SISI SUPABASE (RLS/izin baca, atau belum tersimpan) — bukan di
+           kode halaman ini. Kalau baris ini SUDAH menunjukkan angka yang
+           benar tapi foto tetap tidak berubah, berarti file index.html yang
+           sedang dibuka bukan versi terbaru (perlu upload ulang / refresh
+           cache browser). */
+        console.log("[Kaone] Konten admin diterima dari Supabase:", loadedContent);
+        if(loadedContent && loadedContent.media){
+          console.log("[Kaone] Posisi foto hero:", loadedContent.media.hero && loadedContent.media.hero.pos);
+          console.log("[Kaone] Posisi foto manifesto:", loadedContent.media.manifesto && loadedContent.media.manifesto.pos);
+        }
+        resolve(loadedContent);
       }catch(err){
         console.warn("Konten admin belum bisa dimuat:", err);
         resolve(null);
@@ -2386,7 +2401,10 @@
 
     .container{ padding:0 18px; }
 
-    .hero{ min-height:auto; padding:120px 0 44px; align-items:flex-start; }
+    /* Jarak bawah diperbesar (44px -> 92px) supaya badge "Kategori Jasa /
+       Tahun Berkarya" tidak numpuk dengan .scroll-indicator (titik bulat
+       memantul) yang melayang absolute di dasar hero. */
+    .hero{ min-height:auto; padding:120px 0 92px; align-items:flex-start; }
     .hero-tagline{ margin-bottom:14px; }
     .hero h1{ font-size:2.1rem; max-width:none; }
     .hero p{ font-size:.94rem; margin-top:16px; }
@@ -3676,8 +3694,9 @@ function applySiteSvcCards(list){
 }
 
 function applySiteContent(cfg){
-  if(!cfg) return;
+  if(!cfg){ console.log("[Kaone] Tidak ada konten admin (cfg kosong) — halaman memakai nilai bawaan di file ini."); return; }
   try{
+    console.log("[Kaone] Menerapkan konten admin ke halaman...");
     applySiteTexts(cfg.texts);
     applySiteMedia(cfg.media);
     applySiteServices(cfg.services);
