@@ -183,6 +183,28 @@
   }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
+  /* ===================== MOBILE LAYOUT (topbar) =====================
+     Sebelumnya topbar (.sidebar) cuma punya 1 baris kaku: logo + menu +
+     tombol "Kembali ke Beranda" + "Keluar" dipaksa muat sejajar, jadi
+     di HP kepotong/meluber ke kanan (butuh geser horizontal). Di bawah
+     900px sekarang topbar dipecah jadi beberapa baris yang menyesuaikan
+     lebar layar, dan tombolnya diperkecil supaya tetap muat. */
+  @media (max-width:899px){
+    .sidebar{ flex-wrap:wrap; row-gap:10px; padding:12px 14px; }
+    .nav{ order:3; flex-basis:100%; }
+    .topbar-actions{ order:2; margin-left:auto; gap:6px; }
+    .topbar-actions .btn{ padding:8px 11px; font-size:.74rem; gap:5px; }
+    .user-pill{ max-width:100px; padding:6px 10px; }
+  }
+  @media (max-width:420px){
+    .user-pill{ display:none; }
+    .topbar-actions .btn{ padding:7px 9px; font-size:.7rem; }
+  }
+  @media (max-width:380px){
+    .save-bar{ flex-direction:column; gap:8px; padding:10px 14px; }
+    .save-status{ min-width:0; text-align:center; }
+  }
+
   /* ===================== DESKTOP LAYOUT ===================== */
   @media (min-width:900px){
     .shell{ flex-direction:row; }
@@ -549,9 +571,8 @@ const TEXT_GROUPS = [
     ["hero.paragraph","Paragraf pembuka","textarea"],
     ["hero.cta1","Tombol \"Jelajahi Karya\"","text"],
     ["hero.cta2","Tombol \"Konsultasi Gratis\"","text"],
-    ["hero.badge1.num","Angka lencana 1","text"], ["hero.badge1.label","Label lencana 1","text"],
-    ["hero.badge2.num","Angka lencana 2","text"], ["hero.badge2.label","Label lencana 2","text"],
-    ["hero.badge3.num","Angka lencana 3","text"], ["hero.badge3.label","Label lencana 3","text"]
+    ["hero.badge2.num","Angka lencana 1 (mis. \"8\")","text"], ["hero.badge2.label","Label lencana 1 (mis. \"Kategori Karya\")","text"],
+    ["hero.badge3.num","Angka lencana 2 (mis. \"6 Th\")","text"], ["hero.badge3.label","Label lencana 2 (mis. \"Berkarya\")","text"]
   ]},
   { title:"Galeri", fields:[
     ["galeri.eyebrow","Label kecil di atas judul","text"],
