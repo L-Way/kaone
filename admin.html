@@ -148,8 +148,19 @@
     color:var(--text-dim); font-size:.7rem; letter-spacing:.03em; text-align:center; padding:8px;
   }
   .pos-preview.is-loading .pos-preview-spinner{ display:flex; }
+  /* .pos-preview--desktop/--mobile dipakai untuk foto HERO (di web asli:
+     desktop = landscape lebar, HP = portrait memanjang — background penuh
+     mengikuti bentuk section-nya).
+     Foto MANIFESTO justru KEBALIKANNYA (lihat CSS asli index.html:
+     .manifesto-portrait{aspect-ratio:3/4} untuk desktop, lalu berubah jadi
+     aspect-ratio:16/9 di bawah 1024px/HP) — makanya butuh bentuk pratinjau
+     sendiri (--manifesto-desktop = potret, --manifesto-mobile = landscape),
+     supaya slider yang digeser admin benar-benar mencerminkan bentuk kotak
+     foto yang sesungguhnya di tiap perangkat. */
   .pos-preview--desktop{ width:260px; height:146px; }
   .pos-preview--mobile{ width:118px; height:230px; }
+  .pos-preview--manifesto-desktop{ width:171px; height:228px; }
+  .pos-preview--manifesto-mobile{ width:246px; height:138px; }
   .pos-preview-label{
     position:absolute; top:8px; left:8px; font-size:.65rem; letter-spacing:.04em; font-weight:600;
     color:var(--text); background:rgba(0,0,0,.55); padding:3px 8px; border-radius:999px;
@@ -383,7 +394,7 @@
 
           <div class="pos-device-panel active" data-group-panel="manifesto" data-device-panel="desktop">
             <div class="pos-editor">
-              <div class="pos-preview pos-preview--desktop">
+              <div class="pos-preview pos-preview--manifesto-desktop">
                 <span class="pos-preview-label">Desktop</span>
                 <img id="manifestoPosPreviewDesktop" alt="Pratinjau posisi foto manifesto di tampilan desktop">
                 <span class="pos-preview-spinner">Memuat foto asli…</span>
@@ -393,14 +404,14 @@
                   <input type="range" min="0" max="100" id="manifestoPosXDesktop"></div>
                 <div class="slider-row"><label>Vertikal <span id="manifestoPosYDesktopVal">50%</span></label>
                   <input type="range" min="0" max="100" id="manifestoPosYDesktop"></div>
-                <p class="field-hint">Ini posisi yang dipakai saat website dibuka di layar lebar (laptop/komputer).</p>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka di layar lebar (laptop/komputer). Bentuk foto di sini POTRET (tegak, 3:4).</p>
               </div>
             </div>
           </div>
 
           <div class="pos-device-panel" data-group-panel="manifesto" data-device-panel="mobile">
             <div class="pos-editor">
-              <div class="pos-preview pos-preview--mobile">
+              <div class="pos-preview pos-preview--manifesto-mobile">
                 <span class="pos-preview-label">HP</span>
                 <img id="manifestoPosPreviewMobile" alt="Pratinjau posisi foto manifesto di tampilan HP">
                 <span class="pos-preview-spinner">Memuat foto asli…</span>
@@ -411,7 +422,7 @@
                 <div class="slider-row"><label>Vertikal <span id="manifestoPosYMobileVal">50%</span></label>
                   <input type="range" min="0" max="100" id="manifestoPosYMobile"></div>
                 <button class="btn btn-outline btn-sm" type="button" data-copy-from-desktop="manifesto">Samakan dengan Desktop</button>
-                <p class="field-hint">Ini posisi yang dipakai saat website dibuka lewat HP.</p>
+                <p class="field-hint">Ini posisi yang dipakai saat website dibuka lewat HP. Beda dari Desktop, di HP bentuk foto ini malah jadi LANDSCAPE (lebar, 16:9) — hampir pasti perlu digeser ulang, jangan disamakan dengan Desktop.</p>
               </div>
             </div>
           </div>
