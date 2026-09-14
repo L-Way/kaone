@@ -4031,7 +4031,7 @@ function updateManifestoParallax(){
   const vh = window.innerHeight || 1;
   const total = rect.height + vh;
   const progress = Math.min(Math.max((vh - rect.top) / total, 0), 1);
-  const shift = (progress - 0.5) * 100; // px pergeseran vertikal di dalam klip
+  const shift = (progress - 0.5) * 32; // px pergeseran vertikal di dalam klip (dulu *100 -> terlalu jauh, sampai menutupi wajah yang sudah diatur admin saat dibuka lewat deep link #manifesto)
   manifestoPortraitImg.style.transform = `translateY(calc(-50% + ${shift}px))`;
 }
 window.addEventListener("scroll", ()=>{
