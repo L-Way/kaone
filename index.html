@@ -2467,6 +2467,326 @@
     .hero h1{ font-size:1.85rem; }
     .gallery-grid{ grid-template-columns:repeat(2,1fr); gap:5px; }
   }
+
+  /* =======================================================================
+     LAPIS PENYEMPURNAAN VISUAL — "Emas Tempaan & Layar Genggam"
+     =======================================================================
+     Ditaruh paling bawah di blok gaya supaya menimpa aturan di atasnya
+     tanpa !important, dan tanpa mengubah satu baris pun HTML/JavaScript.
+
+     Identitas brand TIDAK diganti (obsidian + emas champagne, motif lattice,
+     Lora + DM Sans). Yang dilakukan hanya memperdalamnya:
+
+       1. Emas dibuat bergradasi terang→emas→tembaga, supaya terbaca seperti
+          logam yang memantulkan cahaya, bukan kuning datar.
+       2. Kartu diberi bayangan berlapis + garis rambut emas di bibir atas,
+          seolah ada cahaya jatuh dari atas.
+       3. Umpan balik sentuh, karena di HP tidak ada :hover sama sekali —
+          tekanan jari-lah yang membuat halaman terasa hidup.
+       4. Kenyamanan layar HP: dvh (bilah alamat Chrome/Safari yang
+          menyusut), safe-area iPhone berponi, target sentuh 44px.
+
+     Sengaja TIDAK disentuh: scrim hero 3 lapis, Ken Burns kartu galeri,
+     sapuan tombol splash, dan .kontak-glow — semuanya sudah bekerja baik,
+     dan menimpanya justru akan membatalkan penyetelan yang ada. Framing foto
+     hero juga dibiarkan utuh supaya slider di panel admin tetap akurat.
+     ======================================================================= */
+
+  :root{
+    --c-ember:#B07A32;   /* tembaga — ujung gelap gradasi emas */
+    --grad-gold:linear-gradient(135deg, var(--c-gold-pale) 0%, var(--c-gold) 46%, var(--c-ember) 100%);
+    --glow-gold:rgba(212,175,55,.26);
+    --glow-soft:rgba(212,175,55,.10);
+    --shadow-lift:0 1px 1px rgba(0,0,0,.4), 0 8px 18px rgba(0,0,0,.34), 0 24px 56px rgba(0,0,0,.42);
+    --shadow-lift-gold:0 1px 1px rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.4), 0 26px 64px var(--glow-soft);
+
+    /* Tinggi layar SEBENARNYA di HP. 100vh di Safari/Chrome mobile dihitung
+       termasuk bilah alamat yang nanti menyusut, jadi konten kepotong dan
+       halaman ikut bergeser saat scroll. 100dvh menyesuaikan secara dinamis;
+       fallback 100vh tetap ditulis untuk browser lama. */
+    --vh-full:100vh;
+  }
+  @supports (height:100dvh){ :root{ --vh-full:100dvh; } }
+
+
+  /* ======================================================================
+     1 — KENYAMANAN LAYAR HP (Android & iPhone)
+     ====================================================================== */
+
+  html{ -webkit-text-size-adjust:100%; }  /* iOS tidak lagi membesarkan teks sendiri saat layar diputar */
+  body{ -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  a, button, summary, [role="button"], input, textarea, select{ -webkit-tap-highlight-color:transparent; }
+
+  /* Tidak ada lagi geser ke samping yang tidak disengaja. */
+  html, body{ max-width:100%; }
+  @supports (overflow:clip){ html, body{ overflow-x:clip; } }
+
+  body.locked{ height:var(--vh-full); overscroll-behavior:none; }
+  #splash{ min-height:var(--vh-full); }
+
+  /* Poni & garis home iPhone: isi digeser masuk agar tidak tertutup. */
+  header{
+    padding-top:env(safe-area-inset-top);
+    height:calc(64px + env(safe-area-inset-top));
+  }
+  .mobile-nav{
+    height:var(--vh-full);
+    padding-top:calc(90px + env(safe-area-inset-top));
+    padding-bottom:calc(32px + env(safe-area-inset-bottom));
+    padding-right:calc(32px + env(safe-area-inset-right));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .float-wa{
+    right:calc(18px + env(safe-area-inset-right));
+    bottom:calc(18px + env(safe-area-inset-bottom));
+  }
+  footer{ padding-bottom:calc(env(safe-area-inset-bottom) + 8px); }
+
+  /* Target sentuh minimum 44px (pedoman Apple HIG & Material Design),
+     diterapkan pada elemen kecil yang paling sering meleset ditekan. */
+  @media (pointer:coarse){
+    .mobile-nav a,
+    .gallery-filters .filter,
+    .header-admin-link,
+    .footer-admin-link,
+    .cat-modal-close,
+    .lightbox2-close,
+    .service-toggle,
+    .btn-copy-number{ min-height:44px; }
+    .hamburger{ min-width:44px; min-height:44px; justify-content:center; }
+    .star-rating button{ min-width:44px; min-height:44px; }
+
+    /* Baris filter yang digeser horizontal berhenti rapi di tiap tombol. */
+    .gallery-filters{ scroll-snap-type:x proximity; scroll-padding-left:18px; }
+    .gallery-filters .filter{ scroll-snap-align:start; }
+  }
+
+  /* Form: font ≥16px mencegah iOS "zoom paksa" saat kolom disentuh. */
+  input, textarea, select{ font-size:max(16px, 1em); }
+
+
+  /* ======================================================================
+     2 — EMAS TEMPAAN
+     ====================================================================== */
+
+  /* Hanya tombol yang memang BERISI emas yang diberi gradasi. .btn-wa dan
+     .btn-outline sengaja dilewati — keduanya tombol bergaris, isinya harus
+     tetap tembus pandang. */
+  .btn-gold, .float-wa{
+    background-image:var(--grad-gold);
+    background-size:180% 180%;
+    background-position:0% 50%;
+  }
+  .btn-gold, .float-wa{
+    transition:background-position .6s var(--ease),
+               transform .28s var(--ease),
+               box-shadow .35s var(--ease);
+  }
+  .btn-gold{ font-weight:500; box-shadow:0 6px 18px rgba(0,0,0,.34); }
+  .float-wa{ box-shadow:0 14px 34px rgba(0,0,0,.4); }
+  /* Lencana logo tetap lingkaran bergaris (bukan diisi penuh) — itu bagian
+     dari identitas header. Hanya ditambah cahaya tipis agar tidak hilang
+     di atas foto hero yang terang. */
+  .logo-badge{
+    border-color:rgba(212,175,55,.65);
+    box-shadow:0 0 18px rgba(212,175,55,.14), inset 0 0 12px rgba(212,175,55,.08);
+  }
+
+  /* Sapuan kilau: satu garis cahaya lewat di permukaan tombol, seperti
+     pantulan lampu di logam. .btn-gold sudah punya overflow:hidden dan
+     isolation:isolate, jadi aman menumpang ::after di sini. */
+  .btn-gold::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; left:-60%;
+    width:42%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent);
+    transform:skewX(-18deg);
+    pointer-events:none;
+    opacity:0;
+    z-index:1;
+  }
+  .btn-gold > *{ position:relative; z-index:2; }
+  @keyframes gold-sweep{
+    0%{ left:-60%; opacity:0; }
+    12%{ opacity:1; }
+    100%{ left:120%; opacity:0; }
+  }
+
+  @media (hover:hover){
+    .btn-gold:hover, .float-wa:hover{ background-position:100% 50%; transform:translateY(-2px); }
+    .btn-gold:hover{ box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 28px var(--glow-gold); }
+    .float-wa:hover{ box-shadow:0 18px 40px rgba(0,0,0,.45), 0 0 34px var(--glow-gold); }
+    .btn-gold:hover::after{ animation:gold-sweep .85s var(--ease); }
+    .btn-outline:hover, .btn-copy-number:hover{ box-shadow:0 0 22px rgba(212,175,55,.14); }
+  }
+  /* Di HP tidak ada hover — kilau dipicu oleh sentuhan. */
+  .btn-gold:active::after{ animation:gold-sweep .6s var(--ease); }
+
+  /* Umpan balik tekan: satu-satunya "animasi" yang benar-benar terasa di HP. */
+  .btn-gold:active, .btn-outline:active, .btn-enter:active, .btn-wa:active,
+  .btn-wa-lg:active, .btn-copy-number:active, .service-toggle:active,
+  .filter:active, .cat-card:active, .svc-card:active, .float-wa:active,
+  .cat-photo-card:active, .gallery-item:active{
+    transform:scale(.972);
+    transition-duration:.08s;
+  }
+
+  /* Kata beraksen di judul: gradasi emas, bukan satu warna datar. */
+  .hero h1 .accent,
+  .section-head h2 em,
+  .manifesto-title em,
+  .kontak-title em,
+  .splash-brand em{
+    background:var(--grad-gold);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    padding-right:.06em;   /* ruang napas agar huruf miring tidak terpotong saat di-clip */
+  }
+  /* Nomor bab manifesto memudar ke bawah seperti cahaya yang meredup. */
+  .manifesto-chapter-num{
+    background:linear-gradient(180deg, rgba(212,175,55,.6) 0%, rgba(212,175,55,.06) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+  }
+
+
+  /* ======================================================================
+     3 — KEDALAMAN KARTU
+     ====================================================================== */
+
+  .cat-card, .svc-card, .tim-card, .testimoni-card, .kontak-info-item{
+    position:relative;
+    box-shadow:var(--shadow-lift);
+    /* Kilau halus di 38% bagian atas: kesan permukaan yang menangkap cahaya. */
+    background-image:linear-gradient(180deg, rgba(255,255,255,.035), transparent 38%);
+  }
+
+  /* Garis rambut emas di bibir atas kartu, melebar saat kartu disorot. */
+  .cat-card::after, .svc-card::after, .tim-card::after{
+    content:"";
+    position:absolute;
+    top:0; left:14%; right:14%;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--c-gold-pale), transparent);
+    opacity:0;
+    pointer-events:none;
+    z-index:3;
+    transition:opacity .45s var(--ease), left .45s var(--ease), right .45s var(--ease);
+  }
+
+  @media (hover:hover){
+    .cat-card:hover, .svc-card:hover, .tim-card:hover, .testimoni-card:hover{
+      border-color:rgba(212,175,55,.32);
+      box-shadow:var(--shadow-lift-gold);
+    }
+    .cat-card:hover, .svc-card:hover, .tim-card:hover{ transform:translateY(-6px); }
+    .cat-card:hover::after, .svc-card:hover::after, .tim-card:hover::after{
+      opacity:1; left:0; right:0;
+    }
+    /* Kartu galeri punya Ken Burns sendiri, jadi hanya kartu layanan
+       yang diberi zoom tambahan di sini. */
+    .svc-card:hover .svc-card-media img{ transform:scale(1.06); }
+  }
+  .svc-card-media img{ transition:transform 1s var(--ease); }
+
+  /* Pengganti hover saat dijelajahi lewat keyboard / fokus. */
+  .cat-card:focus-visible, .svc-card:focus-visible{
+    border-color:rgba(212,175,55,.45);
+    box-shadow:var(--shadow-lift-gold);
+  }
+
+  .testimoni-card{ transition:border-color .35s var(--ease), box-shadow .35s var(--ease); }
+  /* Bintang penilaian diberi cahaya tipis agar emas tidak tenggelam di latar gelap. */
+  .testimoni-card-stars, .star-rating{ filter:drop-shadow(0 0 6px rgba(212,175,55,.26)); }
+
+
+  /* ======================================================================
+     4 — DETAIL KECIL
+     ====================================================================== */
+
+  /* Fokus keyboard harus tetap terbaca jelas di atas latar obsidian. */
+  :focus-visible{
+    outline:2px solid var(--c-gold-pale);
+    outline-offset:3px;
+    border-radius:var(--radius-sm);
+  }
+
+  .marquee-strip{
+    background-image:linear-gradient(90deg,
+      rgba(212,175,55,.07), transparent 28%, transparent 72%, rgba(212,175,55,.07));
+  }
+
+  /* Bilah gulir senada, bukan abu-abu bawaan browser (desktop saja). */
+  @media (pointer:fine){
+    *{ scrollbar-width:thin; scrollbar-color:rgba(212,175,55,.34) transparent; }
+    ::-webkit-scrollbar{ width:10px; height:10px; }
+    ::-webkit-scrollbar-track{ background:transparent; }
+    ::-webkit-scrollbar-thumb{
+      background:rgba(212,175,55,.3);
+      border:3px solid var(--background);
+      border-radius:var(--radius-full);
+    }
+    ::-webkit-scrollbar-thumb:hover{ background:rgba(212,175,55,.5); }
+  }
+
+
+  /* ======================================================================
+     5 — TATA LETAK LAYAR KECIL
+     ====================================================================== */
+
+  @media (max-width:760px){
+    .hero{ padding:118px 0 88px; }
+    .hero h1{ font-size:clamp(2rem, 8.4vw, 2.6rem); line-height:1.12; }
+    .hero p{ max-width:40ch; }
+
+    /* Dua tombol sejajar lebih ringkas daripada ditumpuk memanjang. */
+    .hero-actions{ flex-direction:row; flex-wrap:wrap; gap:10px; }
+    .hero-actions a{ flex:1 1 auto; min-width:152px; min-height:48px; }
+
+    .section-head h2{ font-size:clamp(1.6rem, 6.6vw, 2.1rem); line-height:1.18; }
+
+    /* Dua kolom membuat galeri terasa lebih kaya daripada satu kolom
+       panjang, dan tiap kartu masih cukup besar untuk dinikmati. */
+    .gallery-cat-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+    .cat-card{ aspect-ratio:3/4; }
+    .cat-card-info{ padding:12px; }
+
+    .tim-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+    .tim-card{ padding:22px 10px 18px; }
+
+    .kontak-info-item{ padding:16px; }
+    .testimoni-card{ padding:18px 16px; }
+  }
+
+  @media (max-width:420px){
+    .gallery-cat-grid{ grid-template-columns:1fr; }
+    .cat-card{ aspect-ratio:4/3; }
+    .tim-grid{ grid-template-columns:1fr; }
+    .hero-actions a{ flex:1 1 100%; }
+  }
+
+  /* Layar lebar: panjang baris dijaga agar tetap nyaman dibaca. */
+  @media (min-width:1100px){
+    .hero p, .section-head p, .manifesto-chapter p, .about-copy p{ max-width:62ch; }
+  }
+
+
+  /* ======================================================================
+     6 — HEMAT GERAK
+     ====================================================================== */
+
+  @media (prefers-reduced-motion:reduce){
+    .btn-gold::after{ display:none; }
+    .cat-card:hover, .svc-card:hover, .tim-card:hover{ transform:none; }
+  }
+
 </style>
 </head>
 <body class="locked">
