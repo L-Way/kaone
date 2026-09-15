@@ -232,6 +232,186 @@
     .page-head h1{ font-size:1.5rem; }
     .save-bar{ padding-right:264px; }
   }
+
+  /* =======================================================================
+     LAPIS PENYEMPURNAAN VISUAL — PANEL ADMIN
+     =======================================================================
+     Selaras dengan lapis yang sama di index.html: emas bergradasi, kedalaman
+     kartu, umpan balik sentuh, dan perbaikan layar HP (dvh + safe-area).
+
+     Panel admin dipakai sambil bekerja, sering sambil berdiri di lokasi acara
+     dengan satu tangan memegang HP. Jadi prioritasnya beda dari halaman
+     publik: tombol simpan harus selalu terjangkau ibu jari, kolom isian tidak
+     boleh memicu zoom paksa iOS, dan target sentuh dibuat lapang. Hiasan
+     ditahan seperlunya supaya tidak mengganggu pembacaan data.
+     ======================================================================= */
+
+  :root{
+    --ember:#B07A32;
+    --grad-gold:linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 46%, var(--ember) 100%);
+    --glow-gold:rgba(212,175,55,.24);
+    --shadow-card:0 1px 1px rgba(0,0,0,.4), 0 6px 16px rgba(0,0,0,.3), 0 20px 48px rgba(0,0,0,.34);
+    --vh-full:100vh;
+  }
+  @supports (height:100dvh){ :root{ --vh-full:100dvh; } }
+
+
+  /* ---------------------------------------------------------------------
+     1 — LAYAR HP
+     --------------------------------------------------------------------- */
+
+  html{ -webkit-text-size-adjust:100%; }
+  html, body{ max-width:100%; }
+  @supports (overflow:clip){ html, body{ overflow-x:clip; } }
+  body{ min-height:var(--vh-full); }
+  .auth-screen{ min-height:var(--vh-full); }
+  .shell{ min-height:var(--vh-full); }
+
+  /* Poni iPhone: topbar yang menempel di atas ikut turun. */
+  .sidebar{ padding-top:calc(14px + env(safe-area-inset-top)); }
+
+  /* Bilah simpan melayang di dasar layar — garis home iPhone dan tombol
+     navigasi Android tidak boleh menutupinya. */
+  .save-bar{
+    padding-bottom:calc(14px + env(safe-area-inset-bottom));
+    padding-left:calc(20px + env(safe-area-inset-left));
+    padding-right:calc(20px + env(safe-area-inset-right));
+    box-shadow:0 -12px 32px rgba(0,0,0,.45);
+  }
+  .content{ padding-bottom:calc(130px + env(safe-area-inset-bottom)); }
+
+  /* Kolom isian ≥16px mencegah iOS memperbesar halaman saat kolom disentuh. */
+  input, textarea, select{ font-size:max(16px, .9rem); }
+
+  @media (pointer:coarse){
+    button, .btn{ min-height:44px; }
+    .btn-sm{ min-height:40px; }
+    .icon-btn{ min-width:44px; min-height:44px; }
+    .nav-btn{ min-height:42px; }
+    .device-btn{ min-height:40px; }
+    input[type="range"]{ height:40px; }   /* slider lebih mudah ditarik dengan ibu jari */
+    .nav{ scroll-snap-type:x proximity; scroll-padding-left:14px; }
+    .nav-btn{ scroll-snap-align:start; }
+  }
+
+
+  /* ---------------------------------------------------------------------
+     2 — EMAS TEMPAAN
+     --------------------------------------------------------------------- */
+
+  .btn-gold, .badge, .auth-mark, .device-btn.active{
+    background-image:var(--grad-gold);
+    background-size:180% 180%;
+    background-position:0% 50%;
+    transition:background-position .55s ease, transform .2s ease, box-shadow .3s ease;
+  }
+  .btn-gold{ box-shadow:0 4px 14px rgba(0,0,0,.3); }
+  .badge, .auth-mark{ box-shadow:0 6px 18px rgba(212,175,55,.16); }
+
+  @media (hover:hover){
+    .btn-gold:hover{
+      background-position:100% 50%;
+      transform:translateY(-1px);
+      box-shadow:0 8px 22px rgba(0,0,0,.36), 0 0 22px var(--glow-gold);
+    }
+    .btn-outline:hover{ box-shadow:0 0 18px rgba(212,175,55,.12); }
+    .icon-btn:hover{ background:var(--gold-dim); }
+  }
+
+  /* Umpan balik tekan — di HP inilah pengganti hover. */
+  button:active, .btn:active{ transform:scale(.97); transition-duration:.07s; }
+  button:disabled:active, .btn:disabled:active{ transform:none; }
+
+
+  /* ---------------------------------------------------------------------
+     3 — KEDALAMAN & CAHAYA
+     --------------------------------------------------------------------- */
+
+  .auth-screen{
+    background:
+      radial-gradient(52% 44% at 50% 8%, rgba(212,175,55,.10), transparent 68%),
+      radial-gradient(120% 100% at 50% 0%, #17181c 0%, var(--bg) 60%);
+  }
+  .auth-card{
+    box-shadow:var(--shadow-card);
+    background-image:linear-gradient(180deg, rgba(255,255,255,.04), transparent 34%);
+  }
+
+  .section-card{
+    box-shadow:var(--shadow-card);
+    background-image:linear-gradient(180deg, rgba(255,255,255,.03), transparent 34%);
+    transition:border-color .3s ease;
+  }
+  @media (hover:hover){
+    .section-card:hover{ border-color:var(--border-strong); }
+  }
+
+  /* Judul bagian diberi penanda emas di kiri: mata langsung tahu di mana
+     satu blok pengaturan dimulai. */
+  .section-card h2{
+    position:relative;
+    padding-left:14px;
+  }
+  .section-card h2::before{
+    content:"";
+    position:absolute;
+    left:0; top:.18em; bottom:.18em;
+    width:2px;
+    border-radius:999px;
+    background:var(--grad-gold);
+  }
+
+  .nav-btn.active{
+    background-image:linear-gradient(90deg, rgba(212,175,55,.2), rgba(212,175,55,.07));
+  }
+
+  .pos-preview{ box-shadow:0 8px 22px rgba(0,0,0,.4); }
+  .toast{ box-shadow:0 12px 32px rgba(0,0,0,.5), 0 0 24px var(--glow-gold); }
+
+  :focus-visible{ outline:2px solid var(--gold-light); outline-offset:3px; }
+
+  @media (pointer:fine){
+    *{ scrollbar-width:thin; scrollbar-color:rgba(212,175,55,.32) transparent; }
+    ::-webkit-scrollbar{ width:10px; height:10px; }
+    ::-webkit-scrollbar-track{ background:transparent; }
+    ::-webkit-scrollbar-thumb{
+      background:rgba(212,175,55,.28);
+      border:3px solid var(--bg);
+      border-radius:999px;
+    }
+    ::-webkit-scrollbar-thumb:hover{ background:rgba(212,175,55,.48); }
+  }
+
+
+  /* ---------------------------------------------------------------------
+     4 — LAYAR KECIL
+     --------------------------------------------------------------------- */
+
+  @media (max-width:899px){
+    .content{ padding-left:16px; padding-right:16px; }
+    .section-card{ padding:18px 16px; }
+
+    /* Editor posisi foto ditumpuk: pratinjau di atas, slider di bawah,
+       supaya keduanya terlihat sekaligus tanpa geser layar. */
+    .pos-editor{ gap:18px; }
+    .pos-controls{ min-width:0; flex-basis:100%; }
+
+    /* Tombol simpan jadi selebar layar — mudah dijangkau ibu jari. */
+    .save-bar .btn-gold{ flex:1; }
+  }
+
+  @media (max-width:480px){
+    .page-head h1{ font-size:1.18rem; }
+    .pos-preview--desktop{ width:220px; height:124px; }
+    .pos-preview--mobile{ width:104px; height:202px; }
+    .pos-preview--manifesto-desktop{ width:150px; height:200px; }
+    .pos-preview--manifesto-mobile{ width:216px; height:121px; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{ transition-duration:.001ms !important; animation-duration:.001ms !important; }
+  }
+
 </style>
 </head>
 <body>
