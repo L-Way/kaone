@@ -2213,12 +2213,20 @@
     URL.revokeObjectURL(url);
   }
 
+  // Escape sesuai aturan vCard (RFC 6350): backslash dulu, baru ubah baris baru
+  // sungguhan jadi urutan escape "\n" (bukan Enter beneran) supaya tidak
+  // memecah struktur properti, baru koma & titik-koma.
   function vcardEscape(str){
-    return str.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;');
+    return str
+      .replace(/\\/g,'\\\\')
+      .replace(/\r\n|\r/g,'\n')
+      .replace(/\n/g,'\\n')
+      .replace(/,/g,'\\,')
+      .replace(/;/g,'\\;');
   }
 
   function buildVcf(list){
-    return list.map(c => {
+    const cards = list.map(c => {
       const exportedName = `${c.name.trim()} ${NAME_SUFFIX}`;
       const lines = [
         'BEGIN:VCARD',
@@ -2233,7 +2241,10 @@
 
       lines.push('END:VCARD');
       return lines.join('\r\n');
-    }).join('\r\n');
+    });
+    // Newline penutup di akhir file — sebagian importer vCard (mis. beberapa
+    // versi aplikasi Kontak) menolak file yang tidak diakhiri baris kosong.
+    return cards.join('\r\n') + '\r\n';
   }
 
   document.getElementById('exportVcfBtn').addEventListener('click', () => {
