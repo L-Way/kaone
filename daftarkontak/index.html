@@ -354,6 +354,31 @@
   .sync-bar span{flex:1;min-width:160px;font-size:13px;color:var(--ink-soft);}
   .sync-bar button{padding:8px 16px;font-size:12.5px;min-height:36px;}
 
+  /* ===== Kontak belum tersinkron (Panel Admin) ===== */
+  #pendingSyncCard{border-color:var(--gold-soft);}
+  .pending-sync-list{display:flex;flex-direction:column;}
+  .pending-sync-item{
+    display:flex;align-items:center;gap:12px;padding:12px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .pending-sync-item:last-child{border-bottom:none;}
+  .pending-sync-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+  .pending-sync-name{
+    font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:16px;
+    color:var(--emerald);display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .pending-sync-meta{font-size:12.5px;color:var(--muted);}
+  .pending-sync-error{font-size:12px;color:var(--danger);margin-top:2px;}
+  .pending-sync-badge{
+    font-size:10px;font-weight:700;letter-spacing:.03em;padding:1px 8px;border-radius:999px;
+    white-space:nowrap;border:1px solid var(--gold-soft);color:var(--gold);background:rgba(180,144,63,0.1);
+  }
+  .pending-sync-badge.delete{border-color:#d9b7b0;color:var(--danger);background:var(--danger-bg);}
+  .pending-sync-btn{
+    flex-shrink:0;padding:8px 16px;font-size:12.5px;min-height:36px;white-space:nowrap;
+  }
+  .pending-sync-btn.sending{opacity:.6;cursor:wait;}
+
   /* ===== Notifikasi kontak baru (Panel Admin) ===== */
   .notif-wrap{position:relative;}
   .btn-notif{
@@ -372,7 +397,7 @@
     display:flex;align-items:center;justify-content:center;line-height:1;border:2px solid var(--paper);
   }
   .notif-panel{
-    position:absolute;top:calc(100% + 10px);right:0;width:350px;max-width:calc(100vw - 32px);
+    position:fixed;top:0;left:0;width:350px;max-width:calc(100vw - 32px);
     background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
     z-index:70;opacity:0;visibility:hidden;transform:translateY(-6px);
     transition:opacity .18s ease, transform .18s ease, visibility .18s;
@@ -558,7 +583,7 @@
             <span class="phone-prefix">+62</span>
             <input type="tel" id="homePhoneInput" placeholder="8123456789" autocomplete="off" inputmode="numeric">
           </div>
-          <small>Masukkan nomor tanpa awalan 0 / 62, contoh: <code>8123456789</code>.</small>
+          <small>Masukkan nomor tanpa awalan 0 / 62.</small>
           <small class="err">Nomor tidak valid. Isi 8–13 digit angka setelah +62 (tanpa awalan 0).</small>
         </div>
 
@@ -589,6 +614,12 @@
       <span class="sync-dot" id="syncStatusDot"></span>
       <span id="syncStatusText">Memeriksa status sinkronisasi...</span>
       <button type="button" class="btn-ghost" id="syncNowBtn" style="display:none;">Sinkronkan sekarang</button>
+    </div>
+
+    <div class="card" id="pendingSyncCard" style="display:none;">
+      <div class="section-title">Kontak belum tersinkron <span class="count-pill" id="pendingSyncCount">0</span></div>
+      <p class="section-sub">Kontak ini ditambahkan/diubah saat offline (atau gagal terkirim) dan belum tersimpan di database. Sinkronkan satu per satu di bawah — begitu berhasil, kontaknya otomatis hilang dari daftar ini.</p>
+      <div class="pending-sync-list" id="pendingSyncList"></div>
     </div>
 
     <details class="card collapsible" open>
@@ -843,7 +874,9 @@
   const DEFAULT_CATEGORY_KEY = 'wa_default_category';
 
   function getDefaultCategory(){
-    const val = localStorage.getItem(DEFAULT_CATEGORY_KEY) || '';
+    let val = '';
+    try{ val = localStorage.getItem(DEFAULT_CATEGORY_KEY) || ''; }
+    catch(e){ val = ''; }
     return categories.includes(val) ? val : '';
   }
 
@@ -1045,6 +1078,17 @@
     return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
   }
 
+  // Merapikan nama: buang spasi di awal/akhir, rapikan spasi ganda,
+  // lalu jadikan huruf awal tiap kata kapital (mis. "  budi  santoso " -> "Budi Santoso").
+  function formatFullName(raw){
+    return raw
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .map(word => word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : word)
+      .join(' ');
+  }
+
   /* ===== Navigasi Beranda <-> Panel Admin (via login) ===== */
   const SUPABASE_URL = 'https://lswqipyhvzryjehtmaac.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_4yLEbo9WEuRUrQmuYnMSBA_0pnmuEQq';
@@ -1075,6 +1119,20 @@
     });
     if(!res.ok) throw new Error('Gagal mengubah kata sandi');
     return await res.json();
+  }
+
+  // Pemanggil RPC generik untuk aksi notifikasi (tandai dibaca / hapus semua).
+  async function callRpc(name, body){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify(body || {})
+    });
+    if(!res.ok) throw new Error(`RPC ${name} gagal (${res.status})`);
   }
 
   /* ===== Sinkronisasi offline -> online =====
@@ -1173,26 +1231,25 @@
   /* ===== Ambil data terbaru dari server (supaya kontak yang ditambahkan
      dari perangkat lain juga muncul di sini) ===== */
   let isPulling = false;
-  let hasPulledOnce = false;
 
   async function pullFromServer(){
     const headers = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` };
-    const [catRes, contactRes] = await Promise.all([
+    const [catRes, contactRes, notifRes] = await Promise.all([
       fetch(`${SUPABASE_URL}/rest/v1/categories?select=name,is_default&order=name.asc`, { headers }),
-      fetch(`${SUPABASE_URL}/rest/v1/contacts?select=id,name,phone,birthday,note,category:categories(name)&order=name.asc`, { headers })
+      fetch(`${SUPABASE_URL}/rest/v1/contacts?select=id,name,phone,birthday,note,category:categories(name)&order=name.asc`, { headers }),
+      fetch(`${SUPABASE_URL}/rest/v1/notifications?select=id,contact_id,name,phone,category,created_at,read&order=created_at.desc&limit=${NOTIF_MAX}`, { headers })
     ]);
-    if(!catRes.ok || !contactRes.ok) throw new Error('Gagal mengambil data terbaru dari server');
+    if(!catRes.ok || !contactRes.ok || !notifRes.ok) throw new Error('Gagal mengambil data terbaru dari server');
 
     const catData = await catRes.json();
     const contactData = await contactRes.json();
+    const notifData = await notifRes.json();
 
     categories = catData.map(c => c.name);
     saveCategories();
 
     const defaultCat = catData.find(c => c.is_default);
     setDefaultCategory(defaultCat ? defaultCat.name : '');
-
-    const previousIds = new Set(contacts.map(c => c.id));
 
     contacts = contactData.map(c => ({
       id: c.id,
@@ -1204,12 +1261,7 @@
     }));
     saveContacts();
 
-    // Baru beri tahu admin soal kontak yang benar-benar baru (bukan pemuatan pertama kali).
-    if(hasPulledOnce){
-      const newlyAdded = contacts.filter(c => !previousIds.has(c.id));
-      if(newlyAdded.length > 0) handleNewContactsDetected(newlyAdded);
-    }
-    hasPulledOnce = true;
+    applyNotifications(notifData);
 
     render();
     renderCategoryManageList();
@@ -1243,6 +1295,7 @@
     const dot = document.getElementById('syncStatusDot');
     const text = document.getElementById('syncStatusText');
     const btn = document.getElementById('syncNowBtn');
+    renderPendingSync();
     if(!dot || !text || !btn) return;
 
     if(isSyncing){
@@ -1270,6 +1323,96 @@
     }
   }
 
+  /* ===== Daftar "Kontak belum tersinkron" (Panel Admin) =====
+     Menampilkan tiap perubahan kontak (tambah/ubah/hapus) yang masih ada
+     di antrean sinkronisasi (mis. dibuat saat offline), lengkap dengan
+     tombol untuk mengirim satu-per-satu. Kalau berhasil terkirim, item
+     itu dibuang dari antrean dan otomatis hilang dari daftar ini. */
+  const pendingSyncCard = document.getElementById('pendingSyncCard');
+  const pendingSyncList = document.getElementById('pendingSyncList');
+  const pendingSyncCount = document.getElementById('pendingSyncCount');
+  const sendingSyncKeys = new Set(); // kunci item yang sedang dalam proses pengiriman manual
+  const pendingSyncErrors = new Map(); // kunci item -> pesan error terakhir
+
+  function pendingKey(item){
+    return `${item.kind}:${item.action}:${syncItemKey(item)}`;
+  }
+
+  function pendingBadgeHtml(item){
+    if(item.action === 'delete') return '<span class="pending-sync-badge delete">Hapus</span>';
+    return '<span class="pending-sync-badge">Baru / diubah</span>';
+  }
+
+  function renderPendingSync(){
+    if(!pendingSyncCard || !pendingSyncList) return;
+    const pending = syncQueue.filter(item => item.kind === 'contact');
+
+    if(pending.length === 0){
+      pendingSyncCard.style.display = 'none';
+      pendingSyncList.innerHTML = '';
+      return;
+    }
+
+    pendingSyncCard.style.display = 'block';
+    pendingSyncCount.textContent = String(pending.length);
+
+    pendingSyncList.innerHTML = pending.map(item => {
+      const key = pendingKey(item);
+      const name = item.data.name || '(tanpa nama)';
+      const phone = item.data.phone || '';
+      const isSending = sendingSyncKeys.has(key);
+      const errMsg = pendingSyncErrors.get(key);
+      return `
+        <div class="pending-sync-item" data-key="${escapeHtml(key)}">
+          <div class="pending-sync-info">
+            <span class="pending-sync-name">${escapeHtml(name)} ${pendingBadgeHtml(item)}</span>
+            <span class="pending-sync-meta">${escapeHtml(phone)}</span>
+            ${errMsg ? `<span class="pending-sync-error">${escapeHtml(errMsg)}</span>` : ''}
+          </div>
+          <button type="button" class="btn-ghost pending-sync-btn ${isSending ? 'sending' : ''}" data-action="sync-one" data-key="${escapeHtml(key)}" ${isSending ? 'disabled' : ''}>
+            ${isSending ? 'Mengirim...' : 'Sinkronkan'}
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Mengirim satu item antrean secara manual (di luar urutan FIFO otomatis),
+  // supaya kontak lain yang macet gara-gara satu item bermasalah tetap bisa
+  // dikirim duluan.
+  async function syncOnePendingItem(key){
+    if(sendingSyncKeys.has(key)) return;
+    const item = syncQueue.find(x => pendingKey(x) === key);
+    if(!item) return;
+
+    if(!navigator.onLine){
+      showToast('Tidak ada koneksi internet.');
+      return;
+    }
+
+    sendingSyncKeys.add(key);
+    pendingSyncErrors.delete(key);
+    renderPendingSync();
+
+    try{
+      await sendSyncItem(item);
+      syncQueue = syncQueue.filter(x => pendingKey(x) !== key);
+      saveSyncQueue();
+      showToast('Kontak berhasil disinkronkan.');
+    }catch(err){
+      pendingSyncErrors.set(key, 'Gagal terkirim — coba lagi.');
+    }finally{
+      sendingSyncKeys.delete(key);
+      updateSyncStatusUI();
+    }
+  }
+
+  pendingSyncList && pendingSyncList.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action="sync-one"]');
+    if(!btn) return;
+    syncOnePendingItem(btn.dataset.key);
+  });
+
   window.addEventListener('online', fullSync);
   window.addEventListener('offline', updateSyncStatusUI);
 
@@ -1287,28 +1430,52 @@
 
   /* =====================================================================
      ===== Notifikasi kontak baru (Panel Admin) ============================
-     Setiap kali sinkronisasi menemukan kontak yang belum pernah tercatat
-     di perangkat ini, admin diberi tahu lewat: (1) toast singkat,
-     (2) lonceng bertanda merah di topbar beserta daftar riwayatnya,
-     (3) bunyi notifikasi lembut, dan (4) notifikasi sistem browser bila
-     diizinkan — jadi tidak akan terlewat walau tab sedang tidak aktif. */
-  const NOTIF_KEY = 'wa_admin_notifications_v1';
+     Riwayat notifikasi & status "sudah dibaca" disimpan di tabel
+     `notifications` di Supabase — jadi SAMA di semua perangkat admin.
+     Baris notifikasi dibuat otomatis oleh trigger database setiap ada
+     kontak baru masuk, dari perangkat mana pun (Beranda atau Admin).
+     Yang tetap lokal per perangkat hanyalah: (a) preferensi suara aktif/
+     nonaktif, dan (b) penanda "sudah pernah sinkron di perangkat ini"
+     supaya tidak berbunyi untuk SEMUA riwayat lama saat pertama kali
+     dibuka di perangkat baru. */
   const NOTIF_SOUND_KEY = 'wa_admin_notif_sound_v1';
+  const NOTIF_SEEN_KEY = 'wa_notif_seen_ids_v1';
+  const NOTIF_BASELINE_KEY = 'wa_notif_baseline_set_v1';
   const NOTIF_MAX = 60;
 
-  let notifications = loadNotifications();
-  let notifSoundEnabled = localStorage.getItem(NOTIF_SOUND_KEY) !== 'off';
+  let notifications = []; // selalu diisi ulang dari server tiap sinkron
+  let notifSoundEnabled = loadNotifSoundPref();
+  let seenNotifIds = loadSeenNotifIds();
 
-  function loadNotifications(){
-    try{
-      const raw = localStorage.getItem(NOTIF_KEY);
-      return raw ? JSON.parse(raw) : [];
-    }catch(e){ return []; }
+  function loadNotifSoundPref(){
+    try{ return localStorage.getItem(NOTIF_SOUND_KEY) !== 'off'; }
+    catch(e){ return true; }
   }
 
-  function saveNotifications(){
-    try{ localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications.slice(0, NOTIF_MAX))); }
-    catch(e){ console.error('Gagal menyimpan notifikasi:', e); }
+  function saveNotifSoundPref(enabled){
+    try{ localStorage.setItem(NOTIF_SOUND_KEY, enabled ? 'on' : 'off'); }
+    catch(e){ /* penyimpanan tidak tersedia (mis. mode privat) — abaikan diam-diam */ }
+  }
+
+  function loadSeenNotifIds(){
+    try{
+      const raw = localStorage.getItem(NOTIF_SEEN_KEY);
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    }catch(e){ return new Set(); }
+  }
+
+  function saveSeenNotifIds(){
+    try{ localStorage.setItem(NOTIF_SEEN_KEY, JSON.stringify([...seenNotifIds].slice(-300))); }
+    catch(e){ /* abaikan diam-diam */ }
+  }
+
+  function hasNotifBaseline(){
+    try{ return localStorage.getItem(NOTIF_BASELINE_KEY) === '1'; }
+    catch(e){ return false; }
+  }
+  function markNotifBaseline(){
+    try{ localStorage.setItem(NOTIF_BASELINE_KEY, '1'); }
+    catch(e){ /* abaikan diam-diam */ }
   }
 
   function formatRelativeTime(ts){
@@ -1366,32 +1533,49 @@
     }catch(e){ /* abaikan bila browser menolak membuat notifikasi */ }
   }
 
-  function handleNewContactsDetected(newlyAdded){
-    const now = Date.now();
-    newlyAdded.forEach(c => {
-      notifications.unshift({
-        notifId: `${c.id}-${now}-${Math.random().toString(36).slice(2,7)}`,
-        contactId: c.id,
-        name: c.name,
-        phone: c.phone,
-        category: c.category || '',
-        time: now,
-        read: false
-      });
-    });
-    notifications = notifications.slice(0, NOTIF_MAX);
-    saveNotifications();
-    renderNotifications();
+  // Bunyi + toast + notifikasi sistem untuk kontak yang BARU muncul sejak
+  // terakhir kali perangkat ini menyinkron (bukan seluruh riwayat lama).
+  function announceNewNotifications(list){
     playNotifDing();
-    showBrowserNotification(newlyAdded);
-
-    if(newlyAdded.length === 1){
-      showToast(`Kontak baru: ${newlyAdded[0].name} (${newlyAdded[0].phone})`);
+    showBrowserNotification(list);
+    if(list.length === 1){
+      showToast(`Kontak baru: ${list[0].name} (${list[0].phone})`);
     }else{
-      showToast(`${newlyAdded.length} kontak baru ditambahkan.`);
+      showToast(`${list.length} kontak baru ditambahkan.`);
     }
   }
 
+  // Menerapkan daftar notifikasi terbaru dari server ke tampilan, dan
+  // menentukan mana yang benar-benar baru sejak terakhir dilihat di
+  // perangkat ini (untuk bunyi/toast) tanpa membanjiri saat pertama buka.
+  function applyNotifications(rawList){
+    const mapped = rawList.map(n => ({
+      notifId: n.id,
+      contactId: n.contact_id,
+      name: n.name,
+      phone: n.phone,
+      category: n.category || '',
+      time: new Date(n.created_at).getTime(),
+      read: n.read
+    }));
+
+    const baselineReady = hasNotifBaseline();
+    const freshlyNew = baselineReady ? mapped.filter(n => !seenNotifIds.has(n.notifId)) : [];
+
+    mapped.forEach(n => seenNotifIds.add(n.notifId));
+    saveSeenNotifIds();
+    if(!baselineReady) markNotifBaseline();
+
+    notifications = mapped;
+    renderNotifications();
+
+    if(freshlyNew.length > 0){
+      // mapped terurut terbaru->lama; balik supaya pengumuman sesuai urutan kedatangan.
+      announceNewNotifications(freshlyNew.slice().reverse());
+    }
+  }
+
+  const notifBtn = document.getElementById('notifBtn');
   const notifBadge = document.getElementById('notifBadge');
   const notifPanel = document.getElementById('notifPanel');
   const notifList = document.getElementById('notifList');
@@ -1426,15 +1610,43 @@
     `).join('');
   }
 
+  // Menghitung posisi panel notifikasi berdasarkan posisi tombol lonceng
+  // yang sebenarnya di layar (bukan asumsi statis), lalu dibatasi (clamp)
+  // supaya panel selalu muat penuh di dalam layar — penting di HP/layar
+  // sempit karena tombol-tombol di topbar bisa turun baris (wrap).
+  function positionNotifPanel(){
+    const margin = 16;
+    const gap = 10;
+    const btnRect = notifBtn.getBoundingClientRect();
+    const panelWidth = notifPanel.offsetWidth;
+
+    let left = btnRect.right - panelWidth;
+    const minLeft = margin;
+    const maxLeft = window.innerWidth - panelWidth - margin;
+    left = Math.min(Math.max(left, minLeft), Math.max(minLeft, maxLeft));
+
+    let top = btnRect.bottom + gap;
+    const maxTop = window.innerHeight - margin - 60; // sisakan ruang minimal
+    if(top > maxTop) top = Math.max(margin, maxTop);
+
+    notifPanel.style.left = `${left}px`;
+    notifPanel.style.top = `${top}px`;
+  }
+
   function openNotifPanel(){
     notifPanel.classList.add('show');
     notifBtn.setAttribute('aria-expanded', 'true');
     renderNotifications();
+    positionNotifPanel();
   }
   function closeNotifPanel(){
     notifPanel.classList.remove('show');
     notifBtn.setAttribute('aria-expanded', 'false');
   }
+
+  window.addEventListener('resize', () => {
+    if(notifPanel.classList.contains('show')) positionNotifPanel();
+  });
 
   notifBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -1446,23 +1658,33 @@
     closeNotifPanel();
   });
 
-  notifMarkAllBtn.addEventListener('click', () => {
+  notifMarkAllBtn.addEventListener('click', async () => {
+    if(notifications.every(n => n.read)) return;
     notifications.forEach(n => n.read = true);
-    saveNotifications();
     renderNotifications();
+    try{
+      await callRpc('sync_mark_all_notifications_read');
+    }catch(e){
+      showToast('Gagal menandai dibaca ke server — akan disesuaikan lagi saat sinkron berikutnya.');
+    }
   });
 
-  notifClearBtn.addEventListener('click', () => {
+  notifClearBtn.addEventListener('click', async () => {
     if(notifications.length === 0) return;
-    if(!confirm('Hapus semua riwayat notifikasi?')) return;
+    if(!confirm('Hapus semua riwayat notifikasi? Ini akan terhapus di SEMUA perangkat admin.')) return;
     notifications = [];
-    saveNotifications();
     renderNotifications();
+    try{
+      await callRpc('sync_clear_notifications');
+      showToast('Riwayat notifikasi dihapus.');
+    }catch(e){
+      showToast('Gagal menghapus riwayat notifikasi, coba lagi.');
+    }
   });
 
   notifSoundToggleBtn.addEventListener('click', () => {
     notifSoundEnabled = !notifSoundEnabled;
-    localStorage.setItem(NOTIF_SOUND_KEY, notifSoundEnabled ? 'on' : 'off');
+    saveNotifSoundPref(notifSoundEnabled);
     notifSoundToggleBtn.textContent = `Suara: ${notifSoundEnabled ? 'aktif' : 'nonaktif'}`;
     if(notifSoundEnabled) playNotifDing();
   });
@@ -1484,10 +1706,16 @@
     const notifId = item.dataset.notifId;
     const contactId = item.dataset.contactId;
     const n = notifications.find(x => x.notifId === notifId);
-    if(n){ n.read = true; saveNotifications(); renderNotifications(); }
+    if(n && !n.read){
+      n.read = true;
+      renderNotifications();
+      callRpc('sync_mark_notification_read', { p_id: notifId }).catch(() => {
+        showToast('Gagal menandai dibaca ke server — akan disesuaikan lagi saat sinkron berikutnya.');
+      });
+    }
     closeNotifPanel();
 
-    const stillExists = contacts.some(c => c.id === contactId);
+    const stillExists = contactId && contacts.some(c => c.id === contactId);
     if(stillExists){
       searchInput.value = '';
       render();
@@ -1507,7 +1735,6 @@
   const loginBtn = document.getElementById('loginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
   const changePasswordBtn = document.getElementById('changePasswordBtn');
-  const notifBtn = document.getElementById('notifBtn');
 
   function goToHome(){
     homeView.classList.add('active');
@@ -1604,7 +1831,7 @@
 
   homeForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = homeNameInput.value.trim();
+    const name = formatFullName(homeNameInput.value);
     const digits = normalizePhoneDigits(homePhoneInput.value);
 
     let valid = true;
@@ -1710,6 +1937,74 @@
     updateSelectionUI();
   });
 
+  // Bangun HTML isi satu baris <tr> (dipakai baris baru maupun baris yang datanya berubah).
+  function buildRowHtml(c){
+    const categoryHtml = c.category
+      ? `<span class="category-badge">${escapeHtml(c.category)}</span>`
+      : `<span class="category-badge none">Tanpa kategori</span>`;
+    return `
+      <td class="select-cell"><input type="checkbox" class="row-check" data-id="${c.id}" aria-label="Pilih ${escapeHtml(c.name)}" ${selectedIds.has(c.id) ? 'checked' : ''}></td>
+      <td data-label="Nama lengkap" class="name-cell">${escapeHtml(c.name)}</td>
+      <td data-label="Nomor WA" class="phone-cell">${escapeHtml(c.phone)}</td>
+      <td data-label="Kategori" class="category-cell">${categoryHtml}</td>
+      <td data-label="Aksi">
+        <div class="row-actions">
+          <button class="icon-btn" data-action="edit" data-id="${c.id}" title="Ubah kontak" aria-label="Ubah kontak">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </button>
+          <button class="icon-btn danger" data-action="delete" data-id="${c.id}" title="Hapus kontak" aria-label="Hapus kontak">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </button>
+        </div>
+      </td>
+    `;
+  }
+
+  // "Tanda tangan" data satu kontak — kalau nilainya sama dengan render
+  // sebelumnya, baris itu tidak disentuh sama sekali (tidak ada kedip).
+  function rowSignature(c){
+    return [c.name, c.phone, c.category, selectedIds.has(c.id) ? '1' : '0'].join('||');
+  }
+
+  // Menyusun ulang <tbody> tanpa membongkar baris yang datanya tidak berubah:
+  // - baris yang masih ada & datanya sama -> dibiarkan apa adanya (tidak kedip)
+  // - baris yang datanya berubah -> isinya diganti, elemen <tr>-nya tetap sama
+  // - baris baru -> dibuat
+  // - baris yang sudah tidak ada di data -> dihapus
+  // - urutan tetap disesuaikan (mis. setelah nama berubah) lewat insertBefore,
+  //   yang tidak menyebabkan flicker karena elemen dipindah, bukan dibangun ulang.
+  function renderRowsDiff(filtered){
+    const existingRows = new Map();
+    Array.from(tableBody.children).forEach(tr => existingRows.set(tr.dataset.rowId, tr));
+
+    let cursor = tableBody.firstChild;
+
+    filtered.forEach(c => {
+      const sig = rowSignature(c);
+      let tr = existingRows.get(c.id);
+      if(tr){
+        existingRows.delete(c.id);
+        if(tr.dataset.sig !== sig){
+          tr.innerHTML = buildRowHtml(c);
+          tr.dataset.sig = sig;
+        }
+      }else{
+        tr = document.createElement('tr');
+        tr.dataset.rowId = c.id;
+        tr.dataset.sig = sig;
+        tr.innerHTML = buildRowHtml(c);
+      }
+      if(cursor !== tr){
+        tableBody.insertBefore(tr, cursor);
+      }else{
+        cursor = cursor.nextSibling;
+      }
+    });
+
+    // Sisa baris di existingRows berarti kontaknya sudah tidak ada di hasil filter.
+    existingRows.forEach(tr => tr.remove());
+  }
+
   function render(){
     const query = searchInput.value.trim().toLowerCase();
     const filtered = contacts.filter(c =>
@@ -1721,42 +2016,20 @@
     const validIds = new Set(contacts.map(c => c.id));
     Array.from(selectedIds).forEach(id => { if(!validIds.has(id)) selectedIds.delete(id); });
 
-    tableBody.innerHTML = '';
     if(contacts.length === 0){
+      tableBody.innerHTML = '';
       contactTable.style.display = 'none';
       emptyState.style.display = 'block';
       emptyState.textContent = 'Belum ada kontak. Tambahkan lewat halaman Beranda.';
     }else if(filtered.length === 0){
+      tableBody.innerHTML = '';
       contactTable.style.display = 'none';
       emptyState.style.display = 'block';
       emptyState.textContent = 'Tidak ada kontak yang cocok dengan pencarian.';
     }else{
       contactTable.style.display = 'table';
       emptyState.style.display = 'none';
-      filtered.forEach(c => {
-        const tr = document.createElement('tr');
-        tr.dataset.rowId = c.id;
-        const categoryHtml = c.category
-          ? `<span class="category-badge">${escapeHtml(c.category)}</span>`
-          : `<span class="category-badge none">Tanpa kategori</span>`;
-        tr.innerHTML = `
-          <td class="select-cell"><input type="checkbox" class="row-check" data-id="${c.id}" aria-label="Pilih ${escapeHtml(c.name)}" ${selectedIds.has(c.id) ? 'checked' : ''}></td>
-          <td data-label="Nama lengkap" class="name-cell">${escapeHtml(c.name)}</td>
-          <td data-label="Nomor WA" class="phone-cell">${escapeHtml(c.phone)}</td>
-          <td data-label="Kategori" class="category-cell">${categoryHtml}</td>
-          <td data-label="Aksi">
-            <div class="row-actions">
-              <button class="icon-btn" data-action="edit" data-id="${c.id}" title="Ubah kontak" aria-label="Ubah kontak">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              </button>
-              <button class="icon-btn danger" data-action="delete" data-id="${c.id}" title="Hapus kontak" aria-label="Hapus kontak">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-              </button>
-            </div>
-          </td>
-        `;
-        tableBody.appendChild(tr);
-      });
+      renderRowsDiff(filtered);
     }
     countPill.textContent = `${contacts.length} kontak`;
     updateSelectionUI();
@@ -1786,7 +2059,7 @@
     contacts = contacts.filter(x => x.id !== id);
     selectedIds.delete(id);
     saveContacts();
-    queueChange('contact', 'delete', { id });
+    queueChange('contact', 'delete', { id, name: c.name, phone: c.phone });
     render();
     renderCategoryManageList();
     showToast('Kontak dihapus.');
@@ -1829,7 +2102,7 @@
 
   editForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = editNameInput.value.trim();
+    const name = formatFullName(editNameInput.value);
     const digits = normalizePhoneDigits(editPhoneInput.value);
     const id = editIdInput.value;
 
