@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#173B31">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Nama Kontak Gunung Raya — Catatan WhatsApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16211c;
+    --ink-soft:#55584e;
+    --paper:#f4eedd;
+    --panel:#fffcf4;
+    --line:#e1d6b8;
+    --emerald:#173b31;
+    --emerald-deep:#0d251f;
+    --gold:#b4903f;
+    --gold-soft:#dec57e;
+    --gold-glow:rgba(180,144,63,0.28);
+    --muted:#867d68;
+    --danger:#8c3b34;
+    --danger-bg:#f3e3dd;
+    --shadow:0 18px 40px -20px rgba(20,30,20,0.28);
+    --shadow-sm:0 8px 20px -14px rgba(20,30,20,0.22);
+    --radius:10px;
+    --safe-top:env(safe-area-inset-top, 0px);
+    --safe-bottom:env(safe-area-inset-bottom, 0px);
+    --safe-left:env(safe-area-inset-left, 0px);
+    --safe-right:env(safe-area-inset-right, 0px);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:'Manrope',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1100px 500px at 50% -10%, rgba(180,144,63,0.09), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    padding:0 0 calc(56px + var(--safe-bottom));
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.01em;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px;padding-left:calc(20px + var(--safe-left));padding-right:calc(20px + var(--safe-right));}
+
+  a, button, input{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  /* ===== Top bar ===== */
+  .topbar{
+    padding-top:var(--safe-top);
+    border-bottom:1px solid rgba(180,144,63,0.35);
+    margin-bottom:34px;
+    background:linear-gradient(180deg, rgba(180,144,63,0.06), transparent);
+  }
+  .topbar-inner{
+    max-width:640px;margin:0 auto;
+    padding:22px 20px 20px;
+    padding-left:calc(20px + var(--safe-left));padding-right:calc(20px + var(--safe-right));
+  }
+  .topbar-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+  .brand h1{font-size:clamp(1.35rem, 4vw, 1.7rem);margin:0 0 3px;font-style:italic;color:var(--emerald);}
+  .brand p{margin:0;color:var(--muted);font-size:13px;letter-spacing:.01em;}
+
+  .btn-login, .btn-logout{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;
+    border:1px solid var(--gold);background:transparent;color:var(--emerald);
+    white-space:nowrap;flex-shrink:0;min-height:44px;
+    transition:background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .btn-login svg, .btn-logout svg{width:15px;height:15px;flex-shrink:0;}
+  .btn-login:hover{background:var(--emerald);color:var(--panel);border-color:var(--emerald);}
+  .btn-logout:hover{background:var(--ink);color:var(--panel);border-color:var(--ink);}
+
+  .view{display:none;}
+  .view.active{display:block;animation:fade-in .35s ease;}
+  @keyframes fade-in{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px 26px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow-sm);
+    position:relative;
+  }
+
+  .home-card{max-width:480px;margin:8px auto 0;padding:36px 32px;}
+  .home-card::before{
+    content:"";position:absolute;top:0;left:32px;right:32px;height:2px;
+    background:linear-gradient(90deg, var(--gold), transparent 70%);
+  }
+  .card-heading{margin:0 0 6px;font-size:clamp(1.4rem,4.5vw,1.65rem);color:var(--emerald);}
+  .card-heading-accent{display:inline-block;width:38px;height:2px;background:var(--gold);margin:2px 0 16px;}
+  .home-card .muted{margin:0 0 24px;color:var(--muted);font-size:14px;line-height:1.5;}
+
+  /* ===== Forms ===== */
+  form{display:flex;flex-direction:column;gap:22px;}
+  .field label{
+    display:block;font-size:12.5px;font-weight:600;margin-bottom:8px;
+    color:var(--gold);letter-spacing:.03em;
+  }
+  .field input{
+    width:100%;
+    padding:10px 2px 10px;
+    border:none;
+    border-bottom:1.5px solid var(--line);
+    border-radius:0;
+    background:transparent;
+    font-size:16px;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .18s ease, box-shadow .18s ease;
+  }
+  .field input::placeholder{color:#b7ae98;}
+  .field input:focus{border-color:var(--gold);box-shadow:0 1px 0 0 var(--gold);}
+  .field small{display:block;margin-top:7px;color:var(--muted);font-size:12px;line-height:1.5;}
+  .field small.err{color:var(--danger);display:none;}
+  .field.invalid small.err{display:block;}
+  .field.invalid input{border-color:var(--danger);}
+
+  .phone-input{display:flex;align-items:stretch;gap:10px;}
+  .phone-prefix{
+    display:flex;align-items:center;
+    padding:10px 0;
+    font-weight:600;
+    color:var(--emerald);
+    font-size:16px;
+    white-space:nowrap;
+    border-bottom:1.5px solid var(--line);
+  }
+  .phone-input input{flex:1;min-width:0;}
+
+  .select-wrap{position:relative;}
+  .select-wrap select{
+    width:100%;appearance:none;-webkit-appearance:none;-moz-appearance:none;
+    padding:10px 22px 10px 2px;border:none;border-bottom:1.5px solid var(--line);
+    background:transparent;font-size:16px;color:var(--ink);outline:none;cursor:pointer;
+    transition:border-color .18s ease;
+  }
+  .select-wrap select:focus{border-color:var(--gold);}
+  .select-wrap .select-arrow{
+    position:absolute;right:2px;top:14px;pointer-events:none;color:var(--muted);width:14px;height:14px;
+  }
+
+  .new-category-row{display:flex;gap:10px;align-items:center;margin-top:12px;}
+  .new-category-row input{flex:1;}
+  .new-category-row button{padding:8px 14px;font-size:12.5px;min-height:38px;}
+
+  .field textarea{
+    width:100%;padding:10px 2px;border:none;border-bottom:1.5px solid var(--line);
+    background:transparent;font-size:16px;color:var(--ink);outline:none;
+    resize:vertical;min-height:72px;font-family:inherit;line-height:1.5;
+    transition:border-color .18s ease;
+  }
+  .field textarea::placeholder{color:#b7ae98;}
+  .field textarea:focus{border-color:var(--gold);}
+  .char-counter{display:block;text-align:right;margin-top:5px;color:var(--muted);font-size:11px;}
+
+  .category-badge{
+    display:inline-block;padding:3px 11px;border-radius:999px;font-size:11.5px;font-weight:600;
+    border:1px solid var(--gold-soft);color:var(--emerald-deep);background:rgba(180,144,63,0.12);
+    white-space:nowrap;
+  }
+  .category-badge.none{border-color:var(--line);color:var(--muted);background:transparent;font-style:italic;font-weight:500;}
+
+  .category-add-row{display:flex;gap:12px;align-items:center;margin-bottom:22px;}
+  .category-add-row input{
+    flex:1;padding:10px 2px;border:none;border-bottom:1.5px solid var(--line);
+    background:transparent;font-size:16px;color:var(--ink);outline:none;
+    transition:border-color .18s ease;
+  }
+  .category-add-row input::placeholder{color:#b7ae98;}
+  .category-add-row input:focus{border-color:var(--gold);}
+  .category-add-btn{
+    width:44px;height:44px;min-height:44px;border-radius:50%;flex-shrink:0;
+    background:var(--emerald);color:var(--panel);border:none;padding:0;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);
+  }
+  .category-add-btn svg{width:18px;height:18px;}
+  .category-add-btn:hover{background:var(--emerald-deep);}
+
+  .category-list{display:flex;flex-direction:column;}
+  .category-row{
+    display:flex;align-items:center;gap:12px;padding:12px 2px;
+    border-bottom:1px solid var(--line);transition:background .15s ease;
+  }
+  .category-row:last-child{border-bottom:none;}
+  .category-row:hover{background:rgba(180,144,63,0.05);}
+  .category-row-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+  .category-row-name{
+    font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:17px;
+    color:var(--emerald);display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .category-row-count{color:var(--muted);font-size:12.5px;}
+  .default-tag{
+    font-size:10px;font-weight:700;letter-spacing:.03em;color:var(--gold);
+    border:1px solid var(--gold-soft);padding:1px 8px;border-radius:999px;
+    background:rgba(180,144,63,0.1);white-space:nowrap;
+  }
+  .star-btn{
+    width:38px;height:38px;min-height:38px;border-radius:50%;flex-shrink:0;padding:0;
+    background:transparent;border:1px solid var(--line);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .star-btn svg{width:17px;height:17px;fill:none;}
+  .star-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .star-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(180,144,63,0.12);}
+  .star-btn.active svg{fill:currentColor;}
+  .category-empty{color:var(--muted);font-size:15px;font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;text-align:center;padding:20px 10px;}
+
+  button{
+    cursor:pointer;
+    border:none;
+    border-radius:8px;
+    padding:13px 20px;
+    font-size:14.5px;
+    font-weight:600;
+    letter-spacing:.01em;
+    transition:background .18s ease, color .18s ease, opacity .18s ease, transform .05s ease, box-shadow .18s ease;
+    min-height:44px;
+  }
+  button:active{transform:scale(0.985);}
+  .btn-primary{background:var(--emerald);color:var(--panel);box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{background:var(--emerald-deep);}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line);}
+  .btn-ghost:hover{background:rgba(180,144,63,0.08);border-color:var(--gold);color:var(--ink);}
+  .btn-block{width:100%;}
+
+  /* ===== Toolbar & search (admin) ===== */
+  .toolbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+  .toolbar input[type=search]{
+    flex:1;min-width:160px;
+    padding:10px 2px;border:none;border-bottom:1.5px solid var(--line);
+    background:transparent;font-size:16px;color:var(--ink);outline:none;
+    transition:border-color .18s ease;
+  }
+  .toolbar input[type=search]:focus{border-color:var(--gold);}
+  .count-pill{
+    background:transparent;color:var(--gold);font-size:12px;font-weight:700;
+    padding:5px 12px;border-radius:999px;white-space:nowrap;border:1px solid var(--gold);
+  }
+
+  /* ===== Ledger table ===== */
+  table{width:100%;border-collapse:collapse;font-size:15px;}
+  thead th{
+    text-align:left;font-size:12px;font-weight:600;letter-spacing:.02em;
+    color:var(--muted);padding:0 10px 10px;border-bottom:1px solid var(--line);
+  }
+  tbody td{padding:14px 10px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr{transition:background .15s ease;}
+  tbody tr:hover{background:rgba(180,144,63,0.06);}
+  .name-cell{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:17px;color:var(--emerald);}
+  .phone-cell{color:var(--ink-soft);font-variant-numeric:tabular-nums;letter-spacing:.01em;}
+  .category-cell{white-space:nowrap;}
+  .row-actions{display:flex;gap:8px;justify-content:flex-end;}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;min-height:36px;padding:0;
+    background:transparent;border:1px solid var(--line);border-radius:50%;
+    color:var(--ink-soft);cursor:pointer;flex-shrink:0;
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .icon-btn svg{width:16px;height:16px;}
+  .icon-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(180,144,63,0.08);}
+  .icon-btn.danger:hover{border-color:var(--danger);color:var(--danger);background:var(--danger-bg);}
+  .text-link{
+    background:transparent;border:none;cursor:pointer;padding:6px 2px;font-size:13px;
+    color:var(--ink-soft);font-weight:600;min-height:auto;border-bottom:1px solid transparent;
+  }
+  .text-link:hover{color:var(--gold);border-color:var(--gold);}
+  .text-link.danger:hover{color:var(--danger);border-color:var(--danger);}
+
+  .empty{text-align:center;color:var(--muted);padding:44px 10px;font-size:14px;font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;}
+
+  .export-bar{display:flex;gap:12px;flex-wrap:wrap;}
+  .export-bar button{flex:1;min-width:170px;}
+
+  .section-title{
+    font-size:12.5px;font-weight:700;margin-bottom:4px;color:var(--gold);letter-spacing:.03em;
+  }
+  .section-sub{margin:0 0 18px;color:var(--muted);font-size:13px;}
+
+  /* ===== Panel yang bisa dibuka/tutup (admin) ===== */
+  .collapsible{padding:0;}
+  .collapsible > summary{
+    list-style:none;cursor:pointer;padding:28px 26px;margin:0;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .collapsible > summary::-webkit-details-marker{display:none;}
+  .collapsible > summary .section-title{margin-bottom:0;}
+  .collapsible-summary-text{flex:1;min-width:0;}
+  .collapsible-chevron{
+    flex-shrink:0;width:18px;height:18px;color:var(--gold);
+    transition:transform .2s ease;
+  }
+  .collapsible[open] > summary .collapsible-chevron{transform:rotate(180deg);}
+  .collapsible-body{padding:0 26px 28px;}
+  .collapsible > summary:hover .section-title{color:var(--emerald);}
+
+  code{background:rgba(180,144,63,0.12);color:var(--emerald-deep);padding:2px 6px;border-radius:4px;font-size:12px;font-family:'Manrope',sans-serif;}
+
+  .toast{
+    position:fixed;left:50%;bottom:calc(24px + var(--safe-bottom));transform:translate(-50%,20px);
+    background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:10px;
+    font-size:13px;opacity:0;transition:all .25s;pointer-events:none;z-index:50;
+    box-shadow:var(--shadow);max-width:calc(100vw - 40px);text-align:center;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  footer{
+    text-align:center;color:var(--muted);font-size:12.5px;margin-top:30px;
+    font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:14px;
+  }
+
+  /* ===== Modal ===== */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(13,25,21,0.55);
+    display:none;align-items:center;justify-content:center;z-index:100;
+    padding:20px;padding-bottom:calc(20px + var(--safe-bottom));
+    backdrop-filter:blur(2px);
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--panel);border-radius:14px;padding:34px 28px 28px;max-width:400px;width:100%;
+    text-align:center;box-shadow:var(--shadow);
+    animation:pop .2s ease-out;border:1px solid var(--line);
+    max-height:calc(100vh - 40px);overflow-y:auto;
+  }
+  @keyframes pop{from{transform:scale(0.94) translateY(6px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+  .modal.left-align{text-align:left;}
+  .modal-icon{
+    width:54px;height:54px;border-radius:50%;
+    border:1.5px solid var(--gold);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+  }
+  .modal-icon svg{width:24px;height:24px;}
+  .modal h3{margin:0 0 8px;font-size:22px;color:var(--emerald);}
+  .modal p{margin:0 0 22px;color:var(--muted);font-size:14px;line-height:1.55;}
+  .modal p strong{color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:600;}
+  .modal-actions{display:flex;flex-direction:column;gap:10px;}
+  .modal-actions.row{flex-direction:row;justify-content:flex-end;}
+
+  .password-input{display:flex;align-items:center;gap:10px;border-bottom:1.5px solid var(--line);}
+  .password-input:focus-within{border-color:var(--gold);}
+  .password-input input{flex:1;min-width:0;border-bottom:none;}
+  .toggle-eye{
+    border:none;background:transparent;padding:6px 0;font-size:12.5px;color:var(--muted);
+    font-weight:600;min-height:auto;white-space:nowrap;
+  }
+  .toggle-eye:hover{color:var(--gold);}
+  .login-hint{
+    margin:20px 0 0 !important;padding-top:16px;border-top:1px dashed var(--line);
+    font-size:12px !important;color:var(--muted) !important;text-align:center;line-height:1.6;
+  }
+
+  /* ===== Responsive: stacked ledger for phones ===== */
+  @media (max-width:620px){
+    thead{display:none;}
+    table, tbody, tr, td{display:block;width:100%;}
+    tbody tr{border:1px solid var(--line);border-radius:8px;margin-bottom:12px;padding:6px 4px;background:var(--panel);}
+    tbody tr:hover{background:rgba(180,144,63,0.06);}
+    tbody td{border-bottom:none;padding:8px 12px;}
+    tbody td[data-label]::before{
+      content:attr(data-label);display:block;font-size:11px;color:var(--muted);
+      letter-spacing:.02em;margin-bottom:3px;
+    }
+    .row-actions{justify-content:flex-start;}
+  }
+
+  @media (max-width:420px){
+    .card{padding:22px 18px;}
+    .home-card{padding:28px 20px;}
+    .home-card::before{left:20px;right:20px;}
+    .export-bar button{min-width:100%;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-row">
+      <div class="brand">
+        <h1 id="pageTitle">Nama Kontak Gunung Raya</h1>
+        <p id="pageSubtitle">Simpan nama &amp; nomor WhatsApp dengan rapi.</p>
+      </div>
+      <button class="btn-login" id="loginBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Login Admin
+      </button>
+      <button class="btn-logout" id="logoutBtn" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Keluar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===== BERANDA: hanya form tambah kontak ===== -->
+  <section id="homeView" class="view active">
+    <div class="card home-card">
+      <h2 class="card-heading">Tambah Kontak Baru</h2>
+      <span class="card-heading-accent"></span>
+      <p class="muted">Isi nama lengkap dan nomor WhatsApp di bawah ini.</p>
+      <form id="homeForm" novalidate>
+        <div class="field" id="homeNameField">
+          <label for="homeNameInput">Nama lengkap</label>
+          <input type="text" id="homeNameInput" placeholder="Tuliskan nama lengkap kontak." autocomplete="off">
+          <small class="err">Nama lengkap wajib diisi.</small>
+        </div>
+        <div class="field" id="homePhoneField">
+          <label for="homePhoneInput">Nomor WhatsApp</label>
+          <div class="phone-input">
+            <span class="phone-prefix">+62</span>
+            <input type="tel" id="homePhoneInput" placeholder="8123456789" autocomplete="off" inputmode="numeric">
+          </div>
+          <small>Masukkan nomor tanpa awalan 0 / 62, contoh: <code>8123456789</code>.</small>
+          <small class="err">Nomor tidak valid. Isi 8–13 digit angka setelah +62 (tanpa awalan 0).</small>
+        </div>
+
+        <div class="field">
+          <label>Kategori</label>
+          <p id="homeCategoryDisplay" style="margin:0;color:var(--ink);font-size:15px;font-weight:600;">Tanpa kategori</p>
+        </div>
+
+        <div class="field">
+          <label for="homeBirthdayInput">Tanggal lahir <span style="color:var(--muted);font-weight:500;">(opsional)</span></label>
+          <input type="date" id="homeBirthdayInput">
+        </div>
+
+        <div class="field">
+          <label for="homeNoteInput">Catatan singkat <span style="color:var(--muted);font-weight:500;">(opsional)</span></label>
+          <textarea id="homeNoteInput" maxlength="300" placeholder="Tuliskan catatan tentang kontak ini."></textarea>
+          <span class="char-counter" id="homeNoteCounter">0/300</span>
+        </div>
+
+        <button type="submit" class="btn-primary btn-block">Tambah Kontak</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== PANEL ADMIN: kelola & ekspor ===== -->
+  <section id="adminView" class="view">
+    <details class="card collapsible" open>
+      <summary>
+        <span class="collapsible-summary-text">
+          <div class="section-title">Kelola kategori</div>
+        </span>
+        <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="collapsible-body">
+        <p class="section-sub">Tandai bintang pada satu kategori untuk dijadikan default kontak baru di Beranda.</p>
+
+        <div class="category-add-row">
+          <input type="text" id="newCategoryManageInput" placeholder="Nama kategori baru">
+          <button type="button" class="category-add-btn" id="addCategoryManageBtn" aria-label="Tambah kategori">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          </button>
+        </div>
+
+        <div class="category-list" id="categoryManageList"></div>
+      </div>
+    </details>
+
+    <details class="card collapsible" open>
+      <summary>
+        <span class="collapsible-summary-text">
+          <div class="section-title">Daftar kontak</div>
+        </span>
+        <svg class="collapsible-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="collapsible-body">
+        <div class="toolbar">
+          <input type="search" id="searchInput" placeholder="Cari nama atau nomor...">
+          <span class="count-pill" id="countPill">0 kontak</span>
+        </div>
+        <div id="tableWrap">
+          <table id="contactTable">
+            <thead>
+              <tr>
+                <th>Nama lengkap</th>
+                <th>Nomor WA</th>
+                <th>Kategori</th>
+                <th style="text-align:right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+          <div class="empty" id="emptyState">Belum ada kontak.</div>
+        </div>
+      </div>
+    </details>
+
+    <div class="card">
+      <div class="section-title">Ekspor & cadangan</div>
+      <p class="section-sub">Unduh koleksi kontak Anda kapan saja, atau impor dari file lain.</p>
+      <div class="export-bar">
+        <button class="btn-primary" id="exportVcfBtn">Ekspor ke Google Kontak (.vcf)</button>
+        <button class="btn-ghost" id="exportJsonBtn">Cadangkan data (.json)</button>
+        <button class="btn-ghost" id="importJsonBtn">Impor cadangan (.json)</button>
+        <button class="btn-ghost" id="importVcfBtn">Impor kontak (.vcf)</button>
+      </div>
+      <input type="file" id="importJsonFile" accept="application/json" style="display:none;">
+      <input type="file" id="importVcfFile" accept=".vcf,text/vcard,text/x-vcard" style="display:none;">
+    </div>
+  </section>
+
+
+</div>
+
+<!-- Popup login admin -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal left-align">
+    <div class="modal-icon" style="margin:0 auto 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    </div>
+    <h3 style="text-align:center;">Login Admin</h3>
+    <p style="text-align:center;">Masukkan kata sandi untuk membuka Panel Admin.</p>
+    <form id="loginForm" novalidate>
+      <div class="field" id="loginPasswordField">
+        <label for="loginPasswordInput">Kata sandi</label>
+        <div class="password-input">
+          <input type="password" id="loginPasswordInput" placeholder="Masukkan kata sandi" autocomplete="off">
+          <button type="button" class="toggle-eye" id="togglePasswordBtn">Lihat</button>
+        </div>
+        <small class="err">Kata sandi salah. Coba lagi.</small>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary btn-block">Masuk</button>
+        <button type="button" class="btn-ghost btn-block" id="cancelLoginBtn">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Popup sukses tambah kontak (Beranda) -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h3>Kontak Berhasil Ditambahkan</h3>
+    <p><strong id="successName"></strong><br><span id="successPhone"></span></p>
+    <div class="modal-actions">
+      <button class="btn-primary btn-block" id="addAnotherBtn">Tambahkan Kontak Lain</button>
+      <button class="btn-ghost btn-block" id="closeSuccessBtn">Selesai</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup edit kontak (Panel Admin) -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal left-align">
+    <h3>Edit Kontak</h3>
+    <form id="editForm" novalidate>
+      <input type="hidden" id="editId">
+      <div class="field" id="editNameField">
+        <label for="editNameInput">Nama lengkap</label>
+        <input type="text" id="editNameInput" placeholder="Tuliskan nama lengkap kontak." autocomplete="off">
+        <small class="err">Nama lengkap wajib diisi.</small>
+      </div>
+      <div class="field" id="editPhoneField">
+        <label for="editPhoneInput">Nomor WhatsApp</label>
+        <div class="phone-input">
+          <span class="phone-prefix">+62</span>
+          <input type="tel" id="editPhoneInput" autocomplete="off" inputmode="numeric">
+        </div>
+        <small class="err">Nomor tidak valid. Isi 8–13 digit angka setelah +62 (tanpa awalan 0).</small>
+      </div>
+
+      <div class="field">
+        <label for="editCategorySelect">Kategori <span style="color:var(--muted);font-weight:500;">(opsional)</span></label>
+        <div class="select-wrap">
+          <select id="editCategorySelect"></select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="new-category-row" id="editNewCategoryRow" style="display:none;">
+          <input type="text" id="editNewCategoryInput" placeholder="Nama kategori baru">
+          <button type="button" class="btn-ghost" id="editNewCategorySaveBtn">Simpan</button>
+          <button type="button" class="btn-ghost" id="editNewCategoryCancelBtn">Batal</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="editBirthdayInput">Tanggal lahir <span style="color:var(--muted);font-weight:500;">(opsional)</span></label>
+        <input type="date" id="editBirthdayInput">
+      </div>
+
+      <div class="field">
+        <label for="editNoteInput">Catatan singkat <span style="color:var(--muted);font-weight:500;">(opsional)</span></label>
+        <textarea id="editNoteInput" maxlength="300" placeholder="Tuliskan catatan tentang kontak ini."></textarea>
+        <span class="char-counter" id="editNoteCounter">0/300</span>
+      </div>
+
+      <div class="modal-actions row">
+        <button type="button" class="btn-ghost" id="cancelEditBtn">Batal</button>
+        <button type="submit" class="btn-primary">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'wa_contacts_v1';
+  const NAME_SUFFIX = 'G. Raya';
+  const CATEGORY_KEY = 'wa_categories_v1';
+  const DEFAULT_CATEGORIES = ['Keluarga', 'Teman', 'Kerja', 'Pelanggan', 'Lainnya'];
+
+  let categories = loadCategories();
+
+  function loadCategories(){
+    try{
+      const raw = localStorage.getItem(CATEGORY_KEY);
+      return raw ? JSON.parse(raw) : DEFAULT_CATEGORIES.slice();
+    }catch(e){
+      return DEFAULT_CATEGORIES.slice();
+    }
+  }
+
+  function saveCategories(){
+    try{ localStorage.setItem(CATEGORY_KEY, JSON.stringify(categories)); }
+    catch(e){ console.error('Gagal menyimpan kategori:', e); }
+  }
+
+  function addCategoryIfNew(name){
+    const trimmed = name.trim();
+    if(!trimmed) return trimmed;
+    const existing = categories.find(c => c.toLowerCase() === trimmed.toLowerCase());
+    if(existing) return existing;
+    categories.push(trimmed);
+    saveCategories();
+    return trimmed;
+  }
+
+  /* ===== Kategori default untuk kontak baru di Beranda ===== */
+  const DEFAULT_CATEGORY_KEY = 'wa_default_category';
+
+  function getDefaultCategory(){
+    const val = localStorage.getItem(DEFAULT_CATEGORY_KEY) || '';
+    return categories.includes(val) ? val : '';
+  }
+
+  function setDefaultCategory(val){
+    try{ localStorage.setItem(DEFAULT_CATEGORY_KEY, val); }
+    catch(e){ console.error('Gagal menyimpan kategori default:', e); }
+  }
+
+  function updateHomeCategoryDisplay(){
+    const val = getDefaultCategory();
+    document.getElementById('homeCategoryDisplay').textContent = val || 'Tanpa kategori';
+  }
+
+  function populateCategorySelect(selectEl, selectedValue){
+    selectEl.innerHTML = '';
+    const emptyOpt = document.createElement('option');
+    emptyOpt.value = '';
+    emptyOpt.textContent = 'Tanpa kategori';
+    selectEl.appendChild(emptyOpt);
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      selectEl.appendChild(opt);
+    });
+    const newOpt = document.createElement('option');
+    newOpt.value = '__new__';
+    newOpt.textContent = '+ Tambah kategori baru...';
+    selectEl.appendChild(newOpt);
+    selectEl.value = selectedValue && categories.includes(selectedValue) ? selectedValue : '';
+  }
+
+  // Kategori hanya bisa diatur lewat Panel Admin (form Beranda tidak punya kontrolnya).
+  function setupAdminCategoryControls(prefix){
+    const select = document.getElementById(prefix + 'CategorySelect');
+    const newRow = document.getElementById(prefix + 'NewCategoryRow');
+    const newInput = document.getElementById(prefix + 'NewCategoryInput');
+    const saveBtn = document.getElementById(prefix + 'NewCategorySaveBtn');
+    const cancelBtn = document.getElementById(prefix + 'NewCategoryCancelBtn');
+
+    populateCategorySelect(select, '');
+
+    select.addEventListener('change', () => {
+      if(select.value === '__new__'){
+        newRow.style.display = 'flex';
+        newInput.value = '';
+        newInput.focus();
+      }else{
+        newRow.style.display = 'none';
+      }
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const name = addCategoryIfNew(newInput.value);
+      populateCategorySelect(select, name);
+      newRow.style.display = 'none';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      newRow.style.display = 'none';
+      select.value = '';
+    });
+
+    return { select, newRow };
+  }
+
+  const editCategoryCtrl = setupAdminCategoryControls('edit');
+
+  /* ===== Kelola kategori (Panel Admin) ===== */
+  const categoryManageList = document.getElementById('categoryManageList');
+
+  function renderCategoryManageList(){
+    categoryManageList.innerHTML = '';
+    if(categories.length === 0){
+      categoryManageList.innerHTML = '<p class="category-empty">Belum ada kategori. Tambahkan kategori pertama di atas.</p>';
+      return;
+    }
+    const defaultCat = getDefaultCategory();
+    categories.forEach(cat => {
+      const count = contacts.filter(c => c.category === cat).length;
+      const isDefault = cat === defaultCat;
+      const row = document.createElement('div');
+      row.className = 'category-row';
+      row.innerHTML = `
+        <button type="button" class="star-btn${isDefault ? ' active' : ''}" data-star="${escapeHtml(cat)}"
+          title="${isDefault ? 'Batalkan sebagai default' : 'Jadikan kategori default'}"
+          aria-label="${isDefault ? 'Batalkan sebagai default' : 'Jadikan kategori default'}">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.8L12 3.5z"/></svg>
+        </button>
+        <div class="category-row-info">
+          <span class="category-row-name">${escapeHtml(cat)} ${isDefault ? '<span class="default-tag">Default</span>' : ''}</span>
+          <span class="category-row-count">${count} kontak</span>
+        </div>
+        <button type="button" class="icon-btn danger" data-delete="${escapeHtml(cat)}" title="Hapus kategori" aria-label="Hapus kategori ${escapeHtml(cat)}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+      `;
+      categoryManageList.appendChild(row);
+    });
+  }
+
+  categoryManageList.addEventListener('click', (e) => {
+    const starBtn = e.target.closest('button[data-star]');
+    if(starBtn){
+      const cat = starBtn.dataset.star;
+      setDefaultCategory(getDefaultCategory() === cat ? '' : cat);
+      renderCategoryManageList();
+      updateHomeCategoryDisplay();
+      showToast(getDefaultCategory() === cat ? `"${cat}" dijadikan kategori default.` : 'Kategori default dibatalkan.');
+      return;
+    }
+    const deleteBtn = e.target.closest('button[data-delete]');
+    if(deleteBtn){
+      const cat = deleteBtn.dataset.delete;
+      if(!confirm(`Hapus kategori "${cat}"? Kontak yang memakai kategori ini akan menjadi "Tanpa kategori".`)) return;
+      categories = categories.filter(x => x !== cat);
+      saveCategories();
+      if(getDefaultCategory() === cat) setDefaultCategory('');
+      contacts.forEach(c => { if(c.category === cat) c.category = ''; });
+      saveContacts();
+      renderCategoryManageList();
+      updateHomeCategoryDisplay();
+      render();
+      showToast(`Kategori "${cat}" dihapus.`);
+    }
+  });
+
+  function addCategoryFromManager(){
+    const input = document.getElementById('newCategoryManageInput');
+    const name = input.value.trim();
+    if(!name){ showToast('Nama kategori tidak boleh kosong.'); return; }
+    addCategoryIfNew(name);
+    input.value = '';
+    renderCategoryManageList();
+    showToast(`Kategori "${name}" ditambahkan.`);
+  }
+
+  document.getElementById('addCategoryManageBtn').addEventListener('click', addCategoryFromManager);
+  document.getElementById('newCategoryManageInput').addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){ e.preventDefault(); addCategoryFromManager(); }
+  });
+
+  /* Pencacah karakter catatan */
+  function setupNoteCounter(textareaId, counterId){
+    const textarea = document.getElementById(textareaId);
+    const counter = document.getElementById(counterId);
+    textarea.addEventListener('input', () => {
+      counter.textContent = `${textarea.value.length}/300`;
+    });
+  }
+  setupNoteCounter('homeNoteInput', 'homeNoteCounter');
+  setupNoteCounter('editNoteInput', 'editNoteCounter');
+
+  let contacts = loadContacts();
+
+  function loadContacts(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){
+      console.error('Gagal membaca data tersimpan:', e);
+      return [];
+    }
+  }
+
+  function saveContacts(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+    }catch(e){
+      console.error('Gagal menyimpan data:', e);
+      showToast('Gagal menyimpan data ke perangkat.');
+    }
+  }
+
+  function showToast(msg){
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
+  }
+
+  function normalizePhoneDigits(raw){
+    let digits = raw.replace(/\D/g,'');
+    if(digits.startsWith('620')) digits = digits.slice(3);
+    else if(digits.startsWith('62')) digits = digits.slice(2);
+    else if(digits.startsWith('0')) digits = digits.slice(1);
+    return digits;
+  }
+
+  function isValidLocalNumber(digits){
+    return /^[0-9]{8,13}$/.test(digits);
+  }
+
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+
+  /* ===== Navigasi Beranda <-> Panel Admin (via login) ===== */
+  const SUPABASE_URL = 'https://lswqipyhvzryjehtmaac.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_4yLEbo9WEuRUrQmuYnMSBA_0pnmuEQq';
+
+  async function verifyAdminPassword(password){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/verify_admin_password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ p_password: password })
+    });
+    if(!res.ok) throw new Error('Gagal memeriksa kata sandi');
+    return await res.json();
+  }
+
+  const homeView = document.getElementById('homeView');
+  const adminView = document.getElementById('adminView');
+  const pageTitle = document.getElementById('pageTitle');
+  const pageSubtitle = document.getElementById('pageSubtitle');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  function goToHome(){
+    homeView.classList.add('active');
+    adminView.classList.remove('active');
+    pageTitle.textContent = 'Nama Kontak Gunung Raya';
+    pageSubtitle.textContent = 'Simpan nama & nomor WhatsApp dengan rapi.';
+    loginBtn.style.display = 'inline-flex';
+    logoutBtn.style.display = 'none';
+    updateHomeCategoryDisplay();
+  }
+
+  function goToAdmin(){
+    homeView.classList.remove('active');
+    adminView.classList.add('active');
+    pageTitle.textContent = 'Panel Admin';
+    pageSubtitle.textContent = 'Kelola, cari, ubah, hapus, dan ekspor kontak.';
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = 'inline-flex';
+    renderCategoryManageList();
+    render();
+  }
+
+  logoutBtn.addEventListener('click', goToHome);
+
+  /* Modal login */
+  const loginForm = document.getElementById('loginForm');
+  const loginPasswordInput = document.getElementById('loginPasswordInput');
+  const loginPasswordField = document.getElementById('loginPasswordField');
+  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+
+  loginBtn.addEventListener('click', () => {
+    loginForm.reset();
+    loginPasswordField.classList.remove('invalid');
+    openModal('loginModal');
+    setTimeout(() => loginPasswordInput.focus(), 50);
+  });
+  document.getElementById('cancelLoginBtn').addEventListener('click', () => closeModal('loginModal'));
+
+  togglePasswordBtn.addEventListener('click', () => {
+    const isPw = loginPasswordInput.type === 'password';
+    loginPasswordInput.type = isPw ? 'text' : 'password';
+    togglePasswordBtn.textContent = isPw ? 'Sembunyikan' : 'Lihat';
+  });
+
+  loginPasswordInput.addEventListener('input', () => loginPasswordField.classList.remove('invalid'));
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn ? submitBtn.textContent : '';
+    if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = 'Memeriksa...'; }
+    try{
+      const valid = await verifyAdminPassword(loginPasswordInput.value);
+      if(valid){
+        closeModal('loginModal');
+        goToAdmin();
+      }else{
+        loginPasswordField.classList.add('invalid');
+      }
+    }catch(err){
+      loginPasswordField.classList.add('invalid');
+      showToast('Tidak bisa terhubung ke server, coba lagi.');
+    }finally{
+      if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = originalLabel; }
+    }
+  });
+
+  /* ===== BERANDA: form tambah kontak ===== */
+  const homeForm = document.getElementById('homeForm');
+  const homeNameInput = document.getElementById('homeNameInput');
+  const homePhoneInput = document.getElementById('homePhoneInput');
+  const homeNameField = document.getElementById('homeNameField');
+  const homePhoneField = document.getElementById('homePhoneField');
+
+  homePhoneInput.addEventListener('input', () => {
+    homePhoneInput.value = normalizePhoneDigits(homePhoneInput.value);
+    homePhoneField.classList.remove('invalid');
+  });
+  homeNameInput.addEventListener('input', () => homeNameField.classList.remove('invalid'));
+
+  homeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = homeNameInput.value.trim();
+    const digits = normalizePhoneDigits(homePhoneInput.value);
+
+    let valid = true;
+    if(!name){ homeNameField.classList.add('invalid'); valid = false; }
+    if(!isValidLocalNumber(digits)){ homePhoneField.classList.add('invalid'); valid = false; }
+    if(!valid) return;
+
+    const fullPhone = '+62' + digits;
+    const dup = contacts.find(c => c.phone === fullPhone);
+    if(dup){
+      showToast(`Nomor sudah ada atas nama "${dup.name}".`);
+      homePhoneField.classList.add('invalid');
+      return;
+    }
+
+    const birthday = document.getElementById('homeBirthdayInput').value;
+    const note = document.getElementById('homeNoteInput').value.trim();
+
+    // Kategori tidak dipilih manual di Beranda — otomatis pakai kategori default yang diatur admin.
+    contacts.push({ id: crypto.randomUUID(), name, phone: fullPhone, category: getDefaultCategory(), birthday, note });
+    saveContacts();
+
+    document.getElementById('successName').textContent = name;
+    document.getElementById('successPhone').textContent = fullPhone;
+    homeForm.reset();
+    homeNameField.classList.remove('invalid');
+    homePhoneField.classList.remove('invalid');
+    document.getElementById('homeNoteCounter').textContent = '0/300';
+    openModal('successModal');
+  });
+
+  document.getElementById('addAnotherBtn').addEventListener('click', () => {
+    closeModal('successModal');
+    homeNameInput.focus();
+  });
+  document.getElementById('closeSuccessBtn').addEventListener('click', () => closeModal('successModal'));
+
+  function openModal(id){ document.getElementById(id).classList.add('show'); }
+  function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+  /* ===== PANEL ADMIN: tabel, cari, edit, hapus ===== */
+  const tableBody = document.getElementById('tableBody');
+  const emptyState = document.getElementById('emptyState');
+  const contactTable = document.getElementById('contactTable');
+  const searchInput = document.getElementById('searchInput');
+  const countPill = document.getElementById('countPill');
+
+  function render(){
+    const query = searchInput.value.trim().toLowerCase();
+    const filtered = contacts.filter(c =>
+      c.name.toLowerCase().includes(query) || c.phone.includes(query)
+    ).sort((a,b) => a.name.localeCompare(b.name, 'id'));
+
+    tableBody.innerHTML = '';
+    if(contacts.length === 0){
+      contactTable.style.display = 'none';
+      emptyState.style.display = 'block';
+      emptyState.textContent = 'Belum ada kontak. Tambahkan lewat halaman Beranda.';
+    }else if(filtered.length === 0){
+      contactTable.style.display = 'none';
+      emptyState.style.display = 'block';
+      emptyState.textContent = 'Tidak ada kontak yang cocok dengan pencarian.';
+    }else{
+      contactTable.style.display = 'table';
+      emptyState.style.display = 'none';
+      filtered.forEach(c => {
+        const tr = document.createElement('tr');
+        const categoryHtml = c.category
+          ? `<span class="category-badge">${escapeHtml(c.category)}</span>`
+          : `<span class="category-badge none">Tanpa kategori</span>`;
+        tr.innerHTML = `
+          <td data-label="Nama lengkap" class="name-cell">${escapeHtml(c.name)}</td>
+          <td data-label="Nomor WA" class="phone-cell">${escapeHtml(c.phone)}</td>
+          <td data-label="Kategori" class="category-cell">${categoryHtml}</td>
+          <td data-label="Aksi">
+            <div class="row-actions">
+              <button class="icon-btn" data-action="edit" data-id="${c.id}" title="Ubah kontak" aria-label="Ubah kontak">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </button>
+              <button class="icon-btn danger" data-action="delete" data-id="${c.id}" title="Hapus kontak" aria-label="Hapus kontak">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+              </button>
+            </div>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+    countPill.textContent = `${contacts.length} kontak`;
+  }
+
+  tableBody.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if(!btn) return;
+    const id = btn.dataset.id;
+    if(btn.dataset.action === 'edit') startEdit(id);
+    if(btn.dataset.action === 'delete') deleteContact(id);
+  });
+
+  searchInput.addEventListener('input', render);
+
+  function deleteContact(id){
+    const c = contacts.find(x => x.id === id);
+    if(!c) return;
+    if(!confirm(`Hapus kontak "${c.name}"?`)) return;
+    contacts = contacts.filter(x => x.id !== id);
+    saveContacts();
+    render();
+    renderCategoryManageList();
+    showToast('Kontak dihapus.');
+  }
+
+  /* ===== Modal edit kontak ===== */
+  const editForm = document.getElementById('editForm');
+  const editIdInput = document.getElementById('editId');
+  const editNameInput = document.getElementById('editNameInput');
+  const editPhoneInput = document.getElementById('editPhoneInput');
+  const editNameField = document.getElementById('editNameField');
+  const editPhoneField = document.getElementById('editPhoneField');
+
+  editPhoneInput.addEventListener('input', () => {
+    editPhoneInput.value = normalizePhoneDigits(editPhoneInput.value);
+    editPhoneField.classList.remove('invalid');
+  });
+  editNameInput.addEventListener('input', () => editNameField.classList.remove('invalid'));
+
+  function startEdit(id){
+    const c = contacts.find(x => x.id === id);
+    if(!c) return;
+    editIdInput.value = c.id;
+    editNameInput.value = c.name;
+    editPhoneInput.value = c.phone.replace('+62','');
+    editNameField.classList.remove('invalid');
+    editPhoneField.classList.remove('invalid');
+
+    populateCategorySelect(editCategoryCtrl.select, c.category || '');
+    editCategoryCtrl.newRow.style.display = 'none';
+    document.getElementById('editBirthdayInput').value = c.birthday || '';
+    document.getElementById('editNoteInput').value = c.note || '';
+    document.getElementById('editNoteCounter').textContent = `${(c.note || '').length}/300`;
+
+    openModal('editModal');
+    editNameInput.focus();
+  }
+
+  document.getElementById('cancelEditBtn').addEventListener('click', () => closeModal('editModal'));
+
+  editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = editNameInput.value.trim();
+    const digits = normalizePhoneDigits(editPhoneInput.value);
+    const id = editIdInput.value;
+
+    let valid = true;
+    if(!name){ editNameField.classList.add('invalid'); valid = false; }
+    if(!isValidLocalNumber(digits)){ editPhoneField.classList.add('invalid'); valid = false; }
+    if(!valid) return;
+
+    const fullPhone = '+62' + digits;
+    const dup = contacts.find(c => c.phone === fullPhone && c.id !== id);
+    if(dup){
+      showToast(`Nomor sudah ada atas nama "${dup.name}".`);
+      editPhoneField.classList.add('invalid');
+      return;
+    }
+
+    const c = contacts.find(x => x.id === id);
+    if(c){
+      let category = editCategoryCtrl.select.value;
+      if(category === '__new__'){
+        category = addCategoryIfNew(document.getElementById('editNewCategoryInput').value);
+      }
+      c.name = name;
+      c.phone = fullPhone;
+      c.category = category;
+      c.birthday = document.getElementById('editBirthdayInput').value;
+      c.note = document.getElementById('editNoteInput').value.trim();
+    }
+    saveContacts();
+    closeModal('editModal');
+    render();
+    renderCategoryManageList();
+    showToast('Kontak berhasil diperbarui.');
+  });
+
+  /* ===== Ekspor & cadangan ===== */
+  function downloadFile(filename, content, mime){
+    const blob = new Blob([content], {type: mime});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function vcardEscape(str){
+    return str.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;');
+  }
+
+  document.getElementById('exportVcfBtn').addEventListener('click', () => {
+    if(contacts.length === 0){ showToast('Belum ada kontak untuk diekspor.'); return; }
+    const vcards = contacts.map(c => {
+      const exportedName = `${c.name.trim()} ${NAME_SUFFIX}`;
+      const lines = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${vcardEscape(exportedName)}`,
+        `N:${vcardEscape(exportedName)};;;;`,
+        `TEL;TYPE=CELL:${c.phone}`
+      ];
+      if(c.category) lines.push(`CATEGORIES:${vcardEscape(c.category)}`);
+      if(c.birthday) lines.push(`BDAY:${c.birthday.replace(/-/g,'')}`);
+      if(c.note) lines.push(`NOTE:${vcardEscape(c.note)}`);
+
+      lines.push('END:VCARD');
+      return lines.join('\r\n');
+    }).join('\r\n');
+    downloadFile('kontak-wa.vcf', vcards, 'text/vcard');
+    showToast('File .vcf berhasil diunduh.');
+  });
+
+  document.getElementById('exportJsonBtn').addEventListener('click', () => {
+    if(contacts.length === 0){ showToast('Belum ada data untuk dicadangkan.'); return; }
+    downloadFile('cadangan-kontak-wa.json', JSON.stringify(contacts, null, 2), 'application/json');
+    showToast('Cadangan data berhasil diunduh.');
+  });
+
+  const importJsonBtn = document.getElementById('importJsonBtn');
+  const importJsonFile = document.getElementById('importJsonFile');
+  importJsonBtn.addEventListener('click', () => importJsonFile.click());
+  importJsonFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data)) throw new Error('Format tidak sesuai');
+        let added = 0;
+        data.forEach(item => {
+          if(item && item.name && item.phone && /^\+62[0-9]{8,13}$/.test(item.phone)){
+            if(!contacts.find(c => c.phone === item.phone)){
+              const category = item.category ? addCategoryIfNew(String(item.category)) : '';
+              contacts.push({
+                id: crypto.randomUUID(),
+                name: String(item.name).trim(),
+                phone: item.phone,
+                category,
+                birthday: item.birthday || '',
+                note: item.note || ''
+              });
+              added++;
+            }
+          }
+        });
+        saveContacts();
+        render();
+        showToast(`${added} kontak berhasil diimpor.`);
+      }catch(err){
+        console.error(err);
+        showToast('Gagal membaca file cadangan.');
+      }
+      importJsonFile.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  /* ===== Impor kontak dari file .vcf ===== */
+  function unfoldVcardLines(text){
+    // Baris lanjutan vCard diawali spasi/tab (line folding) — gabungkan ke baris sebelumnya.
+    const rawLines = text.split(/\r\n|\r|\n/);
+    const lines = [];
+    rawLines.forEach(line => {
+      if((line.startsWith(' ') || line.startsWith('\t')) && lines.length){
+        lines[lines.length - 1] += line.slice(1);
+      }else{
+        lines.push(line);
+      }
+    });
+    return lines;
+  }
+
+  function unescapeVcardValue(str){
+    return str
+      .replace(/\\n/gi, ' ')
+      .replace(/\\,/g, ',')
+      .replace(/\\;/g, ';')
+      .replace(/\\\\/g, '\\')
+      .trim();
+  }
+
+  function stripNameSuffix(name){
+    const suffix = ' ' + NAME_SUFFIX;
+    return name.endsWith(suffix) ? name.slice(0, -suffix.length).trim() : name;
+  }
+
+  function parseVcf(text){
+    const lines = unfoldVcardLines(text);
+    const results = [];
+    let current = null;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if(/^BEGIN:VCARD$/i.test(trimmed)){
+        current = { name: '', phone: '', category: '', birthday: '', note: '' };
+        return;
+      }
+      if(/^END:VCARD$/i.test(trimmed)){
+        if(current && current.name && current.phone) results.push(current);
+        current = null;
+        return;
+      }
+      if(!current) return;
+
+      const colonIndex = trimmed.indexOf(':');
+      if(colonIndex === -1) return;
+      const rawKey = trimmed.slice(0, colonIndex);
+      const rawValue = trimmed.slice(colonIndex + 1);
+      const key = rawKey.split(';')[0].toUpperCase();
+
+      if(key === 'FN' && !current.name){
+        current.name = unescapeVcardValue(rawValue);
+      }else if(key === 'N' && !current.name){
+        // Format N: Keluarga;Nama;Tengah;Gelar;Sufiks — susun jadi satu nama utuh
+        const parts = rawValue.split(';').map(unescapeVcardValue).filter(Boolean);
+        current.name = parts.reverse().join(' ').trim();
+      }else if(key === 'TEL' && !current.phone){
+        current.phone = rawValue;
+      }else if(key === 'CATEGORIES' && !current.category){
+        current.category = unescapeVcardValue(rawValue.split(',')[0]);
+      }else if(key === 'BDAY' && !current.birthday){
+        const digits = rawValue.replace(/\D/g,'');
+        if(digits.length === 8) current.birthday = `${digits.slice(0,4)}-${digits.slice(4,6)}-${digits.slice(6,8)}`;
+      }else if(key === 'NOTE' && !current.note){
+        current.note = unescapeVcardValue(rawValue);
+      }
+    });
+
+    return results;
+  }
+
+  const importVcfBtn = document.getElementById('importVcfBtn');
+  const importVcfFile = document.getElementById('importVcfFile');
+  importVcfBtn.addEventListener('click', () => importVcfFile.click());
+  importVcfFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const entries = parseVcf(reader.result);
+        let added = 0, skipped = 0;
+        entries.forEach(entry => {
+          const digits = normalizePhoneDigits(entry.phone);
+          const name = stripNameSuffix(entry.name);
+          if(!name || !isValidLocalNumber(digits)){ skipped++; return; }
+          const fullPhone = '+62' + digits;
+          if(contacts.find(c => c.phone === fullPhone)){ skipped++; return; }
+          const category = entry.category ? addCategoryIfNew(entry.category) : '';
+          contacts.push({
+            id: crypto.randomUUID(), name, phone: fullPhone,
+            category, birthday: entry.birthday || '', note: entry.note || ''
+          });
+          added++;
+        });
+        saveContacts();
+        render();
+        if(added === 0 && skipped === 0){
+          showToast('Tidak ada kontak yang ditemukan di file ini.');
+        }else{
+          showToast(`${added} kontak diimpor${skipped ? `, ${skipped} dilewati` : ''}.`);
+        }
+      }catch(err){
+        console.error(err);
+        showToast('Gagal membaca file .vcf.');
+      }
+      importVcfFile.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  updateHomeCategoryDisplay();
+  render();
+})();
+</script>
+</body>
+</html>
