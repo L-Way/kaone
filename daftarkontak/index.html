@@ -69,16 +69,18 @@
   .brand h1{font-size:clamp(1.35rem, 4vw, 1.7rem);margin:0 0 3px;font-style:italic;color:var(--emerald);}
   .brand p{margin:0;color:var(--muted);font-size:13px;letter-spacing:.01em;}
 
-  .btn-login, .btn-logout{
+  .btn-login, .btn-logout, .btn-change-pw{
     display:inline-flex;align-items:center;gap:8px;
     padding:10px 20px;border-radius:999px;font-size:13px;font-weight:600;
     border:1px solid var(--gold);background:transparent;color:var(--emerald);
     white-space:nowrap;flex-shrink:0;min-height:44px;
     transition:background .18s ease, color .18s ease, box-shadow .18s ease;
   }
-  .btn-login svg, .btn-logout svg{width:15px;height:15px;flex-shrink:0;}
+  .btn-login svg, .btn-logout svg, .btn-change-pw svg{width:15px;height:15px;flex-shrink:0;}
   .btn-login:hover{background:var(--emerald);color:var(--panel);border-color:var(--emerald);}
   .btn-logout:hover{background:var(--ink);color:var(--panel);border-color:var(--ink);}
+  .btn-change-pw:hover{background:var(--gold);color:var(--panel);border-color:var(--gold);}
+  .topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 
   .view{display:none;}
   .view.active{display:block;animation:fade-in .35s ease;}
@@ -287,6 +289,30 @@
 
   .export-bar{display:flex;gap:12px;flex-wrap:wrap;}
   .export-bar button{flex:1;min-width:170px;}
+  .export-bar button:disabled{opacity:.45;cursor:not-allowed;}
+  .export-hint{margin:10px 0 0;font-size:12px;color:var(--muted);}
+
+  /* ===== Seleksi kontak (ekspor sebagian) ===== */
+  .selection-bar{
+    display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;
+    padding:10px 4px 16px;margin-bottom:4px;
+    border-bottom:1px dashed var(--line);
+  }
+  .selection-bar-check{
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    font-size:13px;font-weight:600;color:var(--emerald);user-select:none;
+  }
+  .selection-bar-check input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:var(--emerald);flex-shrink:0;}
+  .selection-count{
+    font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.02em;
+    background:rgba(180,144,63,0.12);border:1px solid var(--gold-soft);
+    padding:4px 12px;border-radius:999px;white-space:nowrap;
+  }
+  .selection-bar .text-link{margin-left:auto;}
+  .select-cell{width:34px;padding-right:0 !important;}
+  .select-cell input[type=checkbox], #selectAllCheckbox{
+    width:17px;height:17px;cursor:pointer;accent-color:var(--emerald);
+  }
 
   .section-title{
     font-size:12.5px;font-weight:700;margin-bottom:4px;color:var(--gold);letter-spacing:.03em;
@@ -312,6 +338,77 @@
   .collapsible > summary:hover .section-title{color:var(--emerald);}
 
   code{background:rgba(180,144,63,0.12);color:var(--emerald-deep);padding:2px 6px;border-radius:4px;font-size:12px;font-family:'Manrope',sans-serif;}
+
+  /* ===== Status sinkronisasi offline/online ===== */
+  .sync-bar{
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:14px 18px;margin-bottom:20px;border-radius:var(--radius);
+    background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow-sm);
+  }
+  .sync-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--muted);}
+  .sync-dot.synced{background:#3f8a5c;}
+  .sync-dot.pending{background:var(--gold);}
+  .sync-dot.offline{background:var(--danger);}
+  .sync-dot.syncing{background:var(--gold);animation:sync-pulse 1s ease-in-out infinite;}
+  @keyframes sync-pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .sync-bar span{flex:1;min-width:160px;font-size:13px;color:var(--ink-soft);}
+  .sync-bar button{padding:8px 16px;font-size:12.5px;min-height:36px;}
+
+  /* ===== Notifikasi kontak baru (Panel Admin) ===== */
+  .notif-wrap{position:relative;}
+  .btn-notif{
+    position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:44px;height:44px;min-height:44px;border-radius:50%;padding:0;flex-shrink:0;
+    border:1px solid var(--gold);background:transparent;color:var(--emerald);cursor:pointer;
+    transition:background .18s ease, color .18s ease;
+  }
+  .btn-notif svg{width:19px;height:19px;}
+  .btn-notif:hover{background:var(--emerald);color:var(--panel);border-color:var(--emerald);}
+  .btn-notif.has-unread{animation:notif-ring 2.2s ease-in-out infinite;}
+  @keyframes notif-ring{0%,100%{box-shadow:0 0 0 0 var(--gold-glow);}50%{box-shadow:0 0 0 7px transparent;}}
+  .notif-badge{
+    position:absolute;top:-3px;right:-3px;min-width:19px;height:19px;padding:0 4px;
+    border-radius:999px;background:var(--danger);color:#fff;font-size:10.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;line-height:1;border:2px solid var(--paper);
+  }
+  .notif-panel{
+    position:absolute;top:calc(100% + 10px);right:0;width:350px;max-width:calc(100vw - 32px);
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+    z-index:70;opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .18s ease, transform .18s ease, visibility .18s;
+  }
+  .notif-panel.show{opacity:1;visibility:visible;transform:translateY(0);}
+  .notif-panel-head{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:14px 16px;border-bottom:1px solid var(--line);
+  }
+  .notif-panel-head span{font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:600;color:var(--emerald);}
+  .notif-list{max-height:340px;overflow-y:auto;}
+  .notif-item{
+    display:flex;gap:10px;align-items:flex-start;padding:12px 16px;
+    border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s ease;
+    background:transparent;width:100%;text-align:left;
+  }
+  .notif-item:last-child{border-bottom:none;}
+  .notif-item:hover{background:rgba(180,144,63,0.08);}
+  .notif-item.unread{background:rgba(180,144,63,0.1);}
+  .notif-item.unread:hover{background:rgba(180,144,63,0.16);}
+  .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:6px;flex-shrink:0;}
+  .notif-item:not(.unread) .notif-dot{background:transparent;}
+  .notif-body{flex:1;min-width:0;}
+  .notif-name{font-weight:700;color:var(--ink);font-size:13.5px;}
+  .notif-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+  .notif-time{font-size:11px;color:var(--gold);margin-top:4px;font-weight:600;letter-spacing:.02em;}
+  .notif-empty{padding:38px 16px;text-align:center;color:var(--muted);font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;}
+  .notif-panel-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:9px 16px;border-top:1px solid var(--line);
+  }
+  .notif-panel-foot .text-link{font-size:12px;padding:6px 2px;}
+
+  @keyframes row-flash{0%{background:rgba(180,144,63,0.38);}100%{background:transparent;}}
+  tr.flash-highlight{animation:row-flash 1.8s ease;}
+  tbody tr[data-row-id].flash-highlight{animation:row-flash 1.8s ease;}
 
   .toast{
     position:fixed;left:50%;bottom:calc(24px + var(--safe-bottom));transform:translate(-50%,20px);
@@ -371,7 +468,8 @@
   @media (max-width:620px){
     thead{display:none;}
     table, tbody, tr, td{display:block;width:100%;}
-    tbody tr{border:1px solid var(--line);border-radius:8px;margin-bottom:12px;padding:6px 4px;background:var(--panel);}
+    tbody tr{border:1px solid var(--line);border-radius:8px;margin-bottom:12px;padding:6px 4px 6px 40px;background:var(--panel);position:relative;}
+    tbody tr.is-selected{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;}
     tbody tr:hover{background:rgba(180,144,63,0.06);}
     tbody td{border-bottom:none;padding:8px 12px;}
     tbody td[data-label]::before{
@@ -379,6 +477,9 @@
       letter-spacing:.02em;margin-bottom:3px;
     }
     .row-actions{justify-content:flex-start;}
+    .select-cell{position:absolute;top:14px;left:6px;width:auto;padding:0 !important;}
+    .selection-bar{gap:10px;}
+    .selection-bar .text-link{margin-left:0;}
   }
 
   @media (max-width:420px){
@@ -406,10 +507,33 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
         Login Admin
       </button>
-      <button class="btn-logout" id="logoutBtn" style="display:none;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-        Keluar
-      </button>
+      <div class="topbar-actions">
+        <div class="notif-wrap">
+          <button type="button" class="btn-notif" id="notifBtn" style="display:none;" aria-label="Notifikasi kontak baru" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
+          </button>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-head">
+              <span>Kontak baru</span>
+              <button type="button" class="text-link" id="notifMarkAllBtn">Tandai dibaca</button>
+            </div>
+            <div class="notif-list" id="notifList"></div>
+            <div class="notif-panel-foot">
+              <button type="button" class="text-link" id="notifSoundToggleBtn">Suara: aktif</button>
+              <button type="button" class="text-link danger" id="notifClearBtn">Hapus semua</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-change-pw" id="changePasswordBtn" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12L20 3"/><path d="M15 7l3 3"/><path d="M18 4l2 2"/></svg>
+          Ganti Kata Sandi
+        </button>
+        <button class="btn-logout" id="logoutBtn" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+          Keluar
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -461,6 +585,12 @@
 
   <!-- ===== PANEL ADMIN: kelola & ekspor ===== -->
   <section id="adminView" class="view">
+    <div class="sync-bar">
+      <span class="sync-dot" id="syncStatusDot"></span>
+      <span id="syncStatusText">Memeriksa status sinkronisasi...</span>
+      <button type="button" class="btn-ghost" id="syncNowBtn" style="display:none;">Sinkronkan sekarang</button>
+    </div>
+
     <details class="card collapsible" open>
       <summary>
         <span class="collapsible-summary-text">
@@ -494,10 +624,19 @@
           <input type="search" id="searchInput" placeholder="Cari nama atau nomor...">
           <span class="count-pill" id="countPill">0 kontak</span>
         </div>
+        <div class="selection-bar">
+          <label class="selection-bar-check">
+            <input type="checkbox" id="selectAllInline" aria-label="Pilih semua kontak yang tampil">
+            <span>Pilih semua yang tampil</span>
+          </label>
+          <span class="selection-count" id="selectionCount">0 dipilih</span>
+          <button type="button" class="text-link" id="clearSelectionBtn" style="display:none;">Batal pilih</button>
+        </div>
         <div id="tableWrap">
           <table id="contactTable">
             <thead>
               <tr>
+                <th style="width:34px;"><input type="checkbox" id="selectAllCheckbox" aria-label="Pilih semua kontak yang tampil"></th>
                 <th>Nama lengkap</th>
                 <th>Nomor WA</th>
                 <th>Kategori</th>
@@ -515,11 +654,13 @@
       <div class="section-title">Ekspor & cadangan</div>
       <p class="section-sub">Unduh koleksi kontak Anda kapan saja, atau impor dari file lain.</p>
       <div class="export-bar">
-        <button class="btn-primary" id="exportVcfBtn">Ekspor ke Google Kontak (.vcf)</button>
+        <button class="btn-primary" id="exportVcfBtn">Ekspor semua ke Google Kontak (.vcf)</button>
+        <button class="btn-primary" id="exportVcfSelectedBtn" disabled>Ekspor terpilih (.vcf)</button>
         <button class="btn-ghost" id="exportJsonBtn">Cadangkan data (.json)</button>
         <button class="btn-ghost" id="importJsonBtn">Impor cadangan (.json)</button>
         <button class="btn-ghost" id="importVcfBtn">Impor kontak (.vcf)</button>
       </div>
+      <p class="export-hint" id="exportHint">Centang kontak pada daftar di atas untuk mengekspor sebagian saja — atau langsung ekspor semua.</p>
       <input type="file" id="importJsonFile" accept="application/json" style="display:none;">
       <input type="file" id="importVcfFile" accept=".vcf,text/vcard,text/x-vcard" style="display:none;">
     </div>
@@ -553,6 +694,47 @@
   </div>
 </div>
 
+<!-- Popup ganti kata sandi admin -->
+<div class="modal-overlay" id="changePasswordModal">
+  <div class="modal left-align">
+    <div class="modal-icon" style="margin:0 auto 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12L20 3"/><path d="M15 7l3 3"/><path d="M18 4l2 2"/></svg>
+    </div>
+    <h3 style="text-align:center;">Ganti Kata Sandi</h3>
+    <p style="text-align:center;">Kata sandi baru langsung tersimpan di server.</p>
+    <form id="changePasswordForm" novalidate>
+      <div class="field" id="oldPasswordField">
+        <label for="oldPasswordInput">Kata sandi lama</label>
+        <div class="password-input">
+          <input type="password" id="oldPasswordInput" placeholder="Masukkan kata sandi lama" autocomplete="off">
+          <button type="button" class="toggle-eye" data-target="oldPasswordInput">Lihat</button>
+        </div>
+        <small class="err">Kata sandi lama salah.</small>
+      </div>
+      <div class="field" id="newPasswordField">
+        <label for="newPasswordInput">Kata sandi baru</label>
+        <div class="password-input">
+          <input type="password" id="newPasswordInput" placeholder="Minimal 6 karakter" autocomplete="off">
+          <button type="button" class="toggle-eye" data-target="newPasswordInput">Lihat</button>
+        </div>
+        <small class="err">Kata sandi baru minimal 6 karakter.</small>
+      </div>
+      <div class="field" id="confirmPasswordField">
+        <label for="confirmPasswordInput">Ulangi kata sandi baru</label>
+        <div class="password-input">
+          <input type="password" id="confirmPasswordInput" placeholder="Ulangi kata sandi baru" autocomplete="off">
+          <button type="button" class="toggle-eye" data-target="confirmPasswordInput">Lihat</button>
+        </div>
+        <small class="err">Konfirmasi tidak cocok.</small>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary btn-block">Simpan kata sandi baru</button>
+        <button type="button" class="btn-ghost btn-block" id="cancelChangePasswordBtn">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Popup sukses tambah kontak (Beranda) -->
 <div class="modal-overlay" id="successModal">
   <div class="modal">
@@ -561,6 +743,7 @@
     </div>
     <h3>Kontak Berhasil Ditambahkan</h3>
     <p><strong id="successName"></strong><br><span id="successPhone"></span></p>
+    <p id="successSyncNote" style="color:var(--muted);font-size:13px;"></p>
     <div class="modal-actions">
       <button class="btn-primary btn-block" id="addAnotherBtn">Tambahkan Kontak Lain</button>
       <button class="btn-ghost btn-block" id="closeSuccessBtn">Selesai</button>
@@ -652,6 +835,7 @@
     if(existing) return existing;
     categories.push(trimmed);
     saveCategories();
+    queueChange('category', 'upsert', { name: trimmed, isDefault: false });
     return trimmed;
   }
 
@@ -765,7 +949,9 @@
     const starBtn = e.target.closest('button[data-star]');
     if(starBtn){
       const cat = starBtn.dataset.star;
-      setDefaultCategory(getDefaultCategory() === cat ? '' : cat);
+      const wasDefault = getDefaultCategory() === cat;
+      setDefaultCategory(wasDefault ? '' : cat);
+      queueChange('category', 'upsert', { name: cat, isDefault: !wasDefault });
       renderCategoryManageList();
       updateHomeCategoryDisplay();
       showToast(getDefaultCategory() === cat ? `"${cat}" dijadikan kategori default.` : 'Kategori default dibatalkan.');
@@ -780,6 +966,7 @@
       if(getDefaultCategory() === cat) setDefaultCategory('');
       contacts.forEach(c => { if(c.category === cat) c.category = ''; });
       saveContacts();
+      queueChange('category', 'delete', { name: cat });
       renderCategoryManageList();
       updateHomeCategoryDisplay();
       render();
@@ -876,12 +1063,451 @@
     return await res.json();
   }
 
+  async function changeAdminPassword(oldPassword, newPassword){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/change_admin_password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ p_old_password: oldPassword, p_new_password: newPassword })
+    });
+    if(!res.ok) throw new Error('Gagal mengubah kata sandi');
+    return await res.json();
+  }
+
+  /* ===== Sinkronisasi offline -> online =====
+     Setiap perubahan (tambah/ubah/hapus kontak & kategori) langsung disimpan
+     ke perangkat seperti biasa, SEKALIGUS dimasukkan ke antrean. Antrean ini
+     otomatis dikirim ke Supabase begitu perangkat terhubung ke internet —
+     saat file baru dibuka, saat internet baru menyala, atau dicoba ulang
+     tiap beberapa detik di latar belakang. Tidak ada data yang hilang; kalau
+     pengiriman gagal, item tetap di antrean untuk dicoba lagi. */
+  const SYNC_QUEUE_KEY = 'wa_sync_queue_v1';
+  let syncQueue = loadSyncQueue();
+  let isSyncing = false;
+
+  function loadSyncQueue(){
+    try{
+      const raw = localStorage.getItem(SYNC_QUEUE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+
+  function saveSyncQueue(){
+    try{ localStorage.setItem(SYNC_QUEUE_KEY, JSON.stringify(syncQueue)); }
+    catch(e){ console.error('Gagal menyimpan antrean sinkronisasi:', e); }
+  }
+
+  function syncItemKey(item){
+    return item.kind === 'contact' ? item.data.id : item.data.name;
+  }
+
+  // Menambah perubahan ke antrean. Perubahan lama pada entitas yang sama
+  // (kontak/kategori yang sama) ditumpuk jadi satu supaya antrean tetap ringkas.
+  function queueChange(kind, action, data){
+    const item = { kind, action, data };
+    const key = syncItemKey(item);
+    syncQueue = syncQueue.filter(x => !(x.kind === kind && syncItemKey(x) === key));
+    syncQueue.push(item);
+    saveSyncQueue();
+    updateSyncStatusUI();
+    tryFlushSyncQueue();
+  }
+
+  async function sendSyncItem(item){
+    const rpcByKindAction = {
+      'contact-upsert': 'sync_upsert_contact',
+      'contact-delete': 'sync_delete_contact',
+      'category-upsert': 'sync_upsert_category',
+      'category-delete': 'sync_delete_category'
+    };
+    const rpcName = rpcByKindAction[`${item.kind}-${item.action}`];
+    let body;
+    if(item.kind === 'contact' && item.action === 'upsert'){
+      body = {
+        p_id: item.data.id, p_name: item.data.name, p_phone: item.data.phone,
+        p_category_name: item.data.category || null,
+        p_birthday: item.data.birthday || null, p_note: item.data.note || null
+      };
+    }else if(item.kind === 'contact' && item.action === 'delete'){
+      body = { p_id: item.data.id };
+    }else if(item.kind === 'category' && item.action === 'upsert'){
+      body = { p_name: item.data.name, p_is_default: !!item.data.isDefault };
+    }else{
+      body = { p_name: item.data.name };
+    }
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${rpcName}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error(`Sinkronisasi gagal (${res.status})`);
+  }
+
+  async function tryFlushSyncQueue(){
+    if(isSyncing || !navigator.onLine || syncQueue.length === 0){
+      updateSyncStatusUI();
+      return;
+    }
+    isSyncing = true;
+    updateSyncStatusUI();
+    while(syncQueue.length > 0){
+      try{
+        await sendSyncItem(syncQueue[0]);
+        syncQueue.shift();
+        saveSyncQueue();
+      }catch(err){
+        break; // Berhenti & coba lagi nanti — urutan antrean tetap terjaga.
+      }
+    }
+    isSyncing = false;
+    updateSyncStatusUI();
+  }
+
+  /* ===== Ambil data terbaru dari server (supaya kontak yang ditambahkan
+     dari perangkat lain juga muncul di sini) ===== */
+  let isPulling = false;
+  let hasPulledOnce = false;
+
+  async function pullFromServer(){
+    const headers = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` };
+    const [catRes, contactRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/categories?select=name,is_default&order=name.asc`, { headers }),
+      fetch(`${SUPABASE_URL}/rest/v1/contacts?select=id,name,phone,birthday,note,category:categories(name)&order=name.asc`, { headers })
+    ]);
+    if(!catRes.ok || !contactRes.ok) throw new Error('Gagal mengambil data terbaru dari server');
+
+    const catData = await catRes.json();
+    const contactData = await contactRes.json();
+
+    categories = catData.map(c => c.name);
+    saveCategories();
+
+    const defaultCat = catData.find(c => c.is_default);
+    setDefaultCategory(defaultCat ? defaultCat.name : '');
+
+    const previousIds = new Set(contacts.map(c => c.id));
+
+    contacts = contactData.map(c => ({
+      id: c.id,
+      name: c.name,
+      phone: c.phone,
+      category: c.category ? c.category.name : '',
+      birthday: c.birthday || '',
+      note: c.note || ''
+    }));
+    saveContacts();
+
+    // Baru beri tahu admin soal kontak yang benar-benar baru (bukan pemuatan pertama kali).
+    if(hasPulledOnce){
+      const newlyAdded = contacts.filter(c => !previousIds.has(c.id));
+      if(newlyAdded.length > 0) handleNewContactsDetected(newlyAdded);
+    }
+    hasPulledOnce = true;
+
+    render();
+    renderCategoryManageList();
+    updateHomeCategoryDisplay();
+  }
+
+  // Siklus sinkron lengkap: kirim dulu perubahan lokal, baru tarik data
+  // terbaru dari server. Ditunda kalau masih ada perubahan lokal yang
+  // belum berhasil terkirim, supaya data yang baru diketik tidak tertimpa.
+  let isFullSyncing = false;
+
+  async function fullSync(){
+    if(isFullSyncing || !navigator.onLine) return;
+    isFullSyncing = true;
+    try{
+      await tryFlushSyncQueue();
+      if(syncQueue.length > 0) return;
+      isPulling = true;
+      updateSyncStatusUI();
+      await pullFromServer();
+    }catch(err){
+      console.error(err);
+    }finally{
+      isPulling = false;
+      isFullSyncing = false;
+      updateSyncStatusUI();
+    }
+  }
+
+  function updateSyncStatusUI(){
+    const dot = document.getElementById('syncStatusDot');
+    const text = document.getElementById('syncStatusText');
+    const btn = document.getElementById('syncNowBtn');
+    if(!dot || !text || !btn) return;
+
+    if(isSyncing){
+      dot.className = 'sync-dot syncing';
+      text.textContent = `Menyinkronkan ${syncQueue.length} perubahan...`;
+      btn.style.display = 'none';
+    }else if(isPulling){
+      dot.className = 'sync-dot syncing';
+      text.textContent = 'Mengambil data terbaru dari server...';
+      btn.style.display = 'none';
+    }else if(!navigator.onLine){
+      dot.className = 'sync-dot offline';
+      text.textContent = syncQueue.length > 0
+        ? `Offline — ${syncQueue.length} perubahan menunggu koneksi internet.`
+        : 'Offline — perubahan baru akan disimpan di perangkat.';
+      btn.style.display = 'none';
+    }else if(syncQueue.length > 0){
+      dot.className = 'sync-dot pending';
+      text.textContent = `${syncQueue.length} perubahan belum terkirim ke server.`;
+      btn.style.display = 'inline-flex';
+    }else{
+      dot.className = 'sync-dot synced';
+      text.textContent = 'Semua data tersinkron ke server.';
+      btn.style.display = 'inline-flex';
+    }
+  }
+
+  window.addEventListener('online', fullSync);
+  window.addEventListener('offline', updateSyncStatusUI);
+
+  // Saat Panel Admin dibuka, sinkron dipercepat supaya kontak baru dari
+  // perangkat lain terdeteksi & dinotifikasi lebih cepat (tiap 8 detik).
+  // Di luar itu, tetap hemat pada siklus normal (tiap 20 detik).
+  let syncTimer = null;
+  function setSyncPace(fast){
+    if(syncTimer) clearInterval(syncTimer);
+    syncTimer = setInterval(fullSync, fast ? 8000 : 20000);
+  }
+  setSyncPace(false);
+
+  document.getElementById('syncNowBtn').addEventListener('click', fullSync);
+
+  /* =====================================================================
+     ===== Notifikasi kontak baru (Panel Admin) ============================
+     Setiap kali sinkronisasi menemukan kontak yang belum pernah tercatat
+     di perangkat ini, admin diberi tahu lewat: (1) toast singkat,
+     (2) lonceng bertanda merah di topbar beserta daftar riwayatnya,
+     (3) bunyi notifikasi lembut, dan (4) notifikasi sistem browser bila
+     diizinkan — jadi tidak akan terlewat walau tab sedang tidak aktif. */
+  const NOTIF_KEY = 'wa_admin_notifications_v1';
+  const NOTIF_SOUND_KEY = 'wa_admin_notif_sound_v1';
+  const NOTIF_MAX = 60;
+
+  let notifications = loadNotifications();
+  let notifSoundEnabled = localStorage.getItem(NOTIF_SOUND_KEY) !== 'off';
+
+  function loadNotifications(){
+    try{
+      const raw = localStorage.getItem(NOTIF_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+
+  function saveNotifications(){
+    try{ localStorage.setItem(NOTIF_KEY, JSON.stringify(notifications.slice(0, NOTIF_MAX))); }
+    catch(e){ console.error('Gagal menyimpan notifikasi:', e); }
+  }
+
+  function formatRelativeTime(ts){
+    const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if(diffSec < 10) return 'Baru saja';
+    if(diffSec < 60) return `${diffSec} detik lalu`;
+    const diffMin = Math.floor(diffSec / 60);
+    if(diffMin < 60) return `${diffMin} menit lalu`;
+    const diffHour = Math.floor(diffMin / 60);
+    if(diffHour < 24) return `${diffHour} jam lalu`;
+    const diffDay = Math.floor(diffHour / 24);
+    if(diffDay < 7) return `${diffDay} hari lalu`;
+    return new Date(ts).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  // Bunyi notifikasi dibuat langsung lewat Web Audio (dua nada lembut),
+  // tanpa perlu berkas suara eksternal — tetap berfungsi walau offline.
+  function playNotifDing(){
+    if(!notifSoundEnabled) return;
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+      [[880, now], [1108, now + 0.11]].forEach(([freq, start]) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.16, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.32);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + 0.34);
+      });
+      setTimeout(() => ctx.close(), 700);
+    }catch(e){ /* Web Audio tidak tersedia — abaikan diam-diam. */ }
+  }
+
+  function requestBrowserNotifPermission(){
+    if(!('Notification' in window)) return;
+    if(Notification.permission === 'default'){
+      Notification.requestPermission().catch(() => {});
+    }
+  }
+
+  function showBrowserNotification(list){
+    if(!('Notification' in window) || Notification.permission !== 'granted') return;
+    const title = list.length === 1 ? 'Kontak baru ditambahkan' : `${list.length} kontak baru ditambahkan`;
+    const body = list.length === 1
+      ? `${list[0].name} — ${list[0].phone}`
+      : list.slice(0, 3).map(c => c.name).join(', ') + (list.length > 3 ? `, +${list.length - 3} lainnya` : '');
+    try{
+      const n = new Notification(title, { body, tag: 'wa-kontak-baru' });
+      n.onclick = () => { window.focus(); n.close(); };
+    }catch(e){ /* abaikan bila browser menolak membuat notifikasi */ }
+  }
+
+  function handleNewContactsDetected(newlyAdded){
+    const now = Date.now();
+    newlyAdded.forEach(c => {
+      notifications.unshift({
+        notifId: `${c.id}-${now}-${Math.random().toString(36).slice(2,7)}`,
+        contactId: c.id,
+        name: c.name,
+        phone: c.phone,
+        category: c.category || '',
+        time: now,
+        read: false
+      });
+    });
+    notifications = notifications.slice(0, NOTIF_MAX);
+    saveNotifications();
+    renderNotifications();
+    playNotifDing();
+    showBrowserNotification(newlyAdded);
+
+    if(newlyAdded.length === 1){
+      showToast(`Kontak baru: ${newlyAdded[0].name} (${newlyAdded[0].phone})`);
+    }else{
+      showToast(`${newlyAdded.length} kontak baru ditambahkan.`);
+    }
+  }
+
+  const notifBadge = document.getElementById('notifBadge');
+  const notifPanel = document.getElementById('notifPanel');
+  const notifList = document.getElementById('notifList');
+  const notifMarkAllBtn = document.getElementById('notifMarkAllBtn');
+  const notifClearBtn = document.getElementById('notifClearBtn');
+  const notifSoundToggleBtn = document.getElementById('notifSoundToggleBtn');
+
+  function renderNotifications(){
+    const unreadCount = notifications.filter(n => !n.read).length;
+    notifBtn.classList.toggle('has-unread', unreadCount > 0);
+    if(unreadCount > 0){
+      notifBadge.style.display = 'flex';
+      notifBadge.textContent = unreadCount > 9 ? '9+' : String(unreadCount);
+    }else{
+      notifBadge.style.display = 'none';
+    }
+
+    if(notifications.length === 0){
+      notifList.innerHTML = '<div class="notif-empty">Belum ada kontak baru.</div>';
+      return;
+    }
+
+    notifList.innerHTML = notifications.map(n => `
+      <button type="button" class="notif-item ${n.read ? '' : 'unread'}" data-notif-id="${n.notifId}" data-contact-id="${n.contactId}">
+        <span class="notif-dot"></span>
+        <span class="notif-body">
+          <span class="notif-name">${escapeHtml(n.name)}</span>
+          <span class="notif-meta">${escapeHtml(n.phone)}${n.category ? ' · ' + escapeHtml(n.category) : ''}</span>
+          <span class="notif-time">${formatRelativeTime(n.time)}</span>
+        </span>
+      </button>
+    `).join('');
+  }
+
+  function openNotifPanel(){
+    notifPanel.classList.add('show');
+    notifBtn.setAttribute('aria-expanded', 'true');
+    renderNotifications();
+  }
+  function closeNotifPanel(){
+    notifPanel.classList.remove('show');
+    notifBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  notifBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notifPanel.classList.contains('show') ? closeNotifPanel() : openNotifPanel();
+  });
+  document.addEventListener('click', (e) => {
+    if(!notifPanel.classList.contains('show')) return;
+    if(notifPanel.contains(e.target) || notifBtn.contains(e.target)) return;
+    closeNotifPanel();
+  });
+
+  notifMarkAllBtn.addEventListener('click', () => {
+    notifications.forEach(n => n.read = true);
+    saveNotifications();
+    renderNotifications();
+  });
+
+  notifClearBtn.addEventListener('click', () => {
+    if(notifications.length === 0) return;
+    if(!confirm('Hapus semua riwayat notifikasi?')) return;
+    notifications = [];
+    saveNotifications();
+    renderNotifications();
+  });
+
+  notifSoundToggleBtn.addEventListener('click', () => {
+    notifSoundEnabled = !notifSoundEnabled;
+    localStorage.setItem(NOTIF_SOUND_KEY, notifSoundEnabled ? 'on' : 'off');
+    notifSoundToggleBtn.textContent = `Suara: ${notifSoundEnabled ? 'aktif' : 'nonaktif'}`;
+    if(notifSoundEnabled) playNotifDing();
+  });
+  notifSoundToggleBtn.textContent = `Suara: ${notifSoundEnabled ? 'aktif' : 'nonaktif'}`;
+
+  function flashRow(id){
+    const tr = tableBody.querySelector(`tr[data-row-id="${id}"]`);
+    if(!tr) return;
+    tr.scrollIntoView({ behavior:'smooth', block:'center' });
+    tr.classList.remove('flash-highlight');
+    void tr.offsetWidth; // reset animasi kalau baris sama diklik berulang
+    tr.classList.add('flash-highlight');
+    setTimeout(() => tr.classList.remove('flash-highlight'), 1900);
+  }
+
+  notifList.addEventListener('click', (e) => {
+    const item = e.target.closest('.notif-item');
+    if(!item) return;
+    const notifId = item.dataset.notifId;
+    const contactId = item.dataset.contactId;
+    const n = notifications.find(x => x.notifId === notifId);
+    if(n){ n.read = true; saveNotifications(); renderNotifications(); }
+    closeNotifPanel();
+
+    const stillExists = contacts.some(c => c.id === contactId);
+    if(stillExists){
+      searchInput.value = '';
+      render();
+      requestAnimationFrame(() => flashRow(contactId));
+    }else{
+      showToast('Kontak ini sudah tidak ada di daftar (mungkin sudah dihapus).');
+    }
+  });
+
+  renderNotifications();
+
+
   const homeView = document.getElementById('homeView');
   const adminView = document.getElementById('adminView');
   const pageTitle = document.getElementById('pageTitle');
   const pageSubtitle = document.getElementById('pageSubtitle');
   const loginBtn = document.getElementById('loginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
+  const changePasswordBtn = document.getElementById('changePasswordBtn');
+  const notifBtn = document.getElementById('notifBtn');
 
   function goToHome(){
     homeView.classList.add('active');
@@ -890,6 +1516,10 @@
     pageSubtitle.textContent = 'Simpan nama & nomor WhatsApp dengan rapi.';
     loginBtn.style.display = 'inline-flex';
     logoutBtn.style.display = 'none';
+    changePasswordBtn.style.display = 'none';
+    notifBtn.style.display = 'none';
+    closeNotifPanel();
+    setSyncPace(false);
     updateHomeCategoryDisplay();
   }
 
@@ -900,8 +1530,14 @@
     pageSubtitle.textContent = 'Kelola, cari, ubah, hapus, dan ekspor kontak.';
     loginBtn.style.display = 'none';
     logoutBtn.style.display = 'inline-flex';
+    changePasswordBtn.style.display = 'inline-flex';
+    notifBtn.style.display = 'inline-flex';
     renderCategoryManageList();
     render();
+    renderNotifications();
+    setSyncPace(true);
+    requestBrowserNotifPermission();
+    fullSync();
   }
 
   logoutBtn.addEventListener('click', goToHome);
@@ -910,7 +1546,6 @@
   const loginForm = document.getElementById('loginForm');
   const loginPasswordInput = document.getElementById('loginPasswordInput');
   const loginPasswordField = document.getElementById('loginPasswordField');
-  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
 
   loginBtn.addEventListener('click', () => {
     loginForm.reset();
@@ -920,10 +1555,15 @@
   });
   document.getElementById('cancelLoginBtn').addEventListener('click', () => closeModal('loginModal'));
 
-  togglePasswordBtn.addEventListener('click', () => {
-    const isPw = loginPasswordInput.type === 'password';
-    loginPasswordInput.type = isPw ? 'text' : 'password';
-    togglePasswordBtn.textContent = isPw ? 'Sembunyikan' : 'Lihat';
+  /* Tombol lihat/sembunyikan untuk semua field kata sandi (login & ganti kata sandi) */
+  document.querySelectorAll('.toggle-eye').forEach((btn) => {
+    const targetId = btn.dataset.target || 'loginPasswordInput';
+    const input = document.getElementById(targetId);
+    btn.addEventListener('click', () => {
+      const isPw = input.type === 'password';
+      input.type = isPw ? 'text' : 'password';
+      btn.textContent = isPw ? 'Sembunyikan' : 'Lihat';
+    });
   });
 
   loginPasswordInput.addEventListener('input', () => loginPasswordField.classList.remove('invalid'));
@@ -984,11 +1624,16 @@
     const note = document.getElementById('homeNoteInput').value.trim();
 
     // Kategori tidak dipilih manual di Beranda — otomatis pakai kategori default yang diatur admin.
-    contacts.push({ id: crypto.randomUUID(), name, phone: fullPhone, category: getDefaultCategory(), birthday, note });
+    const newContact = { id: crypto.randomUUID(), name, phone: fullPhone, category: getDefaultCategory(), birthday, note };
+    contacts.push(newContact);
     saveContacts();
+    queueChange('contact', 'upsert', newContact);
 
     document.getElementById('successName').textContent = name;
     document.getElementById('successPhone').textContent = fullPhone;
+    document.getElementById('successSyncNote').textContent = navigator.onLine
+      ? ''
+      : 'Belum ada internet — data akan terkirim otomatis begitu tersambung nanti.';
     homeForm.reset();
     homeNameField.classList.remove('invalid');
     homePhoneField.classList.remove('invalid');
@@ -1012,11 +1657,69 @@
   const searchInput = document.getElementById('searchInput');
   const countPill = document.getElementById('countPill');
 
+  /* ===== Seleksi kontak (untuk ekspor sebagian) ===== */
+  const selectedIds = new Set();
+  let lastFilteredIds = [];
+  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  const selectAllInline = document.getElementById('selectAllInline');
+  const selectionCount = document.getElementById('selectionCount');
+  const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+  const exportVcfSelectedBtn = document.getElementById('exportVcfSelectedBtn');
+  const exportHint = document.getElementById('exportHint');
+
+  function updateSelectionUI(){
+    const visibleSelected = lastFilteredIds.filter(id => selectedIds.has(id));
+    const total = selectedIds.size;
+
+    selectionCount.textContent = total === 0 ? 'Belum ada yang dipilih' : `${total} dipilih`;
+    clearSelectionBtn.style.display = total > 0 ? 'inline-flex' : 'none';
+
+    exportVcfSelectedBtn.disabled = total === 0;
+    exportVcfSelectedBtn.textContent = total > 0 ? `Ekspor terpilih (${total})` : 'Ekspor terpilih (.vcf)';
+    exportHint.textContent = total > 0
+      ? `${total} kontak terpilih siap diekspor sebagai file .vcf terpisah.`
+      : 'Centang kontak pada daftar di atas untuk mengekspor sebagian saja — atau langsung ekspor semua.';
+
+    const allVisibleSelected = lastFilteredIds.length > 0 && visibleSelected.length === lastFilteredIds.length;
+    const someVisibleSelected = visibleSelected.length > 0 && !allVisibleSelected;
+    [selectAllCheckbox, selectAllInline].forEach(cb => {
+      if(!cb) return;
+      cb.checked = allVisibleSelected;
+      cb.indeterminate = someVisibleSelected;
+      cb.disabled = lastFilteredIds.length === 0;
+    });
+
+    tableBody.querySelectorAll('tr[data-row-id]').forEach(tr => {
+      tr.classList.toggle('is-selected', selectedIds.has(tr.dataset.rowId));
+    });
+  }
+
+  function toggleSelectAllVisible(checked){
+    lastFilteredIds.forEach(id => {
+      if(checked) selectedIds.add(id); else selectedIds.delete(id);
+    });
+    tableBody.querySelectorAll('input.row-check').forEach(cb => { cb.checked = checked; });
+    updateSelectionUI();
+  }
+
+  selectAllCheckbox.addEventListener('change', (e) => toggleSelectAllVisible(e.target.checked));
+  selectAllInline.addEventListener('change', (e) => toggleSelectAllVisible(e.target.checked));
+  clearSelectionBtn.addEventListener('click', () => {
+    selectedIds.clear();
+    tableBody.querySelectorAll('input.row-check').forEach(cb => { cb.checked = false; });
+    updateSelectionUI();
+  });
+
   function render(){
     const query = searchInput.value.trim().toLowerCase();
     const filtered = contacts.filter(c =>
       c.name.toLowerCase().includes(query) || c.phone.includes(query)
     ).sort((a,b) => a.name.localeCompare(b.name, 'id'));
+
+    lastFilteredIds = filtered.map(c => c.id);
+    // Buang id yang sudah tidak ada di data (mis. setelah dihapus) dari seleksi.
+    const validIds = new Set(contacts.map(c => c.id));
+    Array.from(selectedIds).forEach(id => { if(!validIds.has(id)) selectedIds.delete(id); });
 
     tableBody.innerHTML = '';
     if(contacts.length === 0){
@@ -1032,10 +1735,12 @@
       emptyState.style.display = 'none';
       filtered.forEach(c => {
         const tr = document.createElement('tr');
+        tr.dataset.rowId = c.id;
         const categoryHtml = c.category
           ? `<span class="category-badge">${escapeHtml(c.category)}</span>`
           : `<span class="category-badge none">Tanpa kategori</span>`;
         tr.innerHTML = `
+          <td class="select-cell"><input type="checkbox" class="row-check" data-id="${c.id}" aria-label="Pilih ${escapeHtml(c.name)}" ${selectedIds.has(c.id) ? 'checked' : ''}></td>
           <td data-label="Nama lengkap" class="name-cell">${escapeHtml(c.name)}</td>
           <td data-label="Nomor WA" class="phone-cell">${escapeHtml(c.phone)}</td>
           <td data-label="Kategori" class="category-cell">${categoryHtml}</td>
@@ -1054,6 +1759,7 @@
       });
     }
     countPill.textContent = `${contacts.length} kontak`;
+    updateSelectionUI();
   }
 
   tableBody.addEventListener('click', (e) => {
@@ -1064,6 +1770,13 @@
     if(btn.dataset.action === 'delete') deleteContact(id);
   });
 
+  tableBody.addEventListener('change', (e) => {
+    const cb = e.target.closest('input.row-check');
+    if(!cb) return;
+    if(cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
+    updateSelectionUI();
+  });
+
   searchInput.addEventListener('input', render);
 
   function deleteContact(id){
@@ -1071,7 +1784,9 @@
     if(!c) return;
     if(!confirm(`Hapus kontak "${c.name}"?`)) return;
     contacts = contacts.filter(x => x.id !== id);
+    selectedIds.delete(id);
     saveContacts();
+    queueChange('contact', 'delete', { id });
     render();
     renderCategoryManageList();
     showToast('Kontak dihapus.');
@@ -1144,10 +1859,72 @@
       c.note = document.getElementById('editNoteInput').value.trim();
     }
     saveContacts();
+    if(c) queueChange('contact', 'upsert', { id: c.id, name: c.name, phone: c.phone, category: c.category, birthday: c.birthday, note: c.note });
     closeModal('editModal');
     render();
     renderCategoryManageList();
     showToast('Kontak berhasil diperbarui.');
+  });
+
+  /* ===== Ganti kata sandi admin ===== */
+  const changePasswordForm = document.getElementById('changePasswordForm');
+  const oldPasswordInput = document.getElementById('oldPasswordInput');
+  const newPasswordInput = document.getElementById('newPasswordInput');
+  const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+  const oldPasswordField = document.getElementById('oldPasswordField');
+  const newPasswordField = document.getElementById('newPasswordField');
+  const confirmPasswordField = document.getElementById('confirmPasswordField');
+
+  changePasswordBtn.addEventListener('click', () => {
+    changePasswordForm.reset();
+    [oldPasswordField, newPasswordField, confirmPasswordField].forEach(f => f.classList.remove('invalid'));
+    document.querySelectorAll('#changePasswordModal .toggle-eye').forEach((btn) => {
+      document.getElementById(btn.dataset.target).type = 'password';
+      btn.textContent = 'Lihat';
+    });
+    openModal('changePasswordModal');
+    setTimeout(() => oldPasswordInput.focus(), 50);
+  });
+  document.getElementById('cancelChangePasswordBtn').addEventListener('click', () => closeModal('changePasswordModal'));
+
+  [oldPasswordInput, newPasswordInput, confirmPasswordInput].forEach((input, idx) => {
+    const fields = [oldPasswordField, newPasswordField, confirmPasswordField];
+    input.addEventListener('input', () => fields[idx].classList.remove('invalid'));
+  });
+
+  changePasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    oldPasswordField.classList.remove('invalid');
+    newPasswordField.classList.remove('invalid');
+    confirmPasswordField.classList.remove('invalid');
+
+    const oldVal = oldPasswordInput.value;
+    const newVal = newPasswordInput.value;
+    const confirmVal = confirmPasswordInput.value;
+
+    let hasError = false;
+    if(newVal.length < 6){ newPasswordField.classList.add('invalid'); hasError = true; }
+    if(confirmVal !== newVal){ confirmPasswordField.classList.add('invalid'); hasError = true; }
+    if(hasError) return;
+
+    const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Menyimpan...';
+    try{
+      const ok = await changeAdminPassword(oldVal, newVal);
+      if(ok){
+        closeModal('changePasswordModal');
+        showToast('Kata sandi admin berhasil diganti.');
+      }else{
+        oldPasswordField.classList.add('invalid');
+      }
+    }catch(err){
+      showToast('Tidak bisa terhubung ke server, coba lagi.');
+    }finally{
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   });
 
   /* ===== Ekspor & cadangan ===== */
@@ -1167,9 +1944,8 @@
     return str.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;');
   }
 
-  document.getElementById('exportVcfBtn').addEventListener('click', () => {
-    if(contacts.length === 0){ showToast('Belum ada kontak untuk diekspor.'); return; }
-    const vcards = contacts.map(c => {
+  function buildVcf(list){
+    return list.map(c => {
       const exportedName = `${c.name.trim()} ${NAME_SUFFIX}`;
       const lines = [
         'BEGIN:VCARD',
@@ -1185,8 +1961,19 @@
       lines.push('END:VCARD');
       return lines.join('\r\n');
     }).join('\r\n');
-    downloadFile('kontak-wa.vcf', vcards, 'text/vcard');
-    showToast('File .vcf berhasil diunduh.');
+  }
+
+  document.getElementById('exportVcfBtn').addEventListener('click', () => {
+    if(contacts.length === 0){ showToast('Belum ada kontak untuk diekspor.'); return; }
+    downloadFile('kontak-wa-semua.vcf', buildVcf(contacts), 'text/vcard');
+    showToast(`${contacts.length} kontak berhasil diekspor.`);
+  });
+
+  exportVcfSelectedBtn.addEventListener('click', () => {
+    const selected = contacts.filter(c => selectedIds.has(c.id));
+    if(selected.length === 0){ showToast('Belum ada kontak yang dipilih.'); return; }
+    downloadFile(`kontak-wa-terpilih-${selected.length}.vcf`, buildVcf(selected), 'text/vcard');
+    showToast(`${selected.length} kontak terpilih berhasil diekspor.`);
   });
 
   document.getElementById('exportJsonBtn').addEventListener('click', () => {
@@ -1211,14 +1998,16 @@
           if(item && item.name && item.phone && /^\+62[0-9]{8,13}$/.test(item.phone)){
             if(!contacts.find(c => c.phone === item.phone)){
               const category = item.category ? addCategoryIfNew(String(item.category)) : '';
-              contacts.push({
+              const newContact = {
                 id: crypto.randomUUID(),
                 name: String(item.name).trim(),
                 phone: item.phone,
                 category,
                 birthday: item.birthday || '',
                 note: item.note || ''
-              });
+              };
+              contacts.push(newContact);
+              queueChange('contact', 'upsert', newContact);
               added++;
             }
           }
@@ -1327,10 +2116,12 @@
           const fullPhone = '+62' + digits;
           if(contacts.find(c => c.phone === fullPhone)){ skipped++; return; }
           const category = entry.category ? addCategoryIfNew(entry.category) : '';
-          contacts.push({
+          const newContact = {
             id: crypto.randomUUID(), name, phone: fullPhone,
             category, birthday: entry.birthday || '', note: entry.note || ''
-          });
+          };
+          contacts.push(newContact);
+          queueChange('contact', 'upsert', newContact);
           added++;
         });
         saveContacts();
@@ -1351,6 +2142,8 @@
 
   updateHomeCategoryDisplay();
   render();
+  updateSyncStatusUI();
+  fullSync();
 })();
 </script>
 </body>
