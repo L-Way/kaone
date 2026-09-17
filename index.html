@@ -2787,6 +2787,344 @@
     .cat-card:hover, .svc-card:hover, .tim-card:hover{ transform:none; }
   }
 
+
+  /* =======================================================================
+     LAPIS PENYEMPURNAAN KEDUA — "Genggaman Nyaman"
+     =======================================================================
+     Ditaruh paling akhir supaya menimpa aturan di atasnya tanpa !important,
+     dan tanpa mengubah satu baris pun HTML atau JavaScript (panel admin,
+     Supabase, Lenis, semua tetap utuh).
+
+     Fokusnya tiga:
+       A. Lebih indah  — irama antar bagian, kilau emas yang lebih halus,
+                         kartu terasa punya bahan, judul dipatahkan rapi.
+       B. Lebih responsif — celah tablet (761–1023px) yang dulu kosong,
+                         layar HP dimiringkan (landscape), layar sangat
+                         sempit (≤360px, HP lipat), dan layar sangat lebar.
+       C. Lebih nyaman di HP — tombol tidak lagi "tertunda" saat ditekan,
+                         tidak ada menu tahan-tekan iOS yang muncul sendiri,
+                         poni/lekukan layar dihormati di semua sisi, judul
+                         tidak tersembunyi di balik header saat menu diklik.
+     ======================================================================= */
+
+  :root{
+    /* Tinggi header dipakai ulang di banyak tempat; satu sumber kebenaran. */
+    --header-h:calc(64px + env(safe-area-inset-top));
+    /* Jarak tepi halaman: menyatu dengan lekukan layar (poni) saat HP dimiringkan. */
+    --gutter:clamp(18px, 5vw, 32px);
+    --edge-l:max(var(--gutter), env(safe-area-inset-left));
+    --edge-r:max(var(--gutter), env(safe-area-inset-right));
+  }
+
+  /* ======================================================================
+     7 — JANGKAR & TEPI HALAMAN
+     ====================================================================== */
+
+  /* Klik menu "Layanan" tidak lagi menaruh judulnya persis di balik header.
+     Lenis sudah menghitung offset lewat JS; ini jaring pengaman untuk
+     lompatan #hash bawaan browser (misal link dibuka dari luar). */
+  html{ scroll-padding-top:calc(var(--header-h) + 14px); }
+  section[id], div[id="beranda"]{ scroll-margin-top:calc(var(--header-h) + 14px); }
+
+  .container{
+    padding-left:var(--edge-l);
+    padding-right:var(--edge-r);
+  }
+  header{
+    padding-left:max(clamp(20px,5vw,48px), env(safe-area-inset-left));
+    padding-right:max(clamp(20px,5vw,48px), env(safe-area-inset-right));
+  }
+
+  /* ======================================================================
+     8 — SENTUHAN JARI (Android & iPhone)
+     ====================================================================== */
+
+  /* touch-action:manipulation menghapus jeda ~300ms "tunggu dobel-ketuk"
+     yang masih tersisa di sebagian Android, sekaligus mencegah halaman
+     ikut membesar kalau tombol tidak sengaja diketuk dua kali. */
+  a, button, summary, label,
+  [role="button"], input, select, textarea{ touch-action:manipulation; }
+
+  /* Tahan-tekan tombol di iOS tidak lagi memunculkan menu "Salin/Bagikan"
+     atau menyeleksi teksnya — terasa seperti aplikasi, bukan halaman web.
+     Paragraf & teks isi sengaja TIDAK dikunci supaya tetap bisa disalin. */
+  button, [role="button"], .btn-gold, .btn-outline, .btn-wa, .btn-wa-lg,
+  .btn-enter, .btn-copy-number, .filter, .hamburger, .float-wa,
+  .mobile-nav a, nav.main-nav a, .logo{
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+
+  @media (pointer:coarse){
+    /* Semua sasaran ketuk utama minimal 46px, dan yang paling sering
+       dipakai (tombol ajakan) 50px — lebih longgar dari ambang 44px. */
+    nav.main-nav a, .footer-wa-number, .tim-card, .kontak-info-item a,
+    .testimoni-reset-btn, .filter, label[for]{ min-height:46px; }
+    .btn-gold, .btn-wa, .btn-wa-lg, .btn-outline, .btn-enter{
+      min-height:50px;
+      padding-top:12px;
+      padding-bottom:12px;
+    }
+    /* Tombol ikon di header tetap persegi kecil — ia sudah cukup besar
+       dan tidak boleh mendorong tinggi header. */
+    .header-cta .btn-gold{ min-height:42px; padding-top:0; padding-bottom:0; }
+    /* Jarak antar tombol berdampingan supaya jempol tidak salah sasaran. */
+    .hero-actions, .kontak-actions, .service-footer{ gap:12px; }
+  }
+
+  /* Umpan balik tekan yang lebih "berbahan": selain mengecil, ada kilau
+     emas tipis yang menyala sesaat. Hanya di perangkat sentuh. */
+  @media (hover:none){
+    .btn-gold:active{ box-shadow:0 2px 10px rgba(0,0,0,.4), 0 0 24px var(--glow-gold); }
+    .cat-card:active, .svc-card:active, .tim-card:active{
+      border-color:rgba(212,175,55,.42);
+    }
+  }
+
+  /* ======================================================================
+     9 — HEADER & MENU HP
+     ====================================================================== */
+
+  header.scrolled{
+    background:rgba(11,12,14,.74);
+    box-shadow:0 8px 28px rgba(0,0,0,.34);
+  }
+  /* Garis rambut emas di bawah header — menggantikan garis abu datar.
+     position:absolute supaya tidak ikut jadi item flex di dalam header. */
+  header::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(212,175,55,.42), transparent);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .45s var(--ease);
+  }
+  header.scrolled::after{ opacity:1; }
+
+  .mobile-nav{
+    width:min(84vw, 340px);
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(212,175,55,.10), transparent 60%),
+      linear-gradient(180deg, #17181c 0%, var(--card) 40%);
+    border-left:1px solid rgba(212,175,55,.18);
+    box-shadow:-28px 0 64px rgba(0,0,0,.55);
+    gap:2px;
+  }
+  .mobile-nav a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:52px;
+    padding:6px 4px;
+    border-bottom:1px solid rgba(255,255,255,.055);
+    letter-spacing:.01em;
+    transition:color .3s var(--ease), padding-left .3s var(--ease);
+  }
+  /* Titik emas kecil di kiri tiap baris — penanda halus, bukan ikon ramai. */
+  .mobile-nav a::before{
+    content:"";
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--primary);
+    opacity:.35;
+    flex-shrink:0;
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .mobile-nav a:active{ color:var(--accent); padding-left:8px; }
+  .mobile-nav a:active::before{ opacity:1; transform:scale(1.6); }
+
+  /* Baris menu masuk berurutan, bukan serentak — terasa lebih tenang. */
+  @keyframes nav-row-in{
+    from{ opacity:0; transform:translateX(16px); }
+    to{ opacity:1; transform:translateX(0); }
+  }
+  /* fill-mode backwards: selama menunggu giliran, baris menahan keadaan
+     awal (tembus pandang) — dan saat menu DITUTUP animasinya tidak aktif,
+     jadi baris tidak berkedip hilang di tengah gerakan menutup. */
+  .mobile-nav.open a{ animation:nav-row-in .45s var(--ease) backwards; }
+  .mobile-nav.open a:nth-child(1){ animation-delay:.06s; }
+  .mobile-nav.open a:nth-child(2){ animation-delay:.11s; }
+  .mobile-nav.open a:nth-child(3){ animation-delay:.16s; }
+  .mobile-nav.open a:nth-child(4){ animation-delay:.21s; }
+  .mobile-nav.open a:nth-child(5){ animation-delay:.26s; }
+  .mobile-nav.open a:nth-child(6){ animation-delay:.31s; }
+  .mobile-nav.open a:nth-child(n+7){ animation-delay:.36s; }
+
+  .scrim{ backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); }
+
+  /* ======================================================================
+     10 — TIPOGRAFI YANG DIPATAHKAN RAPI
+     ====================================================================== */
+
+  /* text-wrap:balance membagi judul jadi baris yang panjangnya seimbang —
+     tidak ada lagi satu kata yatim menggantung sendirian di baris terakhir.
+     text-wrap:pretty melakukan hal serupa, lebih ringan, untuk paragraf. */
+  h1, h2, h3, .display, .section-head h2, .hero h1,
+  .manifesto-title, .kontak-title, .splash-brand{ text-wrap:balance; }
+  p, .section-head p, .hero p, .service-desc, .splash-tagline{ text-wrap:pretty; }
+
+  /* Angka & nomor telepon memakai lebar digit yang sama supaya tidak
+     "bergoyang" saat nilainya berubah (mis. statistik hero). */
+  .hero-badge, .footer-wa-number, .kontak-info-item{ font-variant-numeric:tabular-nums; }
+
+  /* ======================================================================
+     11 — IRAMA ANTAR BAGIAN & KEDALAMAN KARTU
+     ====================================================================== */
+
+  /* Garis pemisah yang memudar di kedua ujung: pergantian bagian terasa
+     disengaja, bukan sekadar konten berhenti lalu mulai lagi. */
+  #manifesto, #tentang, #testimoni, #kontak{
+    position:relative;
+  }
+  /* #galeri, #layanan, dan #tim sengaja dilewati: ketiganya memakai
+     .spotlight::before untuk cahaya kubah di atasnya, dan menimpanya
+     justru akan memadamkan cahaya itu. */
+  #manifesto::before, #tentang::before,
+  #testimoni::before, #kontak::before{
+    content:"";
+    position:absolute;
+    top:0; left:12%; right:12%;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(212,175,55,.22), transparent);
+    pointer-events:none;
+  }
+
+  /* Judul bagian diberi cahaya latar sangat tipis — mata tertarik ke sana
+     lebih dulu sebelum turun ke isi. */
+  .section-head{ position:relative; }
+  .section-head::before{
+    content:"";
+    position:absolute;
+    top:-40px; left:-10%;
+    width:min(420px, 70%);
+    height:140px;
+    background:radial-gradient(60% 60% at 30% 50%, rgba(212,175,55,.09), transparent 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .section-head > *{ position:relative; z-index:1; }
+
+  /* Kartu: sudut sedikit lebih lembut di HP (terasa seperti aplikasi),
+     dan tepi dalam yang menangkap cahaya. */
+  .cat-card, .svc-card, .tim-card, .testimoni-card, .kontak-info-item{
+    box-shadow:var(--shadow-lift), inset 0 1px 0 rgba(255,255,255,.055);
+  }
+
+  /* ======================================================================
+     12 — CELAH TABLET (761–1023px) yang sebelumnya kosong
+     ====================================================================== */
+
+  @media (min-width:761px) and (max-width:1023px){
+    .container{ padding-left:max(28px, env(safe-area-inset-left)); padding-right:max(28px, env(safe-area-inset-right)); }
+
+    /* Dua kolom jauh lebih pas untuk iPad/tablet Android daripada satu
+       kolom memanjang yang membuat halaman terasa tidak selesai. */
+    .svc-cards-grid{ grid-template-columns:repeat(2,1fr); gap:18px; }
+    .gallery-cat-grid{ grid-template-columns:repeat(3,1fr); gap:14px; }
+    .tim-grid{ grid-template-columns:repeat(3,1fr); gap:14px; }
+    .kontak-info-grid{ grid-template-columns:repeat(2,1fr); gap:16px; }
+
+    .hero{ min-height:78vh; }
+    .hero h1{ font-size:clamp(2.4rem, 5.4vw, 3.2rem); }
+    .hero p, .section-head p{ max-width:52ch; }
+    .section-head h2{ font-size:clamp(1.9rem, 4.4vw, 2.5rem); max-width:20ch; }
+
+    .manifesto-portrait{ aspect-ratio:3/2; }
+    .kontak-map iframe{ height:300px; }
+  }
+
+  /* ======================================================================
+     13 — HP DIMIRINGKAN (landscape) — layar cuma setinggi ±400px
+     ====================================================================== */
+
+  @media (orientation:landscape) and (max-height:520px){
+    /* Splash tidak lagi terpotong: elemen paling "mewah" disembunyikan,
+       sisanya dirapatkan. */
+    .splash-inner{ padding:10px 20px; }
+    .splash-mark{ width:46px; margin-bottom:10px; }
+    .splash-lattice{ width:130px; margin:8px auto; }
+    .splash-brand{ font-size:1.5rem; }
+    .splash-welcome{ display:none; }
+    .splash-location{ margin-top:8px; }
+
+    .hero{ min-height:auto; padding:96px 0 56px; }
+    .hero h1{ font-size:clamp(1.6rem, 5vw, 2.1rem); }
+    .hero p{ margin-top:10px; }
+    .hero-actions{ margin-top:16px; flex-direction:row; }
+    .hero-badges{ margin-top:16px; }
+    .scroll-indicator{ display:none; }
+
+    /* Menu HP jadi dua kolom, jadi seluruh isinya tetap terlihat tanpa
+       harus digulir dengan jempol sambil memegang HP menyamping. */
+    .mobile-nav{
+      width:min(64vw, 420px);
+      padding-top:calc(64px + env(safe-area-inset-top));
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-content:start;
+      column-gap:18px;
+    }
+    .mobile-nav a{ min-height:44px; font-size:1rem; }
+
+    .float-wa{ width:46px; height:46px; }
+    .float-wa svg{ width:20px; height:20px; }
+  }
+
+  /* ======================================================================
+     14 — LAYAR SANGAT SEMPIT (≤360px) & HP LIPAT
+     ====================================================================== */
+
+  @media (max-width:360px){
+    :root{ --gutter:14px; }
+    .logo{ font-size:1.02rem; gap:8px; }
+    .hero h1{ font-size:clamp(1.65rem, 8.6vw, 2rem); }
+    .hero-badge{ padding:8px 13px; font-size:.68rem; }
+    .section-head h2{ font-size:clamp(1.45rem, 7.4vw, 1.8rem); }
+    .cat-card-info{ padding:10px; }
+    .tim-card{ padding:18px 8px 14px; }
+    .testimoni-card{ padding:16px 13px; }
+    .kontak-info-item{ padding:14px; }
+    .float-wa{ width:50px; height:50px; }
+  }
+
+  /* Sudut kartu sedikit lebih lembut di layar sentuh kecil. */
+  @media (max-width:760px){
+    :root{ --radius:13px; }
+    /* Blur layar penuh 24px cukup berat untuk HP kelas menengah;
+       14px tetap terbaca "kaca" tapi jauh lebih ringan digulir. */
+    header.scrolled{ backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+    .grain-overlay{ opacity:.035; }
+    /* Ruang napas di dasar halaman supaya tombol WhatsApp melayang tidak
+       menutupi baris terakhir footer. */
+    footer{ padding-bottom:calc(env(safe-area-inset-bottom) + 78px); }
+  }
+
+  /* ======================================================================
+     15 — LAYAR SANGAT LEBAR
+     ====================================================================== */
+
+  @media (min-width:1600px){
+    .container{ max-width:1440px; }
+    .hero h1{ font-size:clamp(3rem, 3.4vw, 4rem); }
+  }
+
+  /* ======================================================================
+     16 — HEMAT GERAK & HEMAT TRANSPARANSI
+     ====================================================================== */
+
+  @media (prefers-reduced-motion:reduce){
+    .mobile-nav.open a{ animation:none; }
+  }
+  /* iOS "Reduce Transparency": kaca buram diganti warna pekat agar teks
+     tetap terbaca tanpa efek blur. */
+  @media (prefers-reduced-transparency:reduce){
+    header.scrolled{ background:rgba(11,12,14,.96); backdrop-filter:none; -webkit-backdrop-filter:none; }
+    .scrim{ backdrop-filter:none; -webkit-backdrop-filter:none; background:rgba(0,0,0,.7); }
+  }
+
 </style>
 </head>
 <body class="locked">
